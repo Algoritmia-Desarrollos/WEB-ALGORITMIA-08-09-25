@@ -31,30 +31,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // 3. Lógica para el carrusel de portafolio
-    const portfolioSwiper = new Swiper('.portfolio-slider', {
-        loop: true,
-        autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
+ /* changes in js/script.js */
+// 3. Lógica para el carrusel de portafolio
+const portfolioSwiper = new Swiper('.portfolio-slider', {
+    loop: true,
+    autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+    },
+    slidesPerView: 1,
+    spaceBetween: 30,
+    breakpoints: {
+        500: {
+          slidesPerView: 2,
+          spaceBetween: 20
         },
-        slidesPerView: 1,
-        spaceBetween: 30,
-        breakpoints: {
-            500: {
-              slidesPerView: 2,
-              spaceBetween: 20
-            },
-            768: {
-              slidesPerView: 3,
-              spaceBetween: 30
-            },
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 30
-            }
+        768: {
+          slidesPerView: 3, /* CAMBIADO A 3 EN ESTE BREAKPOINT */
+          spaceBetween: 30
+        },
+        1024: {
+          slidesPerView: 3, /* CAMBIADO DE 4 A 3 */
+          spaceBetween: 30
         }
-    });
+    }
+});
 
     // 4. NUEVA LÓGICA PARA EL MENÚ DE NAVEGACIÓN ADAPTABLE
     const navToggle = document.getElementById('nav-toggle');

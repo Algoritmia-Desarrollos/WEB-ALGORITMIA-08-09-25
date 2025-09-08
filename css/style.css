@@ -1,3 +1,26 @@
+/* Botón flotante de WhatsApp */
+.whatsapp-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    background: #25d366;
+    color: #fff;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    font-size: 2rem;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.whatsapp-float:hover {
+    background: #1ebe5d;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
 /* ============================================= */
 /* VARIABLES Y ESTILOS GLOBALES                  */
 /* ============================================= */
@@ -120,7 +143,7 @@ a {
 .btn-secondary:hover {
     background-color: var(--color-secundario);
     border-color: var(--color-secundario);
-    color: var(--color-blanco);
+    color: var(--color-blanco) !important;
 }
 
 .highlight {
@@ -191,7 +214,9 @@ a {
 }
 
 .main-nav a:hover {
-    color: var(--color-primario);
+    color: var(--color-secundario);
+        font-weight: 500;
+
 }
 
 /* Botón del menú responsive (hamburguesa) */
@@ -208,9 +233,10 @@ a {
 /* ============================================= */
 /* HERO SECTION                                  */
 /* ============================================= */
+/* changes in css/style.css */
 .hero {
     background-color: var(--color-texto-oscuro);
-    min-height: 100vh;
+    min-height: 90vh; /* REDUCIDO DE 100vh a 70vh */
     display: flex;
     align-items: center;
     text-align: center;
