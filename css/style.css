@@ -7,7 +7,7 @@
     --color-texto-oscuro: #21103A; 
     --color-texto-claro: #4B4F58;
     --color-blanco: #FFFFFF;
-    --color-fondo-claro: #F9F7FC;
+    --color-fondo-claro: #F9F7FC; /* Este color ahora se usará como fondo de las secciones para que las tarjetas blancas resalten */
     --fuente-titulos: 'Bebas Neue', sans-serif;
     --fuente-cuerpo: 'Montserrat', sans-serif;
 }
@@ -26,7 +26,7 @@ html {
 body {
     font-family: var(--fuente-cuerpo);
     color: var(--color-texto-claro);
-    background-color: var(--color-blanco);
+    background-color: var(--color-blanco); /* Fondo general blanco */
     line-height: 1.7;
     font-size: 16px;
 }
@@ -93,23 +93,23 @@ a {
 }
 
 .btn-primary:hover {
-    background-color: #e4a022; /* Amarillo un poco más oscuro */
-    box-shadow: 0px 10px 18px 0px rgba(253, 178, 38, 0.3);
+    background-color: var(--color-secundario);
+    box-shadow: 0px 10px 18px 0px rgba(149, 90, 232, 0.3);
     transform: translateY(-3px);
 }
 
 .btn-secondary {
     padding: 10px 25px;
     font-size: 15px;
-    background-color: transparent;
-    border: 2px solid var(--color-blanco);
+    background-color: var(--color-primario);
+    border: 2px solid var(--color-primario);
     color: var(--color-blanco);
 }
 
 .btn-secondary:hover {
-    background-color: var(--color-primario);
-    border-color: var(--color-primario);
-    color: var(--color-texto-oscuro);
+    background-color: var(--color-secundario);
+    border-color: var(--color-secundario);
+    color: var(--color-blanco);
 }
 
 .highlight {
@@ -210,6 +210,25 @@ a {
     opacity: 0.9;
 }
 
+.hero .hero-title .highlight {
+    position: relative;
+    display: inline-block;
+    color: var(--color-secundario);
+}
+.hero .hero-title .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: -5px;
+    right: -5px;
+    height: 5px;
+    background-color: var(--color-secundario);
+    z-index: -1;
+    transform: skew(-15deg);
+    opacity: 1;
+}
+
+
 /* Círculos decorativos */
 .hero::before, .hero::after {
     content: '';
@@ -253,20 +272,37 @@ a {
     padding: 40px;
     border-radius: 15px;
     text-align: center;
-    box-shadow: 0px 18px 40px 0px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease; /* Transición para todos los cambios */
+    height: 320px; /* Altura fija para tarjetas de servicio */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .service-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0px 25px 50px 0px rgba(149, 90, 232, 0.1);
+    box-shadow: 0 15px 30px rgba(149, 90, 232, 0.15);
+    background: var(--color-secundario);
+    border-color: var(--color-secundario);
 }
 .service-card i {
     font-size: 3rem;
     color: var(--color-secundario);
     margin-bottom: 20px;
+    transition: color 0.3s ease;
 }
 .service-card h3 {
     margin-bottom: 15px;
+    transition: color 0.3s ease;
+}
+.service-card p {
+    transition: color 0.3s ease;
+}
+.service-card:hover i,
+.service-card:hover h3,
+.service-card:hover p {
+    color: var(--color-blanco);
 }
 
 /* ============================================= */
@@ -274,7 +310,7 @@ a {
 /* ============================================= */
 .why-choose-us {
     padding: 100px 0;
-    background-color: var(--color-blanco);
+    background-color: var(--color-fondo-claro);
 }
 .benefits-grid {
     display: grid;
@@ -283,31 +319,46 @@ a {
     margin-top: 50px;
 }
 .benefit-card {
-    background-color: var(--color-fondo-claro);
+    background-color: var(--color-blanco);
     padding: 30px;
     border-radius: 15px;
     text-align: center;
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.03);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    height: 250px; /* Altura fija para tarjetas de ventajas */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .benefit-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0px 15px 40px rgba(149, 90, 232, 0.08);
+    box-shadow: 0 10px 25px rgba(149, 90, 232, 0.12);
+    background: var(--color-secundario);
+    border-color: var(--color-secundario);
 }
 .benefit-card i {
     font-size: 2.5rem;
     color: var(--color-secundario);
     margin-bottom: 15px;
+    transition: color 0.3s ease;
 }
 .benefit-card h3 {
     color: var(--color-texto-oscuro);
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     margin-bottom: 10px;
+    transition: color 0.3s ease;
 }
 .benefit-card p {
     color: var(--color-texto-claro);
     font-size: 0.95rem;
     margin-bottom: 0;
+    transition: color 0.3s ease;
+}
+.benefit-card:hover i,
+.benefit-card:hover h3,
+.benefit-card:hover p {
+    color: var(--color-blanco);
 }
 
 /* ============================================= */
@@ -315,22 +366,19 @@ a {
 /* ============================================= */
 .portfolio {
     padding: 100px 0;
+    background-color: var(--color-fondo-claro);
 }
-.portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-}
-.portfolio-grid img {
+.portfolio-slider .swiper-slide img {
     width: 100%;
-    height: 100%;
+    height: 250px;
     object-fit: cover;
     object-position: top;
-    border-radius: 10px;
+    border-radius: 15px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #eee;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
-.portfolio-grid img:hover {
+.portfolio-slider .swiper-slide img:hover {
     transform: scale(1.03);
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
@@ -351,18 +399,37 @@ a {
     background-color: var(--color-blanco);
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0px 15px 40px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 250px;
-    text-align: left;
+    height: 380px; /* Altura fija para tarjetas de testimonio */
+    text-align: center;
+    transition: all 0.3s ease;
 }
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(149, 90, 232, 0.12);
+    background: var(--color-secundario);
+    border-color: var(--color-secundario);
+}
+.testimonial-card .client-logo-img {
+    max-width: 100%;
+    height: 80px;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 8px;
+    margin: 0 auto 20px auto;
+    border: 1px solid #eee;
+    background: #fff; /* Fondo blanco para logos con transparencia */
+}
+
 .testimonial-card p {
-    font-style: italic;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1.6;
     margin-bottom: 20px;
+    transition: color 0.3s ease;
 }
 .client-info {
     margin-top: auto;
@@ -372,11 +439,23 @@ a {
     font-weight: 700;
     font-size: 1.1rem;
     margin-bottom: 0;
+    text-align: center;
+    transition: color 0.3s ease;
 }
 .client-info span {
     font-size: 0.9rem;
     color: var(--color-secundario);
+    transition: color 0.3s ease;
 }
+.testimonial-card:hover p,
+.testimonial-card:hover h4,
+.testimonial-card:hover span {
+    color: var(--color-blanco);
+}
+.testimonial-card:hover .client-info span {
+    color: rgba(255, 255, 255, 0.85); /* Un poco más sutil en hover */
+}
+
 
 /* Estilos para la paginación de Swiper */
 .swiper-pagination-bullet {
@@ -413,9 +492,6 @@ a {
     margin-top: 30px;
     font-size: 20px;
     padding: 20px 45px;
-}
-.final-cta .btn-large:hover {
-    background-color: var(--color-secundario); /* Cambio de color para el botón amarillo */
 }
 
 /* ============================================= */
@@ -480,6 +556,9 @@ a {
 @media (max-width: 1024px) {
     h1 { font-size: 4rem; }
     h2 { font-size: 3rem; }
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
@@ -492,6 +571,10 @@ a {
 
     .grid-2-col, .services-grid, .process-steps, .footer-bottom, .portfolio-grid, .benefits-grid, .testimonial-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .service-card, .benefit-card, .testimonial-card {
+        height: auto; /* Dejar que la altura se ajuste en móvil */
     }
 
     .feature-text {

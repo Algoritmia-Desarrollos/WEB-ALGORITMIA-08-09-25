@@ -12,29 +12,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 2. Lógica para el carrusel de testimonios
     const testimonialsSwiper = new Swiper('.testimonials-slider', {
-        // Opciones de configuración
-        loop: true, // Bucle infinito
+        loop: true,
         autoplay: {
-            delay: 4000, // Pasa cada 4 segundos
+            delay: 4000,
             disableOnInteraction: false,
         },
-        slidesPerView: 1, // Muestra 1 testimonio a la vez en móvil
-        spaceBetween: 30, // Espacio entre slides
-        
-        // Paginación (los puntos de abajo)
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-
-        // Responsive: Muestra más testimonios en pantallas grandes
+        slidesPerView: 1,
+        spaceBetween: 30,
         breakpoints: {
-            // Cuando la ventana es >= 768px
             768: {
               slidesPerView: 2,
               spaceBetween: 30
             },
-            // Cuando la ventana es >= 1024px
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 30
+            }
+        }
+    });
+
+    // 3. Lógica para el carrusel de portafolio
+    const portfolioSwiper = new Swiper('.portfolio-slider', {
+        loop: true,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+        slidesPerView: 1,
+        spaceBetween: 30,
+        breakpoints: {
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 30
+            },
             1024: {
               slidesPerView: 3,
               spaceBetween: 30
