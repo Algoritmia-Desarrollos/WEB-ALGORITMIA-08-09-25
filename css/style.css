@@ -31,6 +31,16 @@ body {
     font-size: 16px;
 }
 
+/* Clase para bloquear el scroll cuando el menú responsive está abierto */
+.no-scroll {
+    overflow: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 h1, h2, h3, h4 {
     font-family: var(--fuente-titulos);
     font-weight: normal;
@@ -101,6 +111,7 @@ a {
 .btn-secondary {
     padding: 10px 25px;
     font-size: 15px;
+    font-weight: 700 !important;
     background-color: var(--color-primario);
     border: 2px solid var(--color-primario);
     color: var(--color-blanco);
@@ -181,6 +192,17 @@ a {
 
 .main-nav a:hover {
     color: var(--color-primario);
+}
+
+/* Botón del menú responsive (hamburguesa) */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--color-blanco);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1500;
 }
 
 /* ============================================= */
@@ -556,45 +578,76 @@ a {
 @media (max-width: 1024px) {
     h1 { font-size: 4rem; }
     h2 { font-size: 3rem; }
-    .benefits-grid {
-        grid-template-columns: repeat(2, 1fr);
+
+    .services-grid, .benefits-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
 }
 
 @media (max-width: 768px) {
     h1 { font-size: 2.8rem; }
-    h2 { font-size: 2.5rem; }
+    h2 { font-size: 2.2rem; }
 
-    .main-header .main-nav { display: none; }
-    .main-header .container { justify-content: center; }
-    .logo { text-align: center; }
+    .main-header .container {
+        justify-content: space-between;
+    }
 
-    .grid-2-col, .services-grid, .process-steps, .footer-bottom, .portfolio-grid, .benefits-grid, .testimonial-grid {
+    /* Estilos del menú de navegación adaptable */
+    .nav-toggle {
+        display: block;
+    }
+
+    .main-nav {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Empieza fuera de la pantalla */
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(33, 16, 58, 0.98);
+        backdrop-filter: blur(5px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.4s ease-in-out;
+    }
+
+    .main-nav.nav-visible {
+        right: 0; /* Se desliza a la vista */
+    }
+
+    .main-nav a {
+        font-size: 1.5rem;
+        margin: 20px 0;
+    }
+    
+    .main-nav .btn-secondary {
+        font-size: 1.2rem;
+        padding: 15px 30px;
+    }
+
+    /* Ajustes generales al layout */
+    .grid-2-col, .services-grid, .footer-bottom, .benefits-grid {
         grid-template-columns: 1fr;
     }
     
     .service-card, .benefit-card, .testimonial-card {
         height: auto; /* Dejar que la altura se ajuste en móvil */
+        padding: 30px;
     }
 
-    .feature-text {
-        padding-left: 0;
-        text-align: center;
-    }
-    .features .grid-2-col {
-        text-align: center;
-    }
-    .feature-text h4, .feature-text h2 {
-        text-align: center;
-    }
-    .feature-image {
-        order: -1;
-        margin-bottom: 30px;
+    .testimonial-card {
+        min-height: 320px;
     }
     
-    .final-cta h1 { font-size: 2.5rem; }
+    .final-cta h1 { 
+        font-size: 2.5rem; 
+    }
     
-    .footer-bottom { text-align: center; }
+    .footer-bottom { 
+        text-align: center; 
+        gap: 50px;
+    }
     
     .hero::before, .hero::after {
         display: none;

@@ -29,13 +29,16 @@
             <a href="#" class="logo">
                 <img src="img/algoritmia_logo.png" alt="Logo Algoritmia Desarrollos">
             </a>
-            <nav class="main-nav">
+            <nav class="main-nav" id="main-nav">
                 <a href="#servicios">Servicios</a>
                 <a href="#portafolio">Portafolio</a>
                 <a href="#elegirnos">¿Por Qué Elegirnos?</a>
                 <a href="#testimonios">Testimonios</a>
                 <a href="#contacto" class="btn btn-secondary">Contactar</a>
             </nav>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
@@ -461,9 +464,10 @@
                 <div class="footer-column">
                     <h3>Contacto</h3>
                     <ul>
-                        <li><a href="mailto:tuemail@ejemplo.com"><i class="fas fa-envelope"></i> tuemail@ejemplo.com</a></li>
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Rosario, Santa Fe, Argentina</a></li>
-                        <li><a href="https://wa.me/TUNUMERO"><i class="fab fa-whatsapp"></i> +54 9 341 XXXXXXX</a></li>
+                        <li style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+                            <a href="mailto:algoritmiadesarrollos@gmail.com" style="display: flex; align-items: center; gap: 6px;"><i class="fas fa-envelope"></i> algoritmiadesarrollos@gmail.com</a>
+                            <a href="https://wa.me/5493476245523" target="_blank" style="display: flex; align-items: center; gap: 6px;"><i class="fab fa-whatsapp"></i> +54 9 3476 24-5523</a>
+                        </li>
                     </ul>
                 </div>
             </div>
