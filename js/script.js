@@ -1,36 +1,44 @@
-// script.js
-
-// Espera a que todo el contenido de la página se cargue
 document.addEventListener('DOMContentLoaded', function () {
     
-    // Inicializar el carrusel de la sección Hero
-    const heroSwiper = new Swiper('.hero .swiper', {
-        // Opciones de configuración
-        loop: true,
-        autoplay: {
-            delay: 3000,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
+    // 1. Lógica para el header dinámico (más delgado al hacer scroll)
+    const header = document.querySelector('.main-header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.classList.add('header-scrolled');
+        } else {
+            header.classList.remove('header-scrolled');
+        }
     });
 
-    // Código para el modal del formulario
-    const applyButton = document.getElementById('apply-button');
-    const modal = document.getElementById('form-modal');
-    const closeModalButton = document.getElementById('close-modal-button');
+    // 2. Lógica para el carrusel de testimonios
+    const testimonialsSwiper = new Swiper('.testimonials-slider', {
+        // Opciones de configuración
+        loop: true, // Bucle infinito
+        autoplay: {
+            delay: 4000, // Pasa cada 4 segundos
+            disableOnInteraction: false,
+        },
+        slidesPerView: 1, // Muestra 1 testimonio a la vez en móvil
+        spaceBetween: 30, // Espacio entre slides
+        
+        // Paginación (los puntos de abajo)
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
 
-    if (applyButton) {
-        applyButton.addEventListener('click', () => {
-            modal.style.display = 'block';
-        });
-    }
-
-    if (closeModalButton) {
-        closeModalButton.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-    }
-
+        // Responsive: Muestra más testimonios en pantallas grandes
+        breakpoints: {
+            // Cuando la ventana es >= 768px
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 30
+            },
+            // Cuando la ventana es >= 1024px
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 30
+            }
+        }
+    });
 });
