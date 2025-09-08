@@ -233,7 +233,6 @@ a {
 /* ============================================= */
 /* HERO SECTION                                  */
 /* ============================================= */
-/* changes in css/style.css */
 .hero {
     background-color: var(--color-texto-oscuro);
     min-height: 90vh; /* REDUCIDO DE 100vh a 70vh */
@@ -258,22 +257,13 @@ a {
     opacity: 0.9;
 }
 
+/* === CAMBIO REALIZADO AQUÍ === */
 .hero .hero-title .highlight {
-    position: relative;
-    display: inline-block;
     color: var(--color-secundario);
-}
-.hero .hero-title .highlight::after {
-    content: '';
-    position: absolute;
-    bottom: 5px;
-    left: -5px;
-    right: -5px;
-    height: 5px;
-    background-color: var(--color-secundario);
-    z-index: -1;
-    transform: skew(-15deg);
-    opacity: 1;
+    text-decoration: underline;
+    text-decoration-color: var(--color-secundario);
+    text-decoration-thickness: 4px;
+    text-underline-offset: 8px; /* Aumenté un poco la separación */
 }
 
 
