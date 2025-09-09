@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         slidesPerView: 1,
         spaceBetween: 30,
+        pagination: {
+            el: '.testimonials-pagination', // === CAMBIO AQUÍ ===
+            clickable: true,
+        },
         breakpoints: {
             768: {
               slidesPerView: 2,
@@ -31,33 +35,36 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
- /* changes in js/script.js */
-// 3. Lógica para el carrusel de portafolio
-const portfolioSwiper = new Swiper('.portfolio-slider', {
-    loop: true,
-    autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-    },
-    slidesPerView: 1,
-    spaceBetween: 30,
-    breakpoints: {
-        500: {
-          slidesPerView: 2,
-          spaceBetween: 20
+    // 3. Lógica para el carrusel de portafolio
+    const portfolioSwiper = new Swiper('.portfolio-slider', {
+        loop: true,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
         },
-        768: {
-          slidesPerView: 3, /* CAMBIADO A 3 EN ESTE BREAKPOINT */
-          spaceBetween: 30
+        slidesPerView: 1,
+        spaceBetween: 30,
+        pagination: {
+          el: '.portfolio-pagination', // === CAMBIO AQUÍ ===
+          clickable: true,
         },
-        1024: {
-          slidesPerView: 3, /* CAMBIADO DE 4 A 3 */
-          spaceBetween: 30
+        breakpoints: {
+            500: {
+              slidesPerView: 2,
+              spaceBetween: 20
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 30
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 30
+            }
         }
-    }
-});
+    });
 
-    // 4. NUEVA LÓGICA PARA EL MENÚ DE NAVEGACIÓN ADAPTABLE
+    // 4. Lógica para el menú de navegación adaptable
     const navToggle = document.getElementById('nav-toggle');
     const mainNav = document.getElementById('main-nav');
     const navLinks = mainNav.querySelectorAll('a');
@@ -67,7 +74,6 @@ const portfolioSwiper = new Swiper('.portfolio-slider', {
             mainNav.classList.toggle('nav-visible');
             document.body.classList.toggle('no-scroll');
 
-            // Cambiar el ícono de hamburguesa a X y viceversa
             const icon = navToggle.querySelector('i');
             if (icon.classList.contains('fa-bars')) {
                 icon.classList.remove('fa-bars');
@@ -79,7 +85,6 @@ const portfolioSwiper = new Swiper('.portfolio-slider', {
         });
     }
 
-    // Cierra el menú al hacer clic en un enlace (ideal para páginas de una sola sección)
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             if (mainNav.classList.contains('nav-visible')) {
