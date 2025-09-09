@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         slidesPerView: 1,
         spaceBetween: 30,
         pagination: {
-            el: '.testimonials-pagination', // === CAMBIO AQUÍ ===
+            el: '.swiper-pagination',
             clickable: true,
         },
         breakpoints: {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         slidesPerView: 1,
         spaceBetween: 30,
         pagination: {
-          el: '.portfolio-pagination', // === CAMBIO AQUÍ ===
+          el: '.swiper-pagination',
           clickable: true,
         },
         breakpoints: {
@@ -97,5 +97,4 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-
 });
