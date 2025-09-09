@@ -68,7 +68,7 @@ h1, h2, h3, h4 {
     font-family: var(--fuente-titulos);
     font-weight: normal;
     color: var(--color-texto-oscuro);
-    line-height: 1.2;
+    line-height: 1;
 }
 
 h1 { font-size: 4.7rem; }
@@ -173,6 +173,8 @@ a {
 /* ============================================= */
 /* HEADER DINÁMICO                               */
 /* ============================================= */
+
+
 .main-header {
     padding: 20px 0; /* Altura inicial */
     position: fixed;
@@ -233,15 +235,50 @@ a {
 /* ============================================= */
 /* HERO SECTION                                  */
 /* ============================================= */
+/* css/style.css */
+
+/* ============================================= */
+/* HERO SECTION                                  */
+/* ============================================= */
 .hero {
-    background-color: var(--color-texto-oscuro);
     min-height: 90vh;
     display: flex;
     align-items: center;
     text-align: center;
     padding-top: 100px;
+    position: relative; /* Clave para posicionar el video y el overlay */
+    overflow: hidden;   /* Evita que el video se desborde */
+}
+
+.hero-video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Lo pone detrás de todo */
+}
+
+.hero-video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que el video cubra todo el espacio sin deformarse */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(33, 16, 58, 0.95); /* Tu color oscuro con 75% de opacidad */
+    z-index: -1; /* Lo pone encima del video pero detrás del texto */
+}
+
+/* Aseguramos que el contenido del texto esté por encima de todo */
+.hero .container {
     position: relative;
-    overflow: hidden;
+    z-index: 1;
 }
 
 .hero-title {
@@ -265,31 +302,6 @@ a {
     text-underline-offset: 8px; 
 }
 
-
-/* Círculos decorativos */
-.hero::before, .hero::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(149, 90, 232, 0.1) 0%, rgba(149, 90, 232, 0) 70%);
-    z-index: 0;
-}
-.hero::before {
-    width: 400px;
-    height: 400px;
-    top: 10%;
-    left: -150px;
-}
-.hero::after {
-    width: 500px;
-    height: 500px;
-    bottom: -150px;
-    right: -200px;
-}
-.hero .container {
-    position: relative;
-    z-index: 1;
-}
 
 /* ============================================= */
 /* SERVICES SECTION                              */
@@ -613,10 +625,36 @@ a {
     }
 }
 
+/* ============================================= */
+/* RESPONSIVE DESIGN (MÓVILES)                 */
+/* ============================================= */
 @media (max-width: 768px) {
-    h1 { font-size: 2.8rem; }
-    h2 { font-size: 2.2rem; }
 
+    /* --- Tipografía General --- */
+    h1 { 
+        font-size: 2.4rem;
+        line-height: 1.15; /* Ligeramente más separado para mejor lectura */
+    }
+    h2 { 
+        font-size: 2.2rem; 
+    }
+
+    /* --- Ajustes del Hero Section --- */
+    .hero .hero-title .highlight {
+        text-underline-offset: 6px; /* Sube el subrayado para que esté más cerca */
+        text-decoration-thickness: 3px; /* Lo hace un poco más fino */
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem; /* Reduce el tamaño del texto secundario */
+        margin-bottom: 35px; /* Ajusta el espacio antes del botón */
+    }
+
+    .hero::before, .hero::after {
+        display: none; /* Oculta los círculos decorativos en móvil */
+    }
+    
+    /* --- Ajustes del Header y Navegación --- */
     .main-header .container {
         justify-content: space-between;
     }
@@ -654,6 +692,7 @@ a {
         padding: 15px 30px;
     }
 
+    /* --- Ajustes de Layout y Secciones --- */
     .grid-2-col, .services-grid, .footer-bottom, .benefits-grid {
         grid-template-columns: 1fr;
     }
@@ -675,8 +714,9 @@ a {
         text-align: center; 
         gap: 50px;
     }
-    
-    .hero::before, .hero::after {
-        display: none;
+
+    /* --- Ajuste del Subrayado en Títulos H2 --- */
+    .highlight-underline::after {
+        height: 4px !important; /* Mantiene el ajuste de grosor para otros títulos */
     }
 }
