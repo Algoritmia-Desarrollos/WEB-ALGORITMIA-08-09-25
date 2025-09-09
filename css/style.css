@@ -271,7 +271,7 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(33, 16, 58, 0.95); /* Tu color oscuro con 75% de opacidad */
+    background-color: rgba(33, 16, 58, 0.9); /* Tu color oscuro con 75% de opacidad */
     z-index: -1; /* Lo pone encima del video pero detrás del texto */
 }
 
