@@ -5,7 +5,6 @@
     --color-primario: #fdb226;
     --color-secundario: #955ce9;
     --color-texto-oscuro: #21103A; 
-    --color-texto-claro: #4B4F58;
     --color-blanco: #FFFFFF;
     --fuente-titulos: 'Bebas Neue', sans-serif;
     --fuente-cuerpo: 'Montserrat', sans-serif;
@@ -21,15 +20,15 @@ html {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-  scroll-behavior: auto !important; /* GSAP necesita esto para funcionar bien */
+  scroll-behavior: auto !important; /* Requerido por GSAP para un control preciso */
 }
 
 body {
   font-family: var(--fuente-cuerpo);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--color-blanco);
-  background-color: var(--color-texto-oscuro);
+  background-color: var(--color-texto-oscuro); /* Color base de la página */
 }
 
 img {
@@ -44,20 +43,20 @@ h1, h2, h3, h4 {
     color: var(--color-blanco);
     line-height: 1.1;
 }
-h1 { font-size: 5rem; }
-h2 { font-size: 3.5rem; }
+h1 { font-size: clamp(3rem, 10vw, 5.5rem); } /* Tipografía responsiva */
+h2 { font-size: clamp(2.5rem, 8vw, 4rem); }
 .client-info h4 { font-family: var(--fuente-cuerpo); font-size: 1.1rem; font-weight: 700; }
 
 p {
     font-size: 1.1rem;
     color: #D3D1D6;
     max-width: 45ch; /* Limita el ancho de línea para mejor legibilidad */
+    margin-bottom: 1rem;
 }
 
 .highlight {
     color: var(--color-primario);
 }
-
 
 /* ============================================= */
 /* HEADER FIJO                                   */
@@ -74,12 +73,16 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 0 40px;
 }
 .logo img {
     width: 50px;
+    transition: transform 0.3s ease;
+}
+.logo img:hover {
+    transform: scale(1.1);
 }
 .btn {
     display: inline-block;
@@ -99,27 +102,28 @@ p {
 .btn-secondary:hover {
     background-color: var(--color-blanco);
     color: var(--color-texto-oscuro);
+    transform: scale(1.05);
 }
 .btn-primary {
     background-color: var(--color-primario);
-    color: var(--color-blanco);
+    color: var(--color-texto-oscuro);
     margin-top: 20px;
+    font-weight: 700;
 }
 .btn-primary:hover {
     background-color: var(--color-blanco);
-    color: var(--color-texto-oscuro);
+    transform: scale(1.05);
 }
-
 
 /* ============================================= */
 /* LAYOUT INTERACTIVO GSAP                       */
 /* ============================================= */
 .gallery {
     display: grid;
-    grid-template-columns: 1fr; /* Apilado en móvil */
-    background-color: var(--color-texto-oscuro);
+    grid-template-columns: 1fr; /* Apilado en móvil por defecto */
     position: relative;
-    transition: background-color 0.4s ease-in-out;
+    background-color: var(--color-texto-oscuro);
+    transition: background-color 0.5s ease-in-out;
 }
 
 .left {
@@ -127,12 +131,13 @@ p {
     height: 100%;
     display: flex;
     justify-content: center;
+    z-index: 10;
 }
 
 .desktopContent {
-    max-width: 500px;
+    max-width: 550px;
     margin: 0 auto;
-    padding: 30px;
+    padding: 0 30px;
     color: var(--color-blanco);
 }
 
@@ -142,12 +147,11 @@ p {
     flex-direction: column;
     justify-content: center;
     color: var(--color-blanco);
-    opacity: 0.5;
+    opacity: 0.4; /* Las secciones no activas están semi-transparentes */
     transition: opacity 0.4s ease;
 }
-/* La sección activa se ve más nítida */
 .desktopContentSection.active-section {
-    opacity: 1;
+    opacity: 1; /* La sección activa se vuelve 100% opaca */
 }
 .desktopContentSection i {
     font-size: 2.5rem;
@@ -164,7 +168,6 @@ p {
     font-size: 1rem;
 }
 
-
 .right {
     width: 100%;
     height: 100vh;
@@ -175,7 +178,7 @@ p {
     height: 100%;
     width: 100%;
     position: relative;
-    border-radius: 40px;
+    border-radius: 30px;
     overflow: hidden;
 }
 
@@ -185,32 +188,31 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    clip-path: inset(100% 0% 0% 0%); /* Estado inicial para GSAP */
+    clip-path: inset(100% 0% 0% 0%); /* Estado inicial para la animación "wipe" */
 }
 
 .desktopPhoto img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center; /* Asegura que la imagen se vea bien centrada */
 }
 
 /* Layout para Escritorio (a partir de 900px) */
 @media (min-width: 900px) {
     .gallery {
-        grid-template-columns: 1fr 1.2fr; /* Columna de texto más angosta */
+        grid-template-columns: 1fr 1.2fr;
         align-items: start;
     }
-
     .right {
         display: block;
         position: sticky;
         top: 0;
         height: 100vh;
-        padding: 10vh 5vw; /* Margen para que la foto "flote" */
+        padding: 12vh 6vw; /* Margen para que la foto "flote" */
     }
-
     .left {
-      padding: 0 5vw;
+      padding: 0 6vw;
     }
 }
 
