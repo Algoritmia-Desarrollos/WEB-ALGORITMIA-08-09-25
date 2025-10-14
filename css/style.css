@@ -9,7 +9,7 @@
     --dark-color: #22103a;
     --white-color: #FFFFFF;
     --light-gray-color: #f8f9fa;
-    --text-color: #e2d9f3;
+    --text-color: var(--white-color); /* Cambiado a blanco */
     --text-color-dark: #333;
     --body-font: 'Montserrat', sans-serif;
     --title-font: 'Bebas Neue', sans-serif;
@@ -94,8 +94,19 @@ nav { height: var(--header-height); display: flex; justify-content: space-betwee
 .service-card:hover .service-icon, .service-card:hover .service-title, .service-card:hover .service-description { color: var(--white-color); }
 
 /* ==================== ADVANTAGES (STACKING CARDS EFFECT) ==================== */
-.advantages-section { height: 400vh; position: relative; margin-bottom: calc(-300vh + 6rem); }
-.advantages-sticky-container { position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden; }
+.advantages-section { 
+    height: 500vh; 
+    position: relative; 
+    margin-bottom: calc(-400vh + 6rem); 
+}
+.advantages-sticky-container { 
+    position: sticky; 
+    top: 0; 
+    height: 100vh; 
+    width: 100%;
+    /* La siguiente línea ha sido eliminada. ¡Esta era la causa del problema! */
+    /* overflow: hidden; */ 
+}
 .advantages-content { display: grid; grid-template-columns: 1fr 1fr; align-items: center; height: 100%; gap: 4rem; }
 .advantages-header { height: 100%; display: flex; flex-direction: column; justify-content: center; }
 .advantages-header .section-title, .advantages-header .section-subtitle { text-align: left; }
@@ -112,22 +123,25 @@ nav { height: var(--header-height); display: flex; justify-content: space-betwee
     max-width: 450px;
     transform-origin: center center;
     opacity: 0;
-    transform: scale(0.9);
+    transform: translateY(100vh) scale(0.9);
     visibility: hidden;
     transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
 }
-.advantage-card.is-active { opacity: 1; transform: scale(1); visibility: visible; z-index: 10; }
+.advantage-card.is-active { 
+    opacity: 1; 
+    transform: translateY(0) scale(1);
+    visibility: visible; 
+    z-index: 10; 
+}
 .advantage-card.is-passed {
     opacity: 1;
     visibility: visible;
-    transform: scale(calc(1 - (var(--stack-order, 1)) * 0.04)) translateY(calc(var(--stack-order, 1) * -1rem));
+    transform: scale(calc(1 - (var(--stack-order, 1)) * 0.04)) translateY(calc(var(--stack-order, 1) * -1.5rem));
     z-index: calc(10 - var(--stack-order, 1));
 }
 .advantage-card i { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 1rem; }
 .advantage-card h4 { font-size: var(--h4-font-size); color: var(--primary-color); }
 .advantage-card * { transition: color 0.3s; }
-.advantage-card:hover { background-color: var(--primary-color); }
-.advantage-card:hover i, .advantage-card:hover h4, .advantage-card:hover p { color: var(--white-color); }
 
 /* ==================== TESTIMONIALS ==================== */
 #testimonials { padding-top: 6rem; }

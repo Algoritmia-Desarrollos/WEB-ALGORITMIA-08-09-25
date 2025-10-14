@@ -67,11 +67,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (sectionRect.top < window.innerHeight && sectionRect.bottom > 0) {
                 // Altura total de scroll para la animación (sección - altura de la pantalla)
                 const scrollableHeight = advantagesSection.offsetHeight - window.innerHeight;
+                
+                // Si no hay altura para scrollear (por si acaso), no hagas nada
+                if (scrollableHeight <= 0) return;
+
                 // Progreso del scroll dentro de la sección (de 0 a 1), asegurándose que no sea negativo
                 const progress = Math.max(0, -sectionRect.top / scrollableHeight);
                 
                 // Determinar qué tarjeta debe estar activa
-                // Se usa `progress * (longitud + 1)` para dar espacio al final y al principio
+                // Se usa `progress * (longitud + 1)` para dar un espacio de scroll al principio antes de que aparezca la primera tarjeta.
                 let activeIndex = Math.floor(progress * (advantageCards.length + 1)) - 1;
                 activeIndex = Math.max(-1, Math.min(activeIndex, advantageCards.length - 1));
 
@@ -81,9 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Tarjetas que ya pasaron y se apilan
                         card.classList.add('is-passed');
                         card.classList.remove('is-active');
+                        // La variable '--stack-order' se usa en el CSS para la posición de la tarjeta
                         card.style.setProperty('--stack-order', activeIndex - index);
                     } else if (index === activeIndex) {
-                        // La tarjeta activa
+                        // La tarjeta activa (la que se está mostrando)
                         card.classList.add('is-active');
                         card.classList.remove('is-passed');
                     } else {
