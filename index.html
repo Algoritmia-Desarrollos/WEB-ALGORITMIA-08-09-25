@@ -3,20 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algoritmia Desarrollos | Transformamos Ideas en Experiencias Digitales</title>
+
+    <title>Algoritmia Desarrollos | Diseño Web y Desarrollo de Aplicaciones</title>
+    <meta name="description" content="Transformamos tus ideas en experiencias digitales. Creamos sitios web modernos, rápidos y optimizados para SEO que impulsan tu negocio en Rosario y toda Argentina.">
+    <meta name="keywords" content="desarrollo web, diseño web, aplicaciones web, seo, portfolio, programador, rosario, argentina">
+    <meta name="author" content="Algoritmia Desarrollos">
     
-    <meta name="description" content="Creamos sitios web y aplicaciones a medida que impulsan tu negocio. Diseño web moderno, rápido y optimizado para SEO.">
-    <meta name="keywords" content="desarrollo web, aplicaciones web, seo, marketing digital, portfolio, algoritmia">
-    
+    <link rel="icon" href="./img/algoritmia_logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="./img/algoritmia_logo.png">
+
+    <meta property="og:title" content="Algoritmia Desarrollos | Diseño Web y Desarrollo de Aplicaciones">
+    <meta property="og:description" content="Transformamos tus ideas en experiencias digitales. Creamos sitios web modernos, rápidos y optimizados para SEO.">
+    <meta property="og:image" content="./img/fondoalgo.png"> 
+    <meta property="og:url" content="https://www.algoritmiadesarrollos.com.ar/">
+    <meta property="og:type" content="website">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
-    
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+
+    <div id="preloader">
+        <img src="./img/algoritmia_logo.png" alt="Logo Algoritmia Cargando" class="preloader-logo">
+    </div>
 
     <header id="header">
         <nav class="container">
@@ -29,76 +42,66 @@
                     <li><a href="#services" class="nav-link">Servicios</a></li>
                     <li><a href="#portfolio" class="nav-link">Portafolio</a></li>
                     <li><a href="#advantages" class="nav-link">Ventajas</a></li>
+                    <li><a href="#testimonials" class="nav-link">Testimonios</a></li>
                     <li><a href="#contact" class="nav-link nav-link-button">Contactar</a></li>
                 </ul>
                 <div class="nav-close" id="nav-close"><i class='bx bx-x'></i></div>
             </div>
-            <div class="nav-toggle" id="nav-toggle">
-                <i class='bx bx-menu'></i>
-            </div>
+            <div class="nav-toggle" id="nav-toggle"><i class='bx bx-menu'></i></div>
         </nav>
     </header>
 
-    <main>
+    <main id="main-content">
         <section class="hero" id="home">
             <div class="container hero-container">
-                <h1 class="hero-title animate-on-scroll">
-                    Transformamos ideas en <br>
-                    <span>experiencias digitales</span> que <br>
-                    impulsan tu negocio.
+                <h1 class="hero-title">
+                    <span class="line">Transformamos ideas en</span>
+                    <span class="line"><span>experiencias digitales</span> que</span>
+                    <span class="line">impulsan tu negocio.</span>
                 </h1>
-                <p class="hero-description animate-on-scroll" style="--delay: 0.2s;">
+                <p class="hero-description animate-on-scroll" style="--delay: 1.5s;">
                     Creamos sitios web, aplicaciones y estrategias a medida para que alcances tus objetivos.
                 </p>
-                <div class="hero-buttons animate-on-scroll" style="--delay: 0.4s;">
+                <div class="hero-buttons animate-on-scroll" style="--delay: 1.8s;">
                     <a href="#contact" class="btn btn-primary">Comienza tu Proyecto</a>
                 </div>
             </div>
+            <a href="#portfolio" class="scroll-down-indicator" aria-label="Bajar a la siguiente sección">
+                <span>Scroll Down</span>
+                <i class='bx bx-mouse'></i>
+            </a>
         </section>
 
         <section class="section" id="portfolio">
-            <div class="portfolio-container">
-                <h2 class="section-title animate-on-scroll">Proyectos que nos <span>enorgullecen</span>.</h2>
-                <div class="scroller animate-on-scroll" data-speed="slow">
-                    <ul class="tag-list scroller-inner">
-                        <li><img src="./img/Limbo42.png" alt="Proyecto Limbo42"></li>
-                        <li><img src="./img/ryder.png" alt="Proyecto Ryder Cup 2025"></li>
-                        <li><img src="./img/TheCousinsEstetica.png" alt="Proyecto The Cousins Estética"></li>
-                        <li><img src="./img/CirugiaPlasticayEsteticaOrono.png" alt="Proyecto Cirugía Plástica Oroño"></li>
-                        <li><img src="./img/burmesdeco.png" alt="Proyecto Burmés Deco"></li>
-                        <li><img src="./img/FitPlan.png" alt="Proyecto FitPlan"></li>
-                        <li><img src="./img/inmo.png" alt="Proyecto Terraviento Inmobiliaria"></li>
-                        <li><img src="./img/Agustina Psicologa.png" alt="Proyecto Psicóloga Agustina Rodriguez"></li>
-                        <li><img src="./img/Cairo.png" alt="Proyecto Cairo Studio"></li>
-                        <li><img src="./img/LaManiaka (2).png" alt="Proyecto La Maniaka"></li>
-                        <li><img src="./img/Selecta.png" alt="Proyecto Selecta Servicios"></li>
-                        <li><img src="./img/armura.png" alt="Proyecto Armura"></li>
-                    </ul>
-                </div>
+            <div class="scroller" data-direction="left">
+                <ul class="scroller__inner">
+                    <li><img src="./img/Limbo42.png" alt="Proyecto Limbo42"></li>
+                    <li><img src="./img/ryder.png" alt="Proyecto Ryder Cup 2025"></li>
+                    <li><img src="./img/TheCousinsEstetica.png" alt="Proyecto The Cousins Estética"></li>
+                    <li><img src="./img/CirugiaPlasticayEsteticaOrono.png" alt="Proyecto Cirugía Plástica Oroño"></li>
+                    <li><img src="./img/burmesdeco.png" alt="Proyecto Burmés Deco"></li>
+                    <li><img src="./img/FitPlan.png" alt="Proyecto FitPlan"></li>
+                    <li><img src="./img/inmo.png" alt="Proyecto Terraviento Inmobiliaria"></li>
+                    <li><img src="./img/Agustina Psicologa.png" alt="Proyecto Psicóloga Agustina Rodriguez"></li>
+                </ul>
             </div>
         </section>
 
         <section class="section section-light" id="services">
             <div class="container">
-                <div class="section-header">
+                <div class="section-header animate-on-scroll">
                     <h3 class="section-subtitle">Nuestros Servicios</h3>
-                    <h2 class="section-title">Soluciones Digitales Integrales para tu Empresa</h2>
+                    <h2 class="section-title">Soluciones Digitales Integrales</h2>
                 </div>
                 <div class="services-grid">
                     <div class="service-card animate-on-scroll">
-                        <i class='bx bx-code-alt service-icon'></i>
-                        <h3 class="service-title">Diseño y Desarrollo Web</h3>
-                        <p class="service-description">Creamos sitios modernos, rápidos y optimizados para SEO que capturan la esencia de tu marca y convierten visitantes en clientes.</p>
+                        <i class='bx bx-code-alt service-icon'></i><h4 class="service-title">Diseño y Desarrollo Web</h4><p class="service-description">Sitios modernos y optimizados para SEO que capturan tu marca y convierten visitantes en clientes.</p>
                     </div>
                     <div class="service-card animate-on-scroll" style="--delay: 0.2s;">
-                        <i class='bx bx-window-open service-icon'></i>
-                        <h3 class="service-title">Aplicaciones Web a Medida</h3>
-                        <p class="service-description">Desarrollamos aplicaciones funcionales y escalables, desde sistemas de gestión interna hasta plataformas complejas.</p>
+                        <i class='bx bx-window-open service-icon'></i><h4 class="service-title">Aplicaciones Web a Medida</h4><p class="service-description">Desde sistemas de gestión interna hasta plataformas complejas para tus usuarios.</p>
                     </div>
                     <div class="service-card animate-on-scroll" style="--delay: 0.4s;">
-                        <i class='bx bx-trending-up service-icon'></i>
-                        <h3 class="service-title">Marketing Digital y SEO</h3>
-                        <p class="service-description">Aumentamos tu visibilidad online con estrategias que garantizan un retorno de inversión y atraen tráfico de calidad.</p>
+                        <i class='bx bx-trending-up service-icon'></i><h4 class="service-title">Marketing Digital y SEO</h4><p class="service-description">Aumentamos tu visibilidad online con estrategias que garantizan un retorno de inversión.</p>
                     </div>
                 </div>
             </div>
@@ -106,33 +109,48 @@
         
         <section class="advantages-section" id="advantages">
             <div class="advantages-sticky-container">
-                <div class="advantages-content">
+                <div class="advantages-content container">
                     <div class="advantages-header">
-                        <h3 class="section-subtitle">Nuestras Ventajas</h3>
-                        <h2 class="section-title">Un socio digital que te <span>ayudará a crecer</span>.</h2>
-                        <p>Nos enfocamos en la calidad, el rendimiento y la seguridad para ofrecerte resultados excepcionales.</p>
+                        <div class="advantages-header-content">
+                            <h3 class="section-subtitle">Nuestras Ventajas</h3>
+                            <h2 class="section-title">Un socio digital que te <span>ayudará a crecer</span>.</h2>
+                            <p>Nos enfocamos en la calidad, el rendimiento y la seguridad para ofrecerte resultados excepcionales.</p>
+                        </div>
                     </div>
                     <div class="advantages-cards-wrapper">
-                        <div class="advantage-card">
-                            <i class='bx bx-mobile-alt'></i>
-                            <h4>Optimización Móvil</h4>
-                            <p>Tu web se verá y funcionará perfecto en cualquier pantalla.</p>
-                        </div>
-                        <div class="advantage-card">
-                            <i class='bx bx-layer'></i>
-                            <h4>Diseños Impresionantes</h4>
-                            <p>Creamos experiencias visuales atractivas y funcionales.</p>
-                        </div>
-                        <div class="advantage-card">
-                            <i class='bx bx-rocket'></i>
-                            <h4>Máxima Velocidad</h4>
-                            <p>Nos aseguramos que tu web no espere ni un milisegundo.</p>
-                        </div>
-                         <div class="advantage-card">
-                            <i class='bx bx-shield-quarter'></i>
-                            <h4>Seguridad de Vanguardia</h4>
-                            <p>Incluimos las últimas medidas de seguridad y copias de seguridad.</p>
-                        </div>
+                        <div class="advantage-card"><i class='bx bx-mobile-alt'></i><h4>Optimización Móvil</h4><p>Tu web se verá y funcionará perfecto en cualquier pantalla.</p></div>
+                        <div class="advantage-card"><i class='bx bx-layer'></i><h4>Diseños Impresionantes</h4><p>Creamos experiencias visuales atractivas y funcionales.</p></div>
+                        <div class="advantage-card"><i class='bx bx-rocket'></i><h4>Máxima Velocidad</h4><p>Nos aseguramos que tu web no espere ni un milisegundo.</p></div>
+                        <div class="advantage-card"><i class='bx bx-shield-quarter'></i><h4>Seguridad de Vanguardia</h4><p>Incluimos las últimas medidas de seguridad y copias de seguridad.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section section-light" id="testimonials">
+            <div class="container">
+                <div class="section-header animate-on-scroll">
+                    <h3 class="section-subtitle">Testimonios</h3>
+                    <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+                </div>
+            </div>
+            <div class="scroller" data-direction="right" data-speed="slow">
+                <div class="scroller__inner">
+                    <div class="testimonial-card">
+                        <p>"El equipo entendió perfectamente nuestra visión. El resultado fue una web moderna que superó nuestras expectativas."</p>
+                        <span>- Limbo42, Agencia de Contenido</span>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"Excelente trabajo. Nos entregaron la página muy rápido y con un diseño espectacular. ¡Gracias!"</p>
+                        <span>- Beauty Salon, Centro de Estética</span>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"Máximo profesionalismo y atención al detalle. La nueva página ha mejorado enormemente mi presencia online."</p>
+                        <span>- Dr. Gustavo Hadad, Cirujano</span>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"Muy contentas con el resultado. La web quedó hermosa y es muy fácil de gestionar."</p>
+                        <span>- The Cousins Estética, Centro de Estética</span>
                     </div>
                 </div>
             </div>
@@ -140,13 +158,11 @@
 
         <section class="section cta-section" id="contact">
             <div class="container cta-container animate-on-scroll">
-                <div class="cta-content">
-                    <h2 class="cta-title">¿Listo para llevar tu negocio al <span>siguiente nivel</span>?</h2>
-                    <p class="cta-description">Agenda una llamada gratuita de 15 minutos para que podamos entender tu proyecto y proponerte una solución a medida.</p>
-                    <a href="https://wa.me/5493476245523" target="_blank" class="btn btn-primary btn-whatsapp">
-                        <i class='bx bxl-whatsapp'></i> Contáctanos por WhatsApp
-                    </a>
-                </div>
+                <h2 class="cta-title">¿Listo para llevar tu negocio al siguiente nivel?</h2>
+                <p class="cta-description">Agenda una llamada gratuita de 15 minutos para entender tu proyecto y proponerte una solución a medida.</p>
+                <a href="https://wa.me/5493476245523" target="_blank" class="btn btn-primary btn-whatsapp">
+                    <i class='bx bxl-whatsapp'></i> Contáctanos por WhatsApp
+                </a>
             </div>
         </section>
     </main>
@@ -154,10 +170,7 @@
     <footer class="footer">
         <div class="container footer-container">
             <div class="footer-group">
-                <a href="#" class="logo">
-                  <img src="./img/algoritmia_logo.png" alt="Logo de Algoritmia Desarrollos">
-                  Algoritmia<span>.</span>
-                </a>
+                <a href="#" class="logo"><img src="./img/algoritmia_logo.png" alt="Logo de Algoritmia Desarrollos">Algoritmia<span>.</span></a>
                 <p>Soluciones digitales que inspiran y convierten.</p>
             </div>
             <div class="footer-group">
@@ -175,15 +188,13 @@
                     <li><a href="tel:+5493476245523">+54 9 3476 24-5523</a></li>
                 </ul>
                 <div class="footer-social">
-                    <a href="#" target="_blank"><i class='bx bxl-linkedin-square'></i></a>
-                    <a href="#" target="_blank"><i class='bx bxl-github'></i></a>
-                    <a href="#" target="_blank"><i class='bx bxl-instagram-alt'></i></a>
+                    <a href="#" target="_blank" aria-label="LinkedIn"><i class='bx bxl-linkedin-square'></i></a>
+                    <a href="#" target="_blank" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+                    <a href="https://www.instagram.com/algoritmia_desarrollos" target="_blank" aria-label="Instagram"><i class='bx bxl-instagram-alt'></i></a>
                 </div>
             </div>
         </div>
-        <div class="footer-copy">
-            <p>&copy; 2025 Algoritmia Desarrollos. Todos los derechos reservados.</p>
-        </div>
+        <div class="footer-copy"><p>&copy; 2025 Algoritmia Desarrollos. Todos los derechos reservados.</p></div>
     </footer>
 
     <script src="./js/script.js"></script>
