@@ -1,89 +1,94 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* ==================== LÓGICA DEL PRELOADER ==================== */
+    // ==================== VARIABLES GLOBALES ====================
+    const header = document.getElementById('header');
     const preloader = document.getElementById('preloader');
     const mainContent = document.getElementById('main-content');
-    const heroTitleSpans = document.querySelectorAll('.hero-title span:not(.line)');
-
-    window.addEventListener('load', () => {
-        preloader.classList.add('loaded');
-        mainContent.classList.add('loaded');
-        
-        heroTitleSpans.forEach((span, idx) => {
-            setTimeout(() => {
-                span.style.transform = 'translateY(0)';
-            }, (idx * 100) + 500);
-        });
-    });
-
-    /* ==================== MENÚ MÓVIL (CORREGIDO Y MEJORADO) ==================== */
     const navMenu = document.getElementById('nav-menu');
     const navToggle = document.getElementById('nav-toggle');
     const navClose = document.getElementById('nav-close');
+    const navLinks = document.querySelectorAll('.nav-link');
 
-    // Función para abrir el menú
+// ==================== LÓGICA DEL PRELOADER Y ANIMACIÓN DEL TÍTULO ====================
+window.addEventListener('load', () => {
+    // La animación CSS del preloader se ejecuta automáticamente.
+    // Esperamos a que termine (dura 2.5s) antes de ocultar el preloader y mostrar el contenido.
+    const PRELOADER_ANIMATION_DURATION = 2500; // 2.5 segundos (debe coincidir con la duración en CSS)
+
+    setTimeout(() => {
+        // Oculta el elemento preloader
+        preloader.classList.add('loaded');
+        // Muestra el contenido principal de la web
+        mainContent.classList.add('loaded');
+
+        // La animación del título del Hero comienza justo después de que el preloader desaparece
+        const heroTitleSpans = document.querySelectorAll('.hero-title span:not(.line)');
+        heroTitleSpans.forEach((span, idx) => {
+            setTimeout(() => {
+                span.style.transform = 'translateY(0)';
+            }, idx * 100); // Retraso escalonado para cada línea de texto
+        });
+
+    }, PRELOADER_ANIMATION_DURATION);
+});
+    // ==================== MENÚ MÓVIL (MÁS ROBUSTO) ====================
+    const toggleMenu = () => {
+        navMenu.classList.toggle('show-menu');
+        document.body.classList.toggle('menu-open'); // Bloquea/desbloquea el scroll del body
+    };
+
     if (navToggle) {
-        navToggle.addEventListener('click', (event) => {
-            event.stopPropagation(); // Evita que el clic se propague al documento
-            navMenu.classList.add('show-menu');
-        });
+        navToggle.addEventListener('click', toggleMenu);
     }
 
-    // Función para cerrar el menú con el botón 'X'
     if (navClose) {
-        navClose.addEventListener('click', () => {
-            navMenu.classList.remove('show-menu');
-        });
+        navClose.addEventListener('click', toggleMenu);
     }
 
-    // Función para cerrar el menú haciendo clic en los enlaces
-    document.querySelectorAll('.nav-link').forEach(link => {
+    // Cierra el menú al hacer clic en un enlace
+    navLinks.forEach(link => {
         link.addEventListener('click', () => {
-            navMenu.classList.remove('show-menu');
-        });
-    });
-
-    // Función para cerrar el menú haciendo clic FUERA de él
-    document.addEventListener('click', (event) => {
-        // Si el menú está abierto y el clic NO fue dentro del menú
-        if (navMenu.classList.contains('show-menu') && !navMenu.contains(event.target)) {
-            navMenu.classList.remove('show-menu');
-        }
-    });
-
-    // Evita que hacer clic dentro del menú lo cierre
-    navMenu.addEventListener('click', (event) => {
-        event.stopPropagation();
-    });
-
-
-    /* ==================== CAMBIAR FONDO DEL HEADER CON SCROLL ==================== */
-    const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-        header.classList.toggle('scrolled', window.scrollY >= 50);
-    });
-
-    /* ==================== ANIMACIONES GENERALES AL HACER SCROLL ==================== */
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
+            if (navMenu.classList.contains('show-menu')) {
+                toggleMenu();
             }
         });
-    }, { threshold: 0.1 });
+    });
+
+    // ==================== CAMBIAR FONDO DEL HEADER CON SCROLL ====================
+    const handleScrollHeader = () => {
+        header.classList.toggle('scrolled', window.scrollY >= 50);
+    };
+    window.addEventListener('scroll', handleScrollHeader);
+
+    // ==================== ANIMACIONES GENERALES AL HACER SCROLL ====================
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const delay = entry.target.dataset.delay ? parseFloat(entry.target.dataset.delay) * 1000 : 0;
+                setTimeout(() => {
+                    entry.target.classList.add('animated');
+                }, delay);
+                obs.unobserve(entry.target); // Deja de observar el elemento una vez animado
+            }
+        });
+    }, { threshold: 0.1 }); // Se activa cuando el 10% del elemento es visible
+
     document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
-    /* ==================== LÓGICA DEL CAROUSEL INFINITO (PORTFOLIO Y TESTIMONIALS) ==================== */
-    document.querySelectorAll(".scroller").forEach(scroller => {
-        const scrollerInner = scroller.querySelector(".scroller__inner");
-        if (scrollerInner) {
-            const scrollerContent = Array.from(scrollerInner.children);
-            scrollerContent.forEach(item => {
-                const duplicatedItem = item.cloneNode(true);
-                duplicatedItem.setAttribute("aria-hidden", true);
-                scrollerInner.appendChild(duplicatedItem);
-            });
-        }
-    });
+    // ==================== LÓGICA DEL CAROUSEL INFINITO ====================
+    const scrollers = document.querySelectorAll(".scroller");
+    if (scrollers.length > 0) {
+        scrollers.forEach(scroller => {
+            const scrollerInner = scroller.querySelector(".scroller__inner");
+            if (scrollerInner) {
+                const scrollerContent = Array.from(scrollerInner.children);
+                scrollerContent.forEach(item => {
+                    const duplicatedItem = item.cloneNode(true);
+                    duplicatedItem.setAttribute("aria-hidden", true);
+                    scrollerInner.appendChild(duplicatedItem);
+                });
+            }
+        });
+    }
 
 });
