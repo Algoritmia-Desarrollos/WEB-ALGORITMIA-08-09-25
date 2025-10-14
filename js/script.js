@@ -9,19 +9,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const navClose = document.getElementById('nav-close');
     const navLinks = document.querySelectorAll('.nav-link');
 
-  // ==================== LÓGICA DEL PRELOADER Y ANIMACIÓN DEL TÍTULO ====================
-window.addEventListener('load', () => {
-    const PRELOADER_ANIMATION_DURATION = 1000;
+// ==================== LÓGICA DEL PRELOADER Y CARGA OPTIMIZADA ====================
 
+// El preloader gira mientras este script detecta cuándo la imagen más importante (la del hero) ha cargado.
+// Una vez cargada, se lanza la animación de salida y se muestra el contenido.
+
+// Ruta a la imagen de fondo del Hero, que es nuestro contenido crítico.
+const heroImageSrc = './img/fondoalgo4.webp'; 
+
+// Creamos un objeto de imagen en memoria para poder detectar cuándo ha cargado.
+const criticalImage = new Image();
+
+// Asignamos la función que se ejecutará cuando la imagen crítica haya terminado de cargar.
+criticalImage.onload = () => {
+    // 1. La imagen del hero ya está lista. Ahora podemos empezar la animación de salida del preloader.
+    //    Añadimos la clase 'loaded' que, según tu CSS, dispara la animación de expansión del logo.
+    preloader.classList.add('loaded');
+
+    // 2. La animación del preloader dura 2.5 segundos (2500ms), según tu CSS.
+    //    Sincronizamos la aparición del contenido con esa animación para una transición suave.
+    const ANIMATION_DURATION = 500;
+
+    // 3. Hacemos que el contenido principal aparezca un poco antes de que la animación termine.
     setTimeout(() => {
-        preloader.classList.add('loaded');
         mainContent.classList.add('loaded');
-        
-        // Re-inicializamos el scroll para que las animaciones se activen correctamente
+        // Disparamos un evento de scroll para activar animaciones que ya sean visibles.
         window.dispatchEvent(new Event('scroll'));
-        
-    }, PRELOADER_ANIMATION_DURATION);
-});
+    }, ANIMATION_DURATION - 500); // Aparece 0.5s antes de que el logo termine de expandirse.
+
+    // 4. Una vez concluida la animación, eliminamos el preloader del DOM para que no interfiera.
+    setTimeout(() => {
+        preloader.style.display = 'none';
+    }, ANIMATION_DURATION);
+};
+
+// 5. Le decimos al objeto que empiece a cargar la imagen del Hero.
+//    El navegador hará esto en segundo plano mientras el logo del preloader ya está girando.
+criticalImage.src = heroImageSrc;
 
     // ==================== CURSOR INTERACTIVO ====================
     // No ejecutar en dispositivos táctiles
