@@ -16,15 +16,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    /* ==================== MENÚ MÓVIL ==================== */
+    /* ==================== MENÚ MÓVIL (CORREGIDO Y MEJORADO) ==================== */
     const navMenu = document.getElementById('nav-menu');
     const navToggle = document.getElementById('nav-toggle');
     const navClose = document.getElementById('nav-close');
-    if (navToggle) navToggle.addEventListener('click', () => navMenu.classList.add('show-menu'));
-    if (navClose) navClose.addEventListener('click', () => navMenu.classList.remove('show-menu'));
+
+    // Función para abrir el menú
+    if (navToggle) {
+        navToggle.addEventListener('click', (event) => {
+            event.stopPropagation(); // Evita que el clic se propague al documento
+            navMenu.classList.add('show-menu');
+        });
+    }
+
+    // Función para cerrar el menú con el botón 'X'
+    if (navClose) {
+        navClose.addEventListener('click', () => {
+            navMenu.classList.remove('show-menu');
+        });
+    }
+
+    // Función para cerrar el menú haciendo clic en los enlaces
     document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => navMenu.classList.remove('show-menu'));
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('show-menu');
+        });
     });
+
+    // Función para cerrar el menú haciendo clic FUERA de él
+    document.addEventListener('click', (event) => {
+        // Si el menú está abierto y el clic NO fue dentro del menú
+        if (navMenu.classList.contains('show-menu') && !navMenu.contains(event.target)) {
+            navMenu.classList.remove('show-menu');
+        }
+    });
+
+    // Evita que hacer clic dentro del menú lo cierre
+    navMenu.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+
 
     /* ==================== CAMBIAR FONDO DEL HEADER CON SCROLL ==================== */
     const header = document.getElementById('header');
@@ -54,51 +85,5 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
-    
-    /* ==================== LÓGICA PARA EL EFECTO DE TARJETAS APILADAS (FINAL) ==================== */
-    const advantagesSection = document.querySelector('.advantages-section');
-    const advantageCards = document.querySelectorAll('.advantage-card');
-
-    if (window.innerWidth > 992 && advantagesSection && advantageCards.length > 0) {
-        window.addEventListener('scroll', () => {
-            const sectionRect = advantagesSection.getBoundingClientRect();
-            
-            // Solo ejecutar la lógica cuando la sección está en la vista
-            if (sectionRect.top < window.innerHeight && sectionRect.bottom > 0) {
-                // Altura total de scroll para la animación (sección - altura de la pantalla)
-                const scrollableHeight = advantagesSection.offsetHeight - window.innerHeight;
-                
-                // Si no hay altura para scrollear (por si acaso), no hagas nada
-                if (scrollableHeight <= 0) return;
-
-                // Progreso del scroll dentro de la sección (de 0 a 1), asegurándose que no sea negativo
-                const progress = Math.max(0, -sectionRect.top / scrollableHeight);
-                
-                // Determinar qué tarjeta debe estar activa
-                // Se usa `progress * (longitud + 1)` para dar un espacio de scroll al principio antes de que aparezca la primera tarjeta.
-                let activeIndex = Math.floor(progress * (advantageCards.length + 1)) - 1;
-                activeIndex = Math.max(-1, Math.min(activeIndex, advantageCards.length - 1));
-
-
-                advantageCards.forEach((card, index) => {
-                    if (index < activeIndex) {
-                        // Tarjetas que ya pasaron y se apilan
-                        card.classList.add('is-passed');
-                        card.classList.remove('is-active');
-                        // La variable '--stack-order' se usa en el CSS para la posición de la tarjeta
-                        card.style.setProperty('--stack-order', activeIndex - index);
-                    } else if (index === activeIndex) {
-                        // La tarjeta activa (la que se está mostrando)
-                        card.classList.add('is-active');
-                        card.classList.remove('is-passed');
-                    } else {
-                        // Tarjetas que aún no han aparecido o que se han "des-scrolleado"
-                        card.classList.remove('is-active');
-                        card.classList.remove('is-passed');
-                    }
-                });
-            }
-        });
-    }
 
 });
