@@ -14,7 +14,7 @@
     --dark-color-alt: #2c1a45;
     --white-color: white;
     --light-gray-color: #f0eef6; /* Un gris muy claro con tinte morado */
-    --text-color: #dcd7e8; /* Un color de texto más suave que el blanco puro */
+    --text-color: white; /* Un color de texto más suave que el blanco puro */
     --text-color-dark: #333;
 
     /* Tipografía */
@@ -46,8 +46,18 @@ body {
 body.menu-open { overflow: hidden; } /* Bloquea el scroll cuando el menú está abierto */
 h1, h2, h3, h4 { font-family: var(--title-font); font-weight: 400; letter-spacing: 1.5px; }
 ul { list-style: none; }
-a { text-decoration: none; color: inherit; }
+a, button, .btn { text-decoration: none; color: inherit;  } /* Ocultamos el cursor en elementos interactivos */
 img { max-width: 100%; height: auto; display: block; }
+
+
+/* Estado hover del cursor */
+.custom-cursor.hover .cursor-outline {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(149, 90, 232, 0.2);
+    border-color: transparent;
+    transform: translate(-26px, -26px);
+}
 
 /* ==================== PRELOADER ==================== */
 #preloader {
@@ -81,17 +91,14 @@ img { max-width: 100%; height: auto; display: block; }
         transform: scale(1) rotate(0deg);
         opacity: 1;
     }
-    /* El logo gira y crece un poco */
     40% {
         transform: scale(1.3) rotate(180deg);
         opacity: 1;
     }
-    /* Termina de girar manteniéndose grande */
     80% {
         transform: scale(1.3) rotate(360deg);
         opacity: 1;
     }
-    /* Se expande masivamente hasta cubrir la pantalla y se desvanece */
     100% {
         transform: scale(50) rotate(360deg);
         opacity: 0;
@@ -100,7 +107,6 @@ img { max-width: 100%; height: auto; display: block; }
 
 #main-content {
     opacity: 0;
-    /* Una transición más larga para que la aparición sea más suave */
     transition: opacity 0.8s ease-in;
 }
 
@@ -108,12 +114,12 @@ img { max-width: 100%; height: auto; display: block; }
     opacity: 1;
 }
 /* ==================== REUSABLE & LAYOUT ==================== */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 .section { padding: 6rem 0; overflow: hidden; /* Contiene las animaciones */ }
 .section-light { background-color: var(--light-gray-color); color: var(--text-color-dark); }
 .section-light h2, .section-light h3, .section-light h4 { color: var(--dark-color); }
 .section-header { text-align: center; margin-bottom: 3rem; }
-.section-subtitle { color: var(--primary-color); font-family: var(--title-font); letter-spacing: 2px; font-size: 1.2rem; }
+.section-subtitle { color: var(--primary-color) !important; font-family: var(--title-font); letter-spacing: 2px; font-size: 1.2rem; }
 .section-title { font-size: var(--h2-font-size); line-height: 1.1; margin: 0.5rem 0 1.5rem; color: var(--white-color); }
 .section-title span { color: var(--primary-color); }
 .section-light .section-title { color: var(--dark-color); }
@@ -137,16 +143,44 @@ nav { height: var(--header-height); display: flex; justify-content: space-betwee
 .nav-toggle, .nav-close { display: none; font-size: 1.8rem; cursor: pointer; color: var(--white-color); z-index: 2001; }
 
 /* ==================== HERO & SCROLL INDICATOR ==================== */
-.hero { position: relative; min-height: 100vh; display: flex; align-items: center; text-align: center; background: url('../img/fondoalgo4.webp') no-repeat center center/cover; }
+.hero { 
+    position: relative; 
+    min-height: 100vh; 
+    display: flex; 
+    align-items: center; 
+    text-align: center; 
+    background: url('../img/fondoalgo4.webp') no-repeat center center/cover;
+    perspective: 1000px; /* Añadido para el efecto 3D */
+}
+.hero-background {
+    position: absolute;
+    top: -5%; left: -5%;
+    width: 100%; height: 100%;
+    background: url('../img/fondoalgo4.webp') no-repeat center center/cover;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); /* Transición suave para el parallax */
+}
 .hero-background-overlay { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(0deg, var(--dark-color) 5%, rgba(26, 15, 42, 0.6) 50%, var(--dark-color) 95%); }
-.hero-container { position: relative; z-index: 2; }
-.hero-title { font-size: var(--h1-font-size); line-height: 1.1; overflow: hidden; }
-.hero-title .line { display: block; }
-.hero-title span:not(.line) { transform: translateY(115%); transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1); display: inline-block; }
+.hero-container { position: relative; z-index: 2; transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); /* Transición suave para el parallax */ }
+.hero-title { font-size: var(--h1-font-size); line-height: 1.0; overflow: hidden; }
 .hero-title span span { color: var(--primary-color); }
 .hero-description { font-size: clamp(1rem, 4vw, 1.25rem); max-width: 650px; margin: 1.5rem auto 2.5rem; }
 .hero-buttons { display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap; }
-.btn { padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; transition: var(--transition-smooth); display: inline-block; border: 2px solid transparent; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+.btn { padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; transition: var(--transition-smooth); display: inline-block; border: 2px solid transparent; text-transform: uppercase; letter-spacing: 1px; position: relative; overflow: hidden; z-index: 1; }
+/* Efecto Glossy para botones */
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: -1;
+}
+.btn:hover::after {
+    left: 150%;
+}
 .btn-primary { background-color: var(--button-color); color: var(--white-color); border-color: var(--button-color); }
 .btn-primary:hover { background-color: var(--primary-color); color: var(--white-color); border-color: var(--primary-color); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(149, 90, 232, 0.4); }
 .btn-secondary { background-color: transparent; color: var(--white-color); border-color: var(--white-color); }
@@ -159,6 +193,7 @@ nav { height: var(--header-height); display: flex; justify-content: space-betwee
 /* ==================== INFINITE SCROLLER (PORTFOLIO) ==================== */
 .scroller { -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent); mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent); }
 .scroller__inner { display: flex; gap: 1.5rem; width: max-content; animation: scroll 40s linear infinite; }
+.scroller:hover .scroller__inner { animation-play-state: paused; } /* Pausa al hacer hover */
 .scroller[data-direction="right"] .scroller__inner { animation-direction: reverse; }
 .scroller[data-speed="slow"] .scroller__inner { animation-duration: 60s; }
 @keyframes scroll { to { transform: translate(calc(-50% - 0.75rem)); } }
@@ -167,24 +202,40 @@ nav { height: var(--header-height); display: flex; justify-content: space-betwee
 
 /* ==================== SERVICES & CARDS HOVER ==================== */
 .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-.service-card { background-color: var(--white-color); padding: 2.5rem; border-radius: 15px; text-align: center; border: 1px solid #e9ecef; box-shadow: var(--shadow-light); transition: var(--transition-smooth); }
+.service-card { 
+    background-color: var(--white-color); 
+    padding: 2.5rem; 
+    border-radius: 15px; 
+    text-align: center; 
+    border: 1px solid #e9ecef; 
+    box-shadow: var(--shadow-light); 
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.4s;
+    transform-style: preserve-3d; /* Para el efecto 3D */
+}
 .service-card * { transition: var(--transition-smooth); }
 .service-icon { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem; display: inline-block; }
 .service-title { font-size: var(--h4-font-size); color: var(--dark-color); margin-bottom: 1rem; }
-.service-card:hover { background-color: var(--primary-color); color: var(--white-color); transform: translateY(-10px); box-shadow: var(--shadow-primary); }
+.service-card:hover { background-color: var(--primary-color); color: var(--white-color); box-shadow: var(--shadow-primary); } /* El transform se aplica con JS */
 .service-card:hover .service-icon, .service-card:hover .service-title, .service-card:hover .service-description { color: var(--white-color); }
-.service-card:hover .service-icon { transform: scale(1.2) rotate(10deg); }
+.service-card:hover .service-icon { transform: scale(1.2) rotate(10deg) translateZ(30px); }
 
 /* ==================== ADVANTAGES ==================== */
 .advantages-container { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 2rem; }
 .advantages-header { text-align: left; }
 .advantages-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-.advantage-card { background-color: var(--dark-color-alt); padding: 2rem; border-radius: 15px; text-align: center; transition: var(--transition-smooth); }
+.advantage-card { 
+    background-color: var(--dark-color-alt); 
+    padding: 2rem; 
+    border-radius: 15px; 
+    text-align: center; 
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.4s;
+    transform-style: preserve-3d; /* Para el efecto 3D */
+}
 .advantage-card i { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 1rem; display: inline-block; transition: var(--transition-smooth); }
 .advantage-card h4 { font-size: var(--h4-font-size); color: var(--white-color); margin-bottom: 0.5rem; }
 .advantage-card p { font-size: 0.9rem; color: var(--text-color); }
-.advantage-card:hover { background-color: var(--primary-color); transform: translateY(-5px); }
-.advantage-card:hover i { color: var(--white-color); transform: scale(1.1); }
+.advantage-card:hover { background-color: var(--primary-color); } /* El transform se aplica con JS */
+.advantage-card:hover i { color: var(--white-color); transform: scale(1.1) translateZ(20px); }
 
 /* ==================== TESTIMONIALS ==================== */
 .testimonial-card { background-color: var(--white-color); padding: 2.5rem; border-radius: 15px; text-align: center; box-shadow: var(--shadow-light); width: 450px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; }
@@ -193,19 +244,15 @@ nav { height: var(--header-height); display: flex; justify-content: space-betwee
 
 /* ==================== CTA (CALL TO ACTION) ==================== */
 .cta-section { padding: 4rem 0; text-align: center; }
-.cta-title { color: var(--white-color); font-size: clamp(2.2rem, 6vw, 3rem); letter-spacing: 2px; margin-bottom: 1rem; }
+.cta-title { color: var(--white-color); font-size: clamp(2rem, 6vw, 3rem); letter-spacing: 2px; margin-bottom: 1rem; }
 .cta-description { color: var(--text-color); margin: 0 auto 2.5rem; max-width: 600px; font-size: 1rem; line-height: 1.7; }
-.btn-cta { background-color: var(--button-color); color: var(--white-color); padding: 1.2rem 3rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; transition: var(--transition-smooth); display: inline-flex; align-items: center; gap: 0.5rem; border: none; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15), 0 0 25px rgba(253, 178, 37, 0.5); }
+.btn-cta { background-color: var(--button-color); color: var(--white-color); padding: 1.2rem 3rem; border-radius: 50px; font-weight: 700; font-size: 15px; transition: var(--transition-smooth); display: inline-flex; align-items: center; gap: 0.5rem; border: none; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15), 0 0 25px rgba(253, 178, 37, 0.5); }
 .btn-cta:hover { background-color: var(--primary-color); transform: translateY(-5px) scale(1.05); box-shadow: inset 0 -3px 0 rgba(0,0,0,0.1), 0 10px 30px rgba(149, 90, 232, 0.7); }
 
 /* ==================== FOOTER ==================== */
 .footer { padding: 5rem 0 0;  }
 .footer-container { display: grid; grid-template-columns: 1.5fr 1fr 1.5fr; gap: 2.5rem; padding-bottom: 4rem; }
-/* Pega esto dentro de tu media query para móviles */
-
-.footer-logo {
-    display: inline-block;
-}
+.footer-logo { display: inline-block; }
 .footer-group { color: var(--text-color); font-size: 0.95rem; }
 .footer-logo img { height: 60px; margin-bottom: 1.25rem; }
 .footer-about p { max-width: 320px; line-height: 1.8; }
@@ -226,7 +273,19 @@ ul.footer-contact i { font-size: 1.2rem; color: var(--button-color) ; }
 .whatsapp-float:hover { transform: scale(1.1); background-color: #128C7E; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); }
 
 /* ==================== ANIMACIONES ON SCROLL ==================== */
-.animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.animate-on-scroll { 
+    opacity: 0; 
+    transform: translateY(30px); 
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out; 
+}
+/* Staggering delay using transition-delay */
+.services-grid .animate-on-scroll:nth-child(2) { transition-delay: 0.2s; }
+.services-grid .animate-on-scroll:nth-child(3) { transition-delay: 0.4s; }
+
+.advantages-grid .animate-on-scroll:nth-child(2) { transition-delay: 0.2s; }
+.advantages-grid .animate-on-scroll:nth-child(3) { transition-delay: 0.4s; }
+.advantages-grid .animate-on-scroll:nth-child(4) { transition-delay: 0.6s; }
+
 .animate-on-scroll.animated { opacity: 1; transform: translateY(0); }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
@@ -238,20 +297,15 @@ ul.footer-contact i { font-size: 1.2rem; color: var(--button-color) ; }
     .footer-about .logo, .footer-about p { margin-left: auto; margin-right: auto; }
 }
 
-/* === CÓDIGO CORREGIDO PARA TABLETS Y MÓVILES === */
 @media screen and (max-width: 768px) {
-    .nav-toggle { 
-        display: block; 
-        transition: opacity 0.3s ease; /* Transición suave */
-    }
-.nav-link-button {font-size: 20px !important; background-color: var(--button-color); color: var(--white-color) !important; padding: 0.75rem 1.5rem; border-radius: 50px; transition: var(--transition-smooth); font-weight: 700; box-shadow: var(--shadow-light); }
+    /* Ocultamos el cursor custom en móviles para una mejor experiencia táctil */
+    body, a, button, .btn { cursor: initial; }
+    .custom-cursor { display: none; }
 
-    /* Oculta las 3 rayas cuando el menú está visible */
-    body.menu-open .nav-toggle {
-        opacity: 0;
-        pointer-events: none;
-    }
-
+    .nav-toggle { display: block; transition: opacity 0.3s ease; }
+    .hero-title { font-size: 45px; }
+    .nav-link-button {font-size: 20px !important; background-color: var(--button-color); color: var(--white-color) !important; padding: 0.75rem 1.5rem; border-radius: 50px; transition: var(--transition-smooth); font-weight: 700; box-shadow: var(--shadow-light); }
+    body.menu-open .nav-toggle { opacity: 0; pointer-events: none; }
     .nav-menu {
         position: fixed;
         top: 0;
@@ -269,38 +323,13 @@ ul.footer-contact i { font-size: 1.2rem; color: var(--button-color) ; }
         justify-content: center;
         align-items: center;
     }
-    .show-menu { 
-        right: 0; 
-    }
-    .nav-list {         flex-direction: column; 
-        align-items: center;
-        gap: 2.5rem; 
-        width: 100%;
-        text-align: center;
-    }
-    .nav-link { 
-        font-size: 1.8rem;
-    }
-    .nav-close { 
-        position: absolute; 
-        top: 1.5rem; 
-        right: 1.5rem; 
-        display: block;
-        font-size: 2rem;
-        z-index: 2001;
-    }
-
-    .footer-container { 
-        grid-template-columns: 1fr; 
-        text-align: center; 
-    }
-    .footer-group ul {
-        align-items: center;
-    }
-    ul.footer-contact, .footer-social { 
-        justify-content: center; 
-    }
-
+    .show-menu { right: 0; }
+    .nav-list { flex-direction: column; align-items: center; gap: 2.5rem; width: 100%; text-align: center; }
+    .nav-link { font-size: 1.8rem; }
+    .nav-close { position: absolute; top: 1.5rem; right: 1.5rem; display: block; font-size: 2rem; z-index: 2001; }
+    .footer-container { grid-template-columns: 1fr; text-align: center; }
+    .footer-group ul { align-items: center; }
+    ul.footer-contact, .footer-social { justify-content: center; }
     .advantages-grid { grid-template-columns: 1fr; }
     .whatsapp-float { width: 50px; height: 50px; font-size: 24px; bottom: 20px; right: 20px; }
 }
