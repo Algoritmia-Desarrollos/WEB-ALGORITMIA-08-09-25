@@ -83,6 +83,8 @@ img { max-width: 100%; height: auto; display: block; }
 .preloader-logo {
     width: 100px;
     /* La animación se ejecuta una vez, dura 2.5s y se queda en su estado final */
+}
+#preloader.loaded .preloader-logo {
     animation: preloader-animation 2.5s forwards cubic-bezier(0.76, 0, 0.24, 1);
 }
 

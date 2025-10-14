@@ -9,19 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const navClose = document.getElementById('nav-close');
     const navLinks = document.querySelectorAll('.nav-link');
 
-    // ==================== LÓGICA DEL PRELOADER Y ANIMACIÓN DEL TÍTULO ====================
-    window.addEventListener('load', () => {
-        const PRELOADER_ANIMATION_DURATION = 2000;
+  // ==================== LÓGICA DEL PRELOADER Y ANIMACIÓN DEL TÍTULO ====================
+window.addEventListener('load', () => {
+    const PRELOADER_ANIMATION_DURATION = 1000;
 
-        setTimeout(() => {
-            preloader.classList.add('loaded');
-            mainContent.classList.add('loaded');
-            
-            // Re-inicializamos el scroll para que las animaciones se activen correctamente
-            window.dispatchEvent(new Event('scroll'));
-            
-        }, PRELOADER_ANIMATION_DURATION);
-    });
+    setTimeout(() => {
+        preloader.classList.add('loaded');
+        mainContent.classList.add('loaded');
+        
+        // Re-inicializamos el scroll para que las animaciones se activen correctamente
+        window.dispatchEvent(new Event('scroll'));
+        
+    }, PRELOADER_ANIMATION_DURATION);
+});
 
     // ==================== CURSOR INTERACTIVO ====================
     // No ejecutar en dispositivos táctiles
