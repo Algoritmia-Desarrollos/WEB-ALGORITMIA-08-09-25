@@ -5,29 +5,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const preloader = document.getElementById('preloader');
     const mainContent = document.getElementById('main-content');
     const navMenu = document.getElementById('nav-menu');
-    const navToggle = document.getElementById('nav-toggle');
+    const navToggle = document.getElementById('nav-toggle'); // Puede ser null
     const navLinks = document.querySelectorAll('.nav-link');
     
     // --- OPTIMIZACIÓN DE MENÚ ---
-    // Capturamos el ícono dentro del botón toggle
-    const navToggleIcon = navToggle.querySelector('i');
-    // No necesitamos 'navClose' porque el mismo toggle hará de "X"
+    let navToggleIcon; // Lo declaramos aquí sin asignarlo
 
     // ==================== LÓGICA DEL PRELOADER MEJORADA ====================
+    // ¡¡MUY IMPORTANTE: Esta lógica va PRIMERO!!
+    // Así nos aseguramos de que se ejecute antes de que cualquier otra cosa pueda fallar.
     window.addEventListener('load', () => {
-        preloader.classList.add('loaded');
+        if (preloader) {
+            preloader.classList.add('loaded');
+        }
+        
         const ANIMATION_DURATION = 2500; 
+
         setTimeout(() => {
-            mainContent.classList.add('loaded');
+            if (mainContent) {
+                mainContent.classList.add('loaded');
+            }
             window.dispatchEvent(new Event('scroll'));
-        }, ANIMATION_DURATION - 2000);
+        }, ANIMATION_DURATION - 2000); // 500ms
+
         setTimeout(() => {
-            preloader.style.display = 'none';
+            if (preloader) {
+                preloader.style.display = 'none';
+            }
         }, ANIMATION_DURATION);
     });
 
-
     // ==================== CURSOR INTERACTIVO ====================
+    // (Esta lógica es segura)
     if (window.matchMedia("(pointer: fine)").matches) {
         const cursorDot = document.createElement('div');
         cursorDot.className = 'custom-cursor cursor-dot';
@@ -40,8 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('mousemove', e => {
             const posX = e.clientX;
             const posY = e.clientY;
+
             cursorDot.style.left = `${posX}px`;
             cursorDot.style.top = `${posY}px`;
+
             cursorOutline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
@@ -56,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==================== EFECTO TILT 3D EN TARJETAS (OPTIMIZADO) ====================
+    // (Esta lógica es segura)
     const tiltElements = document.querySelectorAll('.service-card, .advantage-card');
     tiltElements.forEach(el => {
         let isTicking = false; 
@@ -81,36 +93,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // ==================== MENÚ MÓVIL (MODIFICADO Y OPTIMIZADO) ====================
+    // ==================== MENÚ MÓVIL (MODIFICADO Y PROTEGIDO) ====================
     
     // Función de toggle unificada
     const toggleMenu = () => {
-        // Alterna la clase 'show-menu' en el menú
+        if (!navMenu) return; // Chequeo de seguridad
         const isMenuOpen = navMenu.classList.toggle('show-menu');
-        
-        // Alterna la clase 'menu-open' en el body para bloquear/desbloquear scroll
         document.body.classList.toggle('menu-open', isMenuOpen);
 
-        // Cambia el ícono del botón toggle
-        if (isMenuOpen) {
-            navToggleIcon.classList.remove('bx-menu');
-            navToggleIcon.classList.add('bx-x');
-        } else {
-            navToggleIcon.classList.remove('bx-x');
-            navToggleIcon.classList.add('bx-menu');
+        // El ícono solo debe cambiar si existe
+        if (navToggleIcon) {
+            if (isMenuOpen) {
+                navToggleIcon.classList.remove('bx-menu');
+                navToggleIcon.classList.add('bx-x');
+            } else {
+                navToggleIcon.classList.remove('bx-x');
+                navToggleIcon.classList.add('bx-menu');
+            }
         }
     };
 
-    // Listener en el botón toggle
+    // Asignamos listeners SOLO SI los elementos existen
     if (navToggle) {
+        navToggleIcon = navToggle.querySelector('i'); // Asignamos el ícono aquí
         navToggle.addEventListener('click', toggleMenu);
     }
 
     // Listener en los links del menú para cerrarlo al hacer clic
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
-            // Solo cierra el menú si está abierto
-            if (navMenu.classList.contains('show-menu')) {
+            if (navMenu && navMenu.classList.contains('show-menu')) {
                 toggleMenu();
             }
         });
@@ -118,7 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ==================== CAMBIAR FONDO DEL HEADER CON SCROLL ====================
     const handleScrollHeader = () => {
-        header.classList.toggle('scrolled', window.scrollY >= 50);
+        if (header) {
+            header.classList.toggle('scrolled', window.scrollY >= 50);
+        }
     };
     window.addEventListener('scroll', handleScrollHeader);
 
