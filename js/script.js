@@ -6,27 +6,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.getElementById('main-content');
     const navMenu = document.getElementById('nav-menu');
     const navToggle = document.getElementById('nav-toggle');
-    const navClose = document.getElementById('nav-close');
     const navLinks = document.querySelectorAll('.nav-link');
+    
+    // --- OPTIMIZACIÓN DE MENÚ ---
+    // Capturamos el ícono dentro del botón toggle
+    const navToggleIcon = navToggle.querySelector('i');
+    // No necesitamos 'navClose' porque el mismo toggle hará de "X"
 
     // ==================== LÓGICA DEL PRELOADER MEJORADA ====================
-    // AHORA ESPERAMOS A QUE *TODA* LA PÁGINA Y SUS RECURSOS HAYAN CARGADO.
     window.addEventListener('load', () => {
-        // 1. Todo ha cargado. Ahora podemos empezar la animación de salida del preloader.
         preloader.classList.add('loaded');
-
-        // 2. La animación CSS del preloader dura 2.5s. Sincronizamos todo con ella.
         const ANIMATION_DURATION = 2500; 
-
-        // 3. Hacemos que el contenido principal aparezca con una transición suave.
-        //    Aparecerá justo cuando la animación del preloader esté en su fase final.
         setTimeout(() => {
             mainContent.classList.add('loaded');
-            // Disparamos un evento de scroll para activar animaciones que ya sean visibles.
             window.dispatchEvent(new Event('scroll'));
-        }, ANIMATION_DURATION - 2000); // Aparece 2s después de que inicia la expansión (ajustable).
-
-        // 4. Una vez concluida la animación, eliminamos el preloader del DOM.
+        }, ANIMATION_DURATION - 2000);
         setTimeout(() => {
             preloader.style.display = 'none';
         }, ANIMATION_DURATION);
@@ -34,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ==================== CURSOR INTERACTIVO ====================
-    // (Sin cambios, tu código aquí es correcto)
     if (window.matchMedia("(pointer: fine)").matches) {
         const cursorDot = document.createElement('div');
         cursorDot.className = 'custom-cursor cursor-dot';
@@ -47,17 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('mousemove', e => {
             const posX = e.clientX;
             const posY = e.clientY;
-
             cursorDot.style.left = `${posX}px`;
             cursorDot.style.top = `${posY}px`;
-
             cursorOutline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
             }, { duration: 100, fill: "forwards" });
         });
 
-        const interactiveElements = 'a, button, .btn, .nav-toggle, .nav-close, .service-card, .advantage-card, .scroller img, .logo';
+        const interactiveElements = 'a, button, .btn, .nav-toggle, .service-card, .advantage-card, .scroller img, .logo';
         document.querySelectorAll(interactiveElements).forEach(el => {
             el.addEventListener('mouseenter', () => cursorOutline.parentElement.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursorOutline.parentElement.classList.remove('hover'));
@@ -67,8 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==================== EFECTO TILT 3D EN TARJETAS (OPTIMIZADO) ====================
     const tiltElements = document.querySelectorAll('.service-card, .advantage-card');
     tiltElements.forEach(el => {
-        let isTicking = false; // Flag para controlar la ejecución
-
+        let isTicking = false; 
         el.addEventListener('mousemove', e => {
             if (!isTicking) {
                 window.requestAnimationFrame(() => {
@@ -91,18 +81,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // ==================== MENÚ MÓVIL ====================
-    // (Sin cambios, tu código aquí es correcto)
+    // ==================== MENÚ MÓVIL (MODIFICADO Y OPTIMIZADO) ====================
+    
+    // Función de toggle unificada
     const toggleMenu = () => {
-        navMenu.classList.toggle('show-menu');
-        document.body.classList.toggle('menu-open');
+        // Alterna la clase 'show-menu' en el menú
+        const isMenuOpen = navMenu.classList.toggle('show-menu');
+        
+        // Alterna la clase 'menu-open' en el body para bloquear/desbloquear scroll
+        document.body.classList.toggle('menu-open', isMenuOpen);
+
+        // Cambia el ícono del botón toggle
+        if (isMenuOpen) {
+            navToggleIcon.classList.remove('bx-menu');
+            navToggleIcon.classList.add('bx-x');
+        } else {
+            navToggleIcon.classList.remove('bx-x');
+            navToggleIcon.classList.add('bx-menu');
+        }
     };
 
-    if (navToggle) navToggle.addEventListener('click', toggleMenu);
-    if (navClose) navClose.addEventListener('click', toggleMenu);
+    // Listener en el botón toggle
+    if (navToggle) {
+        navToggle.addEventListener('click', toggleMenu);
+    }
 
+    // Listener en los links del menú para cerrarlo al hacer clic
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
+            // Solo cierra el menú si está abierto
             if (navMenu.classList.contains('show-menu')) {
                 toggleMenu();
             }
@@ -110,14 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // ==================== CAMBIAR FONDO DEL HEADER CON SCROLL ====================
-    // (Sin cambios, tu código aquí es correcto)
     const handleScrollHeader = () => {
         header.classList.toggle('scrolled', window.scrollY >= 50);
     };
     window.addEventListener('scroll', handleScrollHeader);
 
     // ==================== ANIMACIONES GENERALES AL HACER SCROLL ====================
-    // (Sin cambios, tu código aquí es correcto)
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -130,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
     // ==================== LÓGICA DEL CAROUSEL INFINITO ====================
-    // (Sin cambios, tu código aquí es correcto)
     const scrollers = document.querySelectorAll(".scroller");
     if (scrollers.length > 0) {
         scrollers.forEach(scroller => {
