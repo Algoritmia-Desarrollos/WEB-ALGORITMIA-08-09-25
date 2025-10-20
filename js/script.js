@@ -12,31 +12,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let navToggleIcon; // Lo declaramos aquí sin asignarlo
 
     // ==================== LÓGICA DEL PRELOADER MEJORADA ====================
-    // ¡¡MUY IMPORTANTE: Esta lógica va PRIMERO!!
-    // Así nos aseguramos de que se ejecute antes de que cualquier otra cosa pueda fallar.
-    window.addEventListener('load', () => {
-        if (preloader) {
-            preloader.classList.add('loaded');
+    // ¡¡CAMBIO IMPORTANTE!!
+    // No esperamos a 'window.load' porque puede fallar si una imagen no carga.
+    // Ejecutamos la salida del preloader INMEDIATAMENTE después de que el DOM esté listo.
+    
+    if (preloader) {
+        preloader.classList.add('loaded');
+    }
+    
+    const ANIMATION_DURATION = 2500; // Sincronizado con tu animación CSS
+
+    setTimeout(() => {
+        if (mainContent) {
+            mainContent.classList.add('loaded');
         }
-        
-        const ANIMATION_DURATION = 2500; 
+        // Disparamos un evento de scroll para activar animaciones que ya sean visibles.
+        window.dispatchEvent(new Event('scroll'));
+    }, ANIMATION_DURATION - 2000); // 500ms
 
-        setTimeout(() => {
-            if (mainContent) {
-                mainContent.classList.add('loaded');
-            }
-            window.dispatchEvent(new Event('scroll'));
-        }, ANIMATION_DURATION - 2000); // 500ms
-
-        setTimeout(() => {
-            if (preloader) {
-                preloader.style.display = 'none';
-            }
-        }, ANIMATION_DURATION);
-    });
+    setTimeout(() => {
+        if (preloader) {
+            preloader.style.display = 'none'; // Eliminación final del preloader
+        }
+    }, ANIMATION_DURATION);
+    
+    // (El listener 'window.addEventListener('load', ...)' se ha eliminado de aquí)
 
     // ==================== CURSOR INTERACTIVO ====================
-    // (Esta lógica es segura)
     if (window.matchMedia("(pointer: fine)").matches) {
         const cursorDot = document.createElement('div');
         cursorDot.className = 'custom-cursor cursor-dot';
@@ -67,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==================== EFECTO TILT 3D EN TARJETAS (OPTIMIZADO) ====================
-    // (Esta lógica es segura)
     const tiltElements = document.querySelectorAll('.service-card, .advantage-card');
     tiltElements.forEach(el => {
         let isTicking = false; 
