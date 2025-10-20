@@ -22,21 +22,22 @@
 
 body {
     font-family: var(--body-font);
-    background-color: var(--dark-color);
-    background-image: url('../img/fondoalgo4.webp');
+    background-color: var(--dark-color); /* Fallback */
+    
+    /* === CORRECCIÓN: Capa oscura sobre el fondo === */
+    background-image: linear-gradient(rgba(33, 16, 58, 0.9), rgba(33, 16, 58, 0.9)), url('../img/fondoalgo4.webp');
+    
     background-size: cover;
     background-position: center center;
     color: var(--text-color);
     
-    /* === FIJA LA PANTALLA A 100VH INICIAL === */
-    /* El JS la convertirá a píxeles fijos para evitar el "salto" del teclado */
     width: 100vw;
-    height: 100svh; /* 'svh' es la altura segura de la pantalla */
+    height: 100svh;
     display: grid;
     place-items: center;
     padding: 1rem;
-    overflow: hidden; /* Sin scroll en la página */
-    transition: height 0.2s ease; /* Transición suave por si acaso */
+    overflow: hidden;
+    transition: height 0.2s ease;
 }
 
 /* ==================== CONTENEDOR DEL FORMULARIO ==================== */
@@ -49,10 +50,9 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     
-    overflow-y: hidden; /* Sin scroll interno */
-    max-height: 95%; /* Se asegura de no tocar los bordes */
+    overflow-y: hidden;
+    max-height: 95%; 
     
-    /* Prepara la transición para el mensaje de gracias */
     transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
@@ -63,7 +63,7 @@ body {
     position: relative;
 }
 .form-logo {
-    width: 70px; /* Más compacto */
+    width: 70px;
     height: 70px;
     margin: 0 auto 1rem;
 }
@@ -96,9 +96,9 @@ body {
 }
 
 .form-step {
-    display: none; /* Ocultos por defecto */
+    display: none; 
     grid-template-rows: auto auto;
-    gap: 0.9rem; /* Más compacto */
+    gap: 0.9rem; 
 }
 .form-step.active {
     display: grid;
@@ -146,6 +146,9 @@ body {
 .form-group select.form-error,
 .form-group textarea.form-error {
     border-color: var(--error-color) !important;
+}
+.form-group .iti.form-error { /* Error en la banderita */
+    border-color: var(--error-color) !important;
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
 }
 
@@ -163,7 +166,7 @@ body {
 
 /* --- Estilos Campos Dinámicos --- */
 .service-specific-questions {
-    display: none; /* Ocultos por defecto */
+    display: none;
     flex-direction: column;
     gap: 0.9rem;
     margin-top: 0.5rem;
@@ -171,7 +174,7 @@ body {
     padding-top: 1rem;
 }
 .service-specific-questions.active {
-    display: flex; /* Se muestran */
+    display: flex; 
 }
 
 /* --- Estilos Botones Radio Personalizados --- */
@@ -187,7 +190,7 @@ body {
     font-size: 0.95rem;
 }
 .radio-label input[type="radio"] {
-    display: none; /* Oculta el radio real */
+    display: none; 
 }
 .radio-custom {
     display: inline-block;
@@ -223,7 +226,7 @@ body {
     width: 100%;
 }
 .form-step[data-step="1"] .form-navigation {
-    justify-content: flex-end; /* El primer paso solo tiene "Siguiente" */
+    justify-content: flex-end; 
 }
 
 .btn-next,
@@ -233,7 +236,7 @@ body {
     border: none;
     border-radius: 50px;
     font-weight: 700;
-    font-size: 0.9rem; /* Más compacto */
+    font-size: 0.9rem; 
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
@@ -275,7 +278,7 @@ body {
 
 /* --- Mensaje de Gracias --- */
 #gracias-mensaje {
-    display: none; /* Oculto por defecto */
+    display: none; 
     text-align: center;
 }
 #gracias-mensaje h3 {
@@ -305,4 +308,74 @@ body {
 .form-container.show-success {
     opacity: 1;
     transform: scale(1);
+}
+
+/* ============================================================== */
+/* === CORRECCIÓN: ESTILOS INT'L TEL INPUT (BANDERITAS) === */
+/* ============================================================== */
+
+/* El contenedor .iti debe verse como el input */
+.iti {
+    width: 100%;
+    /* Hereda los estilos visuales de los otros inputs */
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* El input REAL de teléfono debe ser transparente y sin bordes */
+.iti input[type="tel"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0;
+    width: 100%;
+    /* Ajusta el padding para dejar espacio a la banderita */
+    padding: 0.75rem 1rem 0.75rem 90px !important; /* Aumenta este valor si el +54 se superpone */
+    font-family: var(--body-font);
+    font-size: 0.95rem;
+    color: var(--white-color);
+}
+
+/* La banderita y el código de país */
+.iti__selected-flag {
+    /* Posiciona la bandera */
+    background-color: transparent;
+    border-radius: 8px 0 0 8px;
+    width: 80px; /* Ancho para bandera + código */
+}
+
+/* El código de país (ej +54) */
+.iti__selected-dial-code {
+    color: var(--text-color-dark);
+}
+
+/* El dropdown de países */
+.iti__country-list {
+    background-color: var(--dark-color-alt); 
+    border: 1px solid var(--primary-color);
+    box-shadow: var(--shadow-primary);
+}
+.iti__country {
+    color: var(--text-color);
+}
+.iti__country:hover, .iti__country.iti__highlight {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+.iti__dial-code {
+    color: var(--text-color-dark);
+}
+
+/* Estilo de Foco: Se aplica al contenedor .iti */
+.iti:focus-within {
+     border-color: var(--primary-color);
+     box-shadow: 0 0 0 3px rgba(149, 90, 232, 0.3);
+}
+
+/* Quita el foco default del input, ya que lo maneja el .iti */
+.iti input[type="tel"]:focus {
+    outline: none;
+    box-shadow: none;
 }

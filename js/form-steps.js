@@ -1,155 +1,143 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // === SOLUCIÓN AL "SALTO" DEL TECLADO MÓVIL ===
-    // Fija la altura del body al 100% de la ventana al cargar.
-    // Esto evita que el 'svh' se recalcule y la página "salte"
-    // cuando el teclado aparece en móviles.
     function lockViewportHeight() {
         const vh = window.innerHeight;
         document.body.style.height = `${vh}px`;
     }
-    // Llama a la función al cargar la página
     lockViewportHeight();
-    // Opcional: Vuelve a llamarla si se redimensiona (para desktops)
-    // En móviles, el evento "resize" es el teclado, pero como
-    // la altura está fija en px, no se re-ejecuta.
     window.addEventListener('resize', lockViewportHeight);
     // === FIN DE LA SOLUCIÓN ===
 
-
-    // --- Selectores del Formulario ---
+    // --- Selectores ---
     const formContainer = document.querySelector('.form-container');
     const formElement = document.getElementById('contact-form');
     const nextButtons = document.querySelectorAll('.btn-next');
     const prevButtons = document.querySelectorAll('.btn-prev');
     const steps = document.querySelectorAll('.form-step');
     const stepIndicator = document.querySelector('.step-indicator');
-    
-    // Selectores de Lógica Dinámica
     const servicioSelect = document.getElementById('servicio');
     const serviceQuestionContainers = document.querySelectorAll('.service-specific-questions');
-    
-    // Selectores de Mensaje Final
     const graciasMensaje = document.getElementById('gracias-mensaje');
     const formTitle = document.getElementById('form-title');
     const formSubtitle = document.getElementById('form-subtitle');
+    const submitButton = formElement.querySelector('.btn-submit'); 
+    const phoneInput = document.querySelector("#telefono"); // Mover aquí para acceso global
+    const fullNumberInput = document.querySelector("input[name='telefono_full']"); 
+    let iti; // Declarar iti aquí para acceso global
 
     let currentStep = 1;
     const totalSteps = steps.length;
 
-    // --- Función para mostrar el paso ---
+    // === INICIALIZACIÓN DE BANDERITAS ===
+    if (phoneInput) { // Asegurarse que el input exista
+        iti = window.intlTelInput(phoneInput, {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
+            initialCountry: "ar", 
+            preferredCountries: ['ar', 'es', 'us', 'mx', 'uy', 'cl', 'co'], 
+            separateDialCode: true, 
+            nationalMode: false, 
+            autoPlaceholder: "aggressive",
+        });
+    }
+    // === FIN BANDERITAS ===
+
+    // === INICIALIZACIÓN DE EMAILJS ===
+    const EMAILJS_PUBLIC_KEY = '3bkxlvg4klx2DB5rd'; 
+    if (typeof emailjs !== 'undefined') { // Verificar que la librería cargó
+         emailjs.init(EMAILJS_PUBLIC_KEY);
+    } else {
+        console.error("EmailJS SDK no cargado!");
+    }
+    // === FIN EMAILJS INIT ===
+
+    // --- Función showStep ---
     function showStep(stepNumber) {
         currentStep = stepNumber;
         steps.forEach(step => step.classList.remove('active'));
-        
         const activeStep = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
-        if (activeStep) {
-            activeStep.classList.add('active');
-        }
-        
-        if (stepIndicator) {
-            stepIndicator.textContent = `Paso ${stepNumber} de ${totalSteps}`;
-        }
+        if (activeStep) activeStep.classList.add('active');
+        if (stepIndicator) stepIndicator.textContent = `Paso ${stepNumber} de ${totalSteps}`;
     }
 
-    // --- Event Listeners Botones "Siguiente" ---
+    // --- Event Listeners Botones ---
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (validateStep(currentStep)) {
-                if (currentStep < totalSteps) {
-                    showStep(currentStep + 1);
-                }
+                if (currentStep < totalSteps) showStep(currentStep + 1);
             }
         });
     });
-
-    // --- Event Listeners Botones "Anterior" ---
     prevButtons.forEach(button => {
         button.addEventListener('click', () => {
-            if (currentStep > 1) {
-                showStep(currentStep - 1);
-            }
+            if (currentStep > 1) showStep(currentStep - 1);
         });
     });
 
     // --- LÓGICA DINÁMICA: PASO 3 ---
     servicioSelect.addEventListener('change', () => {
         const selectedService = servicioSelect.value;
-        
-        // Oculta todas las preguntas específicas
         serviceQuestionContainers.forEach(container => {
             container.classList.remove('active');
-            // Quita 'required' de todos los inputs internos
-            container.querySelectorAll('input, textarea, select').forEach(input => {
-                input.required = false;
-            });
+            container.querySelectorAll('input, textarea, select').forEach(input => input.required = false);
         });
-
-        // Muestra el contenedor de preguntas relevante
         let containerToShow;
         switch (selectedService) {
-            case 'diseno-web':
-                containerToShow = document.getElementById('web-design-questions');
-                break;
-            case 'app-web':
-                containerToShow = document.getElementById('web-app-questions');
-                // Añade 'required' al textarea de descripción de la app
-                document.getElementById('app-descripcion').required = true;
-                break;
-            case 'marketing-seo':
-                containerToShow = document.getElementById('seo-questions');
-                break;
-            case 'otro':
-                containerToShow = document.getElementById('other-questions');
-                // Añade 'required' al textarea de "otro"
-                document.getElementById('otro-descripcion').required = true;
-                break;
+            case 'diseno-web': containerToShow = document.getElementById('web-design-questions'); break;
+            case 'app-web': containerToShow = document.getElementById('web-app-questions'); document.getElementById('app-descripcion').required = true; break;
+            case 'marketing-seo': containerToShow = document.getElementById('seo-questions'); document.getElementById('presupuesto_publicidad').required = true; break;
+            case 'otro': containerToShow = document.getElementById('other-questions'); document.getElementById('otro-descripcion').required = true; break;
         }
-
-        if (containerToShow) {
-            containerToShow.classList.add('active');
-        }
+        if (containerToShow) containerToShow.classList.add('active');
     });
-
 
     // --- Función de Validación ---
     function validateStep(stepNumber) {
         let isValid = true;
         const currentStepElement = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
-        
-        // Valida solo los inputs requeridos VISIBLES
-        // Esto incluye los campos de las preguntas dinámicas
         let inputsToValidate;
         if (stepNumber === 3) {
-            // En el paso 3, solo valida el contenedor de servicio activo
             const activeServiceContainer = currentStepElement.querySelector('.service-specific-questions.active');
-            if (activeServiceContainer) {
-                inputsToValidate = activeServiceContainer.querySelectorAll('[required]');
-            } else {
-                inputsToValidate = []; // No hay nada que validar si no se seleccionó nada
-            }
+            inputsToValidate = activeServiceContainer ? activeServiceContainer.querySelectorAll('[required]') : [];
         } else {
-            // Para otros pasos, valida todos los [required]
             inputsToValidate = currentStepElement.querySelectorAll('[required]');
         }
-
         inputsToValidate.forEach(input => {
-            input.classList.remove('form-error'); // Limpia errores previos
+            input.classList.remove('form-error');
+            const parentGroup = input.closest('.form-group'); // Para banderita
+            if(input.id === 'telefono' && parentGroup && parentGroup.querySelector('.iti')) {
+                 parentGroup.querySelector('.iti').classList.remove('form-error');
+            }
 
-            if (!input.value || (input.type === 'email' && !validateEmail(input.value))) {
+            let value = input.value;
+            
+            if (input.id === 'telefono') {
+                if (iti && !iti.isValidNumber()) { // Verificar que iti exista
+                    isValid = false;
+                    input.classList.add('form-error');
+                    if (parentGroup && parentGroup.querySelector('.iti')) {
+                         parentGroup.querySelector('.iti').classList.add('form-error');
+                    }
+                }
+            } else if (!value || (input.type === 'email' && !validateEmail(value))) {
                 isValid = false;
                 input.classList.add('form-error');
             }
             
-            // Listener para quitar el error al escribir
-            // === CORRECCIÓN AQUÍ (Línea 145) ===
-            input.addEventListener('input', () => {
-                if (input.value) {
-                    input.classList.remove('form-error');
-                }
-            });
-        });
+            // Listener de input (mejorado)
+             const removeError = () => {
+                 if (input.value) {
+                     input.classList.remove('form-error');
+                     if(input.id === 'telefono' && parentGroup && parentGroup.querySelector('.iti')) {
+                          parentGroup.querySelector('.iti').classList.remove('form-error');
+                     }
+                 }
+             };
+             // Quitar listener previo si existe para evitar duplicados
+             input.removeEventListener('input', removeError); 
+             input.addEventListener('input', removeError);
 
+        });
         return isValid;
     }
 
@@ -158,43 +146,82 @@ document.addEventListener('DOMContentLoaded', () => {
         return re.test(String(email).toLowerCase());
     }
 
-    // --- Lógica de Envío (Formspree) ---
+    // =======================================================
+    // === Lógica de Envío (CORREGIDA PARA ENVÍO MANUAL) ===
+    // =======================================================
     formElement.addEventListener('submit', function(e) {
         e.preventDefault();
         
         if (!validateStep(currentStep)) {
-            return; // No envía si el último paso no es válido
+            return; 
         }
 
-        const formData = new FormData(formElement);
-        fetch(formElement.action, {
-            method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        }).then(response => {
-            if (response.ok) {
+        // Actualiza el número completo en el campo oculto
+        if (iti) { // Asegurarse que iti existe
+           fullNumberInput.value = iti.getNumber(); 
+        } else {
+           fullNumberInput.value = phoneInput.value; // Fallback por si falla la librería
+        }
+
+        // --- 1. RECOLECCIÓN MANUAL DE DATOS ---
+        const templateParams = {
+            // Paso 1
+            nombre: document.getElementById('nombre')?.value || '',
+            email: document.getElementById('email')?.value || '',
+            telefono_full: fullNumberInput.value || '', // Usamos el campo oculto actualizado
+            
+            // Paso 2
+            servicio_principal: document.getElementById('servicio')?.value || '',
+            
+            // Paso 3 - Diseño Web (Obtener valor de radios chequeados)
+            web_existente: formElement.querySelector('input[name="web_existente"]:checked')?.value || '',
+            web_tipo: document.getElementById('web_tipo')?.value || '',
+            diseno_listo: formElement.querySelector('input[name="diseno_listo"]:checked')?.value || '',
+
+            // Paso 3 - App Web
+            app_descripcion: document.getElementById('app-descripcion')?.value || '',
+
+            // Paso 3 - Marketing/SEO
+            seo_sitio_actual: document.getElementById('seo-website')?.value || '',
+            presupuesto_publicidad: document.getElementById('presupuesto_publicidad')?.value || '',
+
+            // Paso 3 - Otro
+            otro_descripcion: document.getElementById('otro-descripcion')?.value || '',
+
+            // Paso 4
+            fuente: document.getElementById('como-nos-encontro')?.value || '',
+            mensaje_final: document.getElementById('mensaje-final')?.value || ''
+        };
+        // --- FIN RECOLECCIÓN ---
+
+        // IDs de EmailJS
+        const SERVICE_ID = 'service_ehavv1a'; 
+        const TEMPLATE_ID = 'template_7mgl4yh'; 
+
+        // Deshabilita botón y muestra "Enviando..."
+        submitButton.disabled = true;
+        submitButton.textContent = 'Enviando...';
+
+        // --- 2. ENVÍO CON emailjs.send ---
+        emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+            .then(() => {
                 showSuccessMessage();
-            } else {
-                alert('Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
-            }
-        // === CORRECCIÓN AQUÍ (Línea 179) ===
-        }).catch(() => {
-            alert('Hubo un error de red. Por favor, revisa tu conexión.');
-        });
+            }, (error) => {
+                console.error('Error al enviar con EmailJS:', error);
+                alert('Hubo un error al enviar el formulario. Código: ' + (error.status || 'Desconocido'));
+                 submitButton.disabled = false;
+                 submitButton.textContent = 'Enviar Solicitud';
+            });
+        // --- FIN ENVÍO ---
     });
 
-    // --- Función para Mensaje de Éxito ---
+    // --- Función showSuccessMessage ---
     function showSuccessMessage() {
-        // Oculta el form y la cabecera
         formElement.style.display = 'none';
         stepIndicator.style.display = 'none';
         formTitle.style.display = 'none';
         formSubtitle.style.display = 'none';
-
-        // Muestra el mensaje de gracias
         graciasMensaje.style.display = 'block';
-        
-        // (Animación Opcional)
         formContainer.classList.add('show-success');
     }
 

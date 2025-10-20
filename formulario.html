@@ -20,7 +20,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+    
     <link rel="stylesheet" href="/css/landing-form.css">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
 </head>
 <body>
 
@@ -33,21 +38,22 @@
             <p class="step-indicator">Paso 1 de 4</p>
         </div>
 
-        <form id="contact-form" action="httpsPOST" method="https://formspree.io/f/TU_ID_DE_FORMULARIO_AQUI" novalidate>
+        <form id="contact-form" novalidate>
             
             <div class="form-step active" data-step="1">
                 <div class="form-group">
                     <label for="nombre">Tu Nombre</label>
-                    <input type="text" id="nombre" name="nombre" required>
+                    <input type="text" id="nombre" name="nombre" required autocomplete="name">
                 </div>
                 <div class="form-group">
                     <label for="email">Tu Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required autocomplete="email">
                 </div>
                 <div class="form-group">
                     <label for="telefono">Tu WhatsApp</label>
-                    <input type="tel" id="telefono" name="telefono" placeholder="Ej: +54 9 3476 123456" required>
-                </div>
+                    <input type="tel" id="telefono" name="telefono" required autocomplete="tel"> 
+                    <input type="hidden" name="telefono_full"> 
+                    </div>
                 <div class="form-navigation">
                     <button type="button" class="btn-next">Siguiente <i class='bx bx-right-arrow-alt'></i></button>
                 </div>
@@ -78,23 +84,32 @@
                         <label>¿Ya tienes un sitio web?</label>
                         <div class="radio-group">
                             <label class="radio-label"><input type="radio" name="web_existente" value="si"> <span class="radio-custom"></span> Sí</label>
-                            <label class="radio-label"><input type="radio" name="web_existente" value="no" checked> <span class="radio-custom"></span> No, es mi primera web</label>
+                            <label class="radio-label"><input type="radio" name="web_existente" value="no" checked> <span class="radio-custom"></span> No</label>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="web_tipo">¿Qué tipo de web necesitas?</label>
+                        <select id="web_tipo" name="web_tipo">
+                            <option value="informativa" selected>Informativa / Landing</option>
+                            <option value="ecommerce">E-commerce (Tienda)</option>
+                            <option value="blog">Blog</option>
+                            <option value="portfolio">Portfolio</option>
+                            <option value="otro">Otro</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>¿Tienes el diseño (UI/UX) listo?</label>
                         <div class="radio-group">
-                            <label class="radio-label"><input type="radio" name="diseno_listo" value="si"> <span class="radio-custom"></span> Sí, tengo el diseño</label>
-                            <label class="radio-label"><input type="radio" name="diseno_listo" value="no" checked> <span class="radio-custom"></span> No, necesito diseño</label>
-                            <label class="radio-label"><input type="radio" name="diseno_listo" value="parcial"> <span class="radio-custom"></span> Tengo una idea / boceto</label>
+                            <label class="radio-label"><input type="radio" name="diseno_listo" value="si"> <span class="radio-custom"></span> Sí</label>
+                            <label class="radio-label"><input type="radio" name="diseno_listo" value="no" checked> <span class="radio-custom"></span> No</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="service-specific-questions" id="web-app-questions">
                     <div class="form-group">
-                        <label for="app-descripcion">Describe la función principal de tu aplicación</label>
-                        <textarea id="app-descripcion" name="app_descripcion" rows="4" placeholder="Ej: Un sistema de gestión de turnos para mi consultorio..."></textarea>
+                        <label for="app-descripcion">Describe la función principal</label>
+                        <textarea id="app-descripcion" name="app_descripcion" rows="4" placeholder="Ej: Sistema de turnos..."></textarea>
                     </div>
                 </div>
 
@@ -103,11 +118,21 @@
                         <label for="seo-website">Tu sitio web actual (si tienes)</label>
                         <input type="text" id="seo-website" name="seo_sitio_actual" placeholder="https://www.ejemplo.com">
                     </div>
+                    <div class="form-group">
+                        <label for="presupuesto_publicidad">Presupuesto mensual para publicidad</label>
+                        <select id="presupuesto_publicidad" name="presupuesto_publicidad" required>
+                            <option value="" disabled selected>Selecciona...</option>
+                            <option value="<300USD">&lt; $300 USD</option>
+                            <option value="300-800USD">$300 - $800 USD</option>
+                            <option value=">800USD">&gt; $800 USD</option>
+                            <option value="no-decidido">No decidido</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="service-specific-questions" id="other-questions">
                     <div class="form-group">
-                        <label for="otro-descripcion">Cuéntanos brevemente qué necesitas</label>
+                        <label for="otro-descripcion">¿Qué necesitas?</label>
                         <textarea id="otro-descripcion" name="otro_descripcion" rows="4"></textarea>
                     </div>
                 </div>
@@ -119,32 +144,21 @@
             </div>
 
             <div class="form-step" data-step="4">
-                <div class="form-group">
-                    <label for="presupuesto">¿Cuál es tu rango de presupuesto (opcional)?</label>
-                    <select id="presupuesto" name="presupuesto">
-                        <option value="" disabled selected>Selecciona un rango...</option>
-                        <option value="<500USD">Menos de $500 USD</option>
-                        <option value="500-1500USD">$500 - $1,500 USD</option>
-                        <option value="1500-3000USD">$1,500 - $3,000 USD</option>
-                        <option value=">3000USD">Más de $3,000 USD</option>
-                        <option value="prefiero-no-decir">Prefiero discutirlo en la llamada</option>
-                    </select>
-                </div>
                  <div class="form-group">
                     <label for="como-nos-encontro">¿Cómo nos encontraste?</label>
-                    <select id="como-nos-encontro" name="fuente">
-                        <option value="" disabled selected>Selecciona una opción...</option>
+                    <select id="como-nos-encontro" name="fuente" required>
+                        <option value="" disabled selected>Selecciona...</option>
                         <option value="Google">Google</option>
                         <option value="Instagram">Instagram</option>
                         <option value="Facebook">Facebook</option>
-                        <option value="Recomendacion">Recomendación de un colega</option>
+                        <option value="Recomendacion">Recomendación</option>
                         <option value="LinkedIn">LinkedIn</option>
                         <option value="Otro">Otro</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="mensaje-final">¿Algo más que debamos saber? (opcional)</label>
-                    <textarea id="mensaje-final" name="mensaje_final" rows="3"></textarea>
+                    <textarea id="mensaje-final" name="mensaje_final" rows="4"></textarea>
                 </div>
                 <div class="form-navigation">
                     <button type="button" class="btn-prev"><i class='bx bx-left-arrow-alt'></i> Anterior</button>
@@ -157,11 +171,13 @@
         <div id="gracias-mensaje">
             <h3>¡Gracias, Luca!</h3>
             <p>He recibido tu solicitud. Te contactaré a la brevedad.</p>
-            <p class="saludo-final">¡Saludos con mucha testo!</p>
+            <p class="saludo-final">¡Saludos!</p>
         </div>
 
     </main>
 
-    <script src="/js/form-pro.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
+
+    <script src="/js/form-steps.js"></script> 
 </body>
 </html>
