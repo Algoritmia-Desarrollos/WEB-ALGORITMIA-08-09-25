@@ -350,3 +350,30 @@ ul.footer-contact i { font-size: 1.2rem; color: var(--button-color) ; }
     .advantages-grid { grid-template-columns: 1fr; }
     .whatsapp-float { width: 50px; height: 50px; font-size: 24px; bottom: 20px; right: 20px; }
 }
+
+@media screen and (max-width: 768px) {
+    /* === AÑADIR ESTAS LÍNEAS === */
+
+    /* Asegura que no haya scroll horizontal */
+    body, html {
+        overflow-x: hidden !important;
+    }
+
+    /* Da más espacio a los enlaces del menú móvil para presionar */
+    .nav-list a {
+        padding: 1rem 2rem; /* Aumenta el "área de toque" */
+        width: 100%;
+        font-size: 16px !important;
+    }
+
+    /* Da más espacio a los enlaces del footer */
+    .footer-group ul {
+        gap: 1.5rem; /* Aumenta la separación entre enlaces */
+    }
+
+    /* === FIN DE LAS LÍNEAS === */
+
+    .nav-close {
+        display: none; 
+    }    
+}
