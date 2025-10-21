@@ -727,7 +727,7 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .scroller__inner img { height: 180px; max-width: 300px; } 
 
     .services-path-container {
-        gap: 2.5rem;
+        gap: 6rem;
     } 
     .service-card-path { width: 95%; padding: 2rem; opacity: 1; } 
      .service-card-path.highlighted { box-shadow: var(--shadow-large); }
