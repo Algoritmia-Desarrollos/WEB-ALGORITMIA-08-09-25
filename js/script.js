@@ -119,34 +119,66 @@ document.addEventListener('DOMContentLoaded', () => {
     // === INICIO DE LA MEJORA DE FLUIDEZ (ANIMACIÓN SVG CON LERP) ===
     // =========================================================================
 
-    // --- Constante de suavizado (0.1 = suave y fluido) ---
     const SMOOTHING_FACTOR = 0.1;
 
-    // --- Lógica para "Servicios" (Cápsula) ---
+    // =========================================================================
+    // === INICIO LÓGICA "SERVICIOS" (CON SWAP DE PATH) ===
+    // =========================================================================
     const serviceCards = document.querySelectorAll('#servicios .service-card-path');
-    const servicesPath = document.getElementById('servicesPath');
+    const servicesPathDesktop = document.getElementById('servicesPathDesktop');
+    const servicesPathMobile = document.getElementById('servicesPathMobile');
     const pathIndicator = document.getElementById('path-indicator-capsule'); 
     const servicesSection = document.getElementById('servicios'); 
     const servicesContainer = document.querySelector('#servicios .services-path-container'); 
+    
+    let servicesPath; // Esta variable contendrá el path ACTIVO (desktop o mobile)
     let servicesPathLength = 0; 
     let servicesIndicator_currentPos = { x: 0, y: 0 };
     let servicesIndicator_targetPos = { x: 0, y: 0 };
     let servicesAnimationId = null;
 
-    if (servicesPath && servicesContainer) { 
-        setTimeout(() => { 
-            try {
-                servicesPathLength = servicesPath.getTotalLength(); 
-                const startPoint = servicesPath.getPointAtLength(0);
+    // Función para determinar qué path (línea) usar
+    function updateAndInitializeServicesPath() {
+        if (!servicesPathDesktop || !servicesPathMobile || !pathIndicator) return;
+
+        // Revisa cuál path está visible según el CSS
+        if (window.getComputedStyle(servicesPathMobile).display !== 'none') {
+            servicesPath = servicesPathMobile;
+        } else {
+            servicesPath = servicesPathDesktop;
+        }
+
+        try {
+            servicesPathLength = servicesPath.getTotalLength(); 
+            const startPoint = servicesPath.getPointAtLength(0);
+            
+            // Si la animación no ha empezado, setea la posición inicial
+            if (!servicesAnimationId) { 
                 servicesIndicator_currentPos = { x: startPoint.x, y: startPoint.y };
-                servicesIndicator_targetPos = { x: startPoint.x, y: startPoint.y };
                 pathIndicator.setAttribute('cx', startPoint.x);
                 pathIndicator.setAttribute('cy', startPoint.y);
-                
+            }
+            // La posición objetivo se actualiza para que el círculo "salte" al nuevo path si es necesario
+            servicesIndicator_targetPos = { x: startPoint.x, y: startPoint.y };
+            
+        } catch(e) { 
+            console.error("Error getting services path length:", e); 
+            servicesPathLength = 0;
+        }
+    }
+
+    if (servicesContainer) { 
+        setTimeout(() => { 
+            updateAndInitializeServicesPath(); // Llama al inicializador
+            
+            if (servicesPathLength > 0) {
                 startServicesAnimationLoop(); // Iniciar bucle de animación
-                handleServiceHighlightOnScroll(); // Ejecutar una vez
-            } catch(e) { console.error("Error getting services path length:", e); }
+                handleServiceHighlightOnScroll(); // Ejecutar una vez para posicionar
+            }
         }, 100); 
+        
+        // Vuelve a calcular el path si la ventana cambia de tamaño (ej. de desktop a mobile)
+        window.addEventListener('resize', debounce(updateAndInitializeServicesPath, 200));
     }
 
     function startServicesAnimationLoop() {
@@ -167,7 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const handleServiceHighlightOnScroll = () => { 
-        if (serviceCards.length === 0 || !servicesPath || !pathIndicator || !servicesSection || servicesPathLength === 0 || !servicesContainer) return; 
+        // Ahora servicesPath es dinámico, no necesita ser chequeado
+        if (serviceCards.length === 0 || !pathIndicator || !servicesSection || servicesPathLength === 0 || !servicesContainer) return; 
 
         const viewportCenterY = window.innerHeight / 2;
         let closestCard = null;
@@ -198,23 +231,30 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
         scrollProgress = Math.max(0, Math.min(1, scrollProgress)); 
 
-        if (!isNaN(scrollProgress)) {
-            const point = servicesPath.getPointAtLength(scrollProgress * servicesPathLength);
-            servicesIndicator_targetPos = { x: point.x, y: point.y };
+        if (!isNaN(scrollProgress) && servicesPath) { // Asegurarse que servicesPath esté definido
+            try {
+                const point = servicesPath.getPointAtLength(scrollProgress * servicesPathLength);
+                servicesIndicator_targetPos = { x: point.x, y: point.y };
+            } catch(e) {
+                // servicesPathLength podría ser 0 si el resize falló, esto lo previene.
+            }
         }
     };
     window.addEventListener('scroll', handleServiceHighlightOnScroll); 
+    
+    // =========================================================================
+    // === FIN LÓGICA "SERVICIOS" ===
+    // =========================================================================
 
 
     // =========================================================================
-    // === CÓDIGO DUPLICADO PARA "PROCESO" (CORREGIDO) ===
+    // === CÓDIGO PARA "PROCESO" (Sin cambios) ===
     // =========================================================================
 
     const procesoCards = document.querySelectorAll('#proceso .service-card-path');
     const procesoPath = document.getElementById('procesoPath');
     const procesoIndicator = document.getElementById('proceso-indicator-capsule'); 
     const procesoSection = document.getElementById('proceso'); 
-    // CORRECCIÓN: Apunta al selector de CSS correcto
     const procesoContainer = document.querySelector('#proceso .services-path-container'); 
     let procesoPathLength = 0; 
     let procesoIndicator_currentPos = { x: 0, y: 0 };
@@ -231,8 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 procesoIndicator.setAttribute('cx', startPoint.x);
                 procesoIndicator.setAttribute('cy', startPoint.y);
                 
-                startProcesoAnimationLoop(); // Iniciar bucle de animación
-                handleProcesoHighlightOnScroll(); // Ejecutar una vez
+                startProcesoAnimationLoop(); 
+                handleProcesoHighlightOnScroll(); 
             } catch(e) { console.error("Error getting proceso path length:", e); }
         }, 100); 
     }
@@ -294,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', handleProcesoHighlightOnScroll); 
 
     // =========================================================================
-    // === FIN CÓDIGO DUPLICADO PARA "PROCESO" ===
+    // === FIN CÓDIGO "PROCESO" ===
     // =========================================================================
 
 
@@ -320,8 +360,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 advantagesIndicator.setAttribute('cx', startPoint.x);
                 advantagesIndicator.setAttribute('cy', startPoint.y);
                 
-                startAdvantagesAnimationLoop(); // Iniciar bucle de animación
-                handleAdvantageHighlightOnScroll(); // Ejecutar una vez
+                startAdvantagesAnimationLoop(); 
+                handleAdvantageHighlightOnScroll(); 
             } catch(e) { console.error("Error getting advantages path length:", e); }
         }, 100); 
     }
@@ -329,8 +369,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function startAdvantagesAnimationLoop() {
         if (advantagesAnimationId) cancelAnimationFrame(advantagesAnimationId);
         function loop() {
+            const dx = advantagesIndicator_targetPos.x - advantagesIndicator_currentPos.x;
             const dy = advantagesIndicator_targetPos.y - advantagesIndicator_currentPos.y;
-            if (Math.abs(dy) > 0.1) {
+
+            if (Math.abs(dx) > 0.1) {
+                 advantagesIndicator_currentPos.x += dx * SMOOTHING_FACTOR;
+                 advantagesIndicator.setAttribute('cx', advantagesIndicator_currentPos.x);
+            }
+             if (Math.abs(dy) > 0.1) {
                 advantagesIndicator_currentPos.y += dy * SMOOTHING_FACTOR;
                 advantagesIndicator.setAttribute('cy', advantagesIndicator_currentPos.y);
             }

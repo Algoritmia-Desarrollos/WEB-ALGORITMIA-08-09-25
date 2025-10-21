@@ -50,11 +50,14 @@
 
 /* ==================== BASE & RESET ==================== */
 * { box-sizing: border-box; padding: 0; margin: 0; }
-html { scroll-behavior: smooth; }
+html { 
+    scroll-behavior: smooth; 
+    overflow-x: hidden; 
+}
 body {
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
-    background-color: var(--background); /* FONDO OSCURO PRINCIPAL */
+    background-color: var(--background);
     color: var(--foreground);
     line-height: 1.6; 
     overflow-x: hidden;
@@ -94,35 +97,32 @@ button { background: none; border: none; font-family: inherit; }
     max-width: 1200px; 
     margin: 0 auto; 
     padding: 0 24px; 
-    position: relative; /* Para asegurar que el contenido esté sobre section-card-bg si es necesario */
+    position: relative;
     z-index: 1;
 }
 .section { 
     padding: 6rem 0; 
     overflow: visible; 
-    position: relative; /* Necesario para que .section-card-bg funcione correctamente */
+    position: relative;
 }
-/* Eliminar fondo directo de .section-light */
 .section-light { 
     color: var(--foreground); 
-    padding-top: 0rem; /* Espacio para que se vea el fondo oscuro arriba */
-    padding-bottom: 2rem; /* Espacio abajo */
+    padding-top: 0rem; 
+    padding-bottom: 2rem; 
 }
-/* Tarjeta de fondo para secciones alternas */
 .section-card-bg {
-    background-color: var(--secondaryBg); /* Fondo más claro */
+    background-color: var(--secondaryBg); 
     border-radius: 16px; 
-    border: 1px solid rgba(255, 255, 255, 0.10); /* <<< BORDE CORREGIDO AQUÍ >>> */
-    padding: 6rem 0; /* Padding interno */
+    border: 1px solid rgba(255, 255, 255, 0.10); 
+    padding: 6rem 0; 
     margin: 0 auto; 
-    max-width: calc(100% - 100px); /* Ancho casi completo */
+    max-width: calc(100% - 100px); 
     box-shadow: var(--shadow-large);
-    position: relative; /* Asegurar contexto de apilamiento */
-    z-index: 0; /* Detrás del .container */
+    position: relative; 
+    z-index: 0; 
 }
-/* Ajuste para que el contenido del container quede *dentro* de la tarjeta */
 .section-light .container {
-     padding-top: 0; /* Resetear padding del container dentro de section-light */
+     padding-top: 0; 
      padding-bottom: 0;
 }
 .section-light h2, .section-light h3, .section-light h4 { color: var(--foreground); }
@@ -391,7 +391,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
 }
 
 /* ==================== SERVICIOS (ZIGZAG CON HIGHLIGHT Y TREN) ==================== */
-#servicios {
+#servicios, #proceso { 
     overflow: hidden; 
 }
 .services-path-container {
@@ -414,14 +414,21 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     transform: none;
 }
 
-.service-path-item:nth-child(odd) { 
+/* === CAMBIO AQUÍ: Restaurado el ZIG-ZAG solo para #servicios (Desktop) === */
+#servicios .service-path-item:nth-child(odd) { 
     align-self: flex-start; 
     padding-right: 10%; 
 }
-.service-path-item:nth-child(even) { 
+#servicios .service-path-item:nth-child(even) { 
     align-self: flex-end; 
      padding-left: 10%; 
 }
+
+/* Las tarjetas de #proceso se centran (como antes) */
+#proceso .service-path-item {
+    align-self: center;
+}
+
 
 .service-card-path {
     background-color: var(--secondaryBg); 
@@ -431,30 +438,30 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     transition: var(--transition-highlight); 
     box-shadow: var(--shadow-medium); 
     opacity: 1; 
-    border: 1px solid rgba(255, 255, 255, 0.10); /* Borde permanente */
+    border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 .service-card-path.highlighted {
     box-shadow: var(--shadow-large), var(--highlight-glow); 
-    border-color: hsla(280, 80%, 60%, 0.5); /* Borde iluminado */
+    border-color: hsla(280, 80%, 60%, 0.5); 
 }
 
 .service-card-path i.service-icon,
-.service-card-path i { /* <<< AÑADIDO: Aplicar a todos los <i> */
+.service-card-path i {
     font-size: 2rem; 
     color: var(--accent-color); 
     margin-bottom: 1rem; 
     display: inline-block; 
 }
 .service-card-path h4.service-title,
-.service-card-path h4 { /* <<< AÑADIDO: Aplicar a todos los <h4> */
+.service-card-path h4 {
     font-size: 1.5rem; 
     color: var(--foreground); 
     margin-bottom: 0.75rem; 
     font-weight: 600; 
 }
 .service-card-path p.service-description,
-.service-card-path p { /* <<< AÑADIDO: Aplicar a todos los <p> */
+.service-card-path p {
     font-size: 1rem; 
     color: var(--gray-600);
     line-height: 1.6; 
@@ -471,13 +478,24 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     pointer-events: none; 
     overflow: visible; 
 }
+/* === CAMBIO AQUÍ: Ocultar/Mostrar el path correcto === */
+#servicesPathDesktop { 
+    display: block; /* Visible en Desktop por defecto */
+}
+#servicesPathMobile { 
+    display: none;  /* Oculto en Desktop por defecto */
+}
 .connecting-line path {
-    stroke: url(#lineGradient); 
     stroke-width: 1.5; 
     fill: none;
     stroke-dasharray: 5, 5; 
 }
-#path-indicator-capsule {
+
+#procesoPath { stroke: url(#lineGradientProceso); }
+#proceso-indicator-capsule { fill: url(#indicatorGradientProceso); filter: url(#indicatorGlowProceso); }
+
+#path-indicator-capsule,
+#proceso-indicator-capsule {
     transition: transform 0.1s linear; 
     transform-origin: center center; 
 }
@@ -522,59 +540,47 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     margin-left: auto; 
     margin-right: auto;
 }
-
-/* 1. Contenedor principal de Ventajas (GRID) */
 .advantages-path-container {
     position: relative; 
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 columnas */
+    grid-template-columns: 1fr 1fr; 
     gap: 3rem;                     
     padding: 4rem 0; 
-    align-items: start; /* Align columns to the top */
+    align-items: start; 
 }
-
-/* 2. Columna Izquierda (Círculo) */
 .advantages-sticky-visual {
     position: sticky;
-    top: 50vh; /* Stick its top to the viewport's vertical center */
-    transform: translateY(-50%); /* Pull it up by half its own height to truly center it */
+    top: 50vh; 
+    transform: translateY(-50%); 
     align-self: start; 
-    /* El height viene del SVG de adentro */
 }
-/* ===== INICIO DE LA CORRECCIÓN ===== */
 .advantages-sticky-visual .connecting-line {
-    /* El SVG ahora tiene altura y no es 'absolute' */
     width: 100%;
-    height: 250px; /* Alto fijo para el SVG, para que la línea sea visible */
-    position: relative; /* Quitar absolute */
+    height: 250px; 
+    position: relative; 
 }
-
-/* 3. Columna Derecha (Tarjetas) */
 .advantages-card-list {
     display: flex;
     flex-direction: column;
-    gap: 15rem; /* El espacio vertical entre tarjetas */
+    gap: 15rem; 
 }
-
-/* 4. Anular la alineación de las tarjetas */
-#ventajas .service-path-item:nth-child(odd),
-#ventajas .service-path-item:nth-child(even) {
-    align-self: auto;   /* Quitar alineación (ya está en su columna) */
-    padding-right: 0;   /* Quitar padding */
-    padding-left: 0;    /* Quitar padding */
+#ventajas .advantages-card-list .service-path-item {
+    align-self: auto;   
+    padding-right: 0;   
+    padding-left: 0;    
 }
-
-/* 5. Estilos del círculo (más grande y brillante) */
+#advantagesPath {
+    stroke: url(#lineGradientAdv);
+    stroke-dasharray: none !important; 
+}
 #advantages-indicator {
-    r: 15; /* Radio del núcleo, coincide con HTML */
+    r: 10; 
     fill: url(#indicatorGradientAdv);
-    opacity: 1; /* Opacidad completa */
-    filter: url(#indicatorGlowAdv); /* Aplicar el filtro definido en HTML */
+    opacity: 1; 
+    filter: url(#indicatorGlowAdv); 
     transition: transform 0.1s linear; 
     transform-origin: center center; 
 }
-/* ===== FIN DE LA CORRECCIÓN ===== */
-
 
 /* ==================== TESTIMONIALS ==================== */
 .testimonial-card {
@@ -655,29 +661,36 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
         opacity: 1 !important; 
         filter: none !important;
     }
-    .service-path-item:nth-child(odd),
-    .service-path-item:nth-child(even) { 
-        align-self: center; 
-        padding-left: 0;
-        padding-right: 0;
+    
+    /* === CAMBIO AQUÍ: Ocultar/Mostrar Paths y Forzar Centro en #servicios === */
+    #servicesPathDesktop { display: none; }
+    #servicesPathMobile { display: block; }
+    
+    #servicios .service-path-item,
+    #servicios .service-path-item:nth-child(odd),
+    #servicios .service-path-item:nth-child(even) { 
+        align-self: center !important; 
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
+    /* === FIN CAMBIO === */
+    
     .service-card-path { width: 90%; opacity: 1; } 
-    .connecting-line { display: none; } 
 
-    /* === RESPONSIVE PARA VENTAJAS === */
     .advantages-path-container {
-        grid-template-columns: 1fr; /* 1 columna en móvil */
+        grid-template-columns: 1fr;
         gap: 4rem;
         padding-top: 2rem;
     }
+    
+    /* Dejamos la línea visible en responsive para #ventajas */
     .advantages-sticky-visual {
-        display: none; /* Ocultar el círculo y la línea en móvil */
+        position: relative; /* Quitar sticky */
+        transform: none; /* Resetear transform */
+        top: auto; /* Resetear top */
+        max-width: 400px; /* Limitar ancho */
+        margin: 0 auto -4rem; /* Centrar y ajustar espacio */
     }
-    #ventajas .service-path-item:nth-child(odd),
-    #ventajas .service-path-item:nth-child(even) {
-        align-self: center; /* Centrar las tarjetas (como en servicios) */
-    }
-    /* === FIN RESPONSIVE VENTAJAS === */
 
     .footer-container { grid-template-columns: 1fr 1fr; }
     .footer-about { grid-column: 1 / -1; text-align: center; }
@@ -717,84 +730,17 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     } 
     .service-card-path { width: 95%; padding: 2rem; opacity: 1; } 
      .service-card-path.highlighted { box-shadow: var(--shadow-large); }
-    .connecting-line { display: none; } 
-
 
     .about-us-container { grid-template-columns: 1fr; gap: 2rem; } 
     .about-us-image { order: -1; margin-bottom: 2rem;} 
 
-    /* === RESPONSIVE VENTAJAS === */
     .advantages-path-container {
-        gap: 2.5rem; /* Menos espacio en móvil */
+        gap: 2.5rem;
     }
-    .advantages-sticky-visual {
-        display: none; /* Ocultar el círculo en móvil */
-    }
-    /* === FIN RESPONSIVE VENTAJAS === */
-
+    
     .footer-container { grid-template-columns: 1fr; text-align: center; }
     .footer-group ul { align-items: center; }
     ul.footer-contact, .footer-social { justify-content: center; }
 
     .whatsapp-float { width: 45px; height: 45px; font-size: 22px; bottom: 15px; right: 15px; }
-}
-
-/* ... (después del bloque .advantages-sticky-visual .connecting-line) ... */
-
-/* === CORRECCIÓN LÍNEA VENTAJAS SÓLIDA === */
-#advantagesPath {
-    stroke-dasharray: none !important;
-}
-/* === FIN CORRECCIÓN === */
-
-/* ... (todo tu CSS existente va aquí arriba) ... */
-
-/* === CORRECCIÓN LÍNEA VENTAJAS SÓLIDA === */
-#advantagesPath {
-    stroke-dasharray: none !important;
-}
-
-/* ==================== MODIFICACIÓN PROCESO (CENTRALIZADO) ==================== */
-/* Anula el zig-zag (flex-start/flex-end) solo para la sección #proceso,
-  haciendo que las tarjetas se centren.
-*/
-#proceso .service-path-item:nth-child(odd),
-#proceso .service-path-item:nth-child(even) { 
-    align-self: center; /* Centra las tarjetas en la columna */
-    padding-left: 0;    /* Resetea el padding del zig-zag */
-    padding-right: 0;   /* Resetea el padding del zig-zag */
-}
-
-/* Asegura que todas las tarjetas de proceso tengan el mismo ancho máximo
-  para que se vean uniformes y del "mismo tamaño".
-*/
-#proceso .service-path-item {
-    max-width: 700px; 
-    width: 90%;
-}
-
-/* ... (todo tu CSS existente va aquí arriba) ... */
-
-/* === CORRECCIÓN LÍNEA VENTAJAS SÓLIDA === */
-#advantagesPath {
-    stroke-dasharray: none !important;
-}
-
-/* ==================== MODIFICACIÓN PROCESO (CENTRALIZADO) ==================== */
-/* Anula el zig-zag (flex-start/flex-end) solo para la sección #proceso,
-  haciendo que las tarjetas se centren.
-*/
-#proceso .services-path-container .service-path-item:nth-child(odd),
-#proceso .services-path-container .service-path-item:nth-child(even) { 
-    align-self: center; /* Centra las tarjetas en la columna */
-    padding-left: 0;    /* Resetea el padding del zig-zag */
-    padding-right: 0;   /* Resetea el padding del zig-zag */
-}
-
-/* Asegura que todas las tarjetas de proceso tengan el mismo ancho máximo
-  para que se vean uniformes y del "mismo tamaño".
-*/
-#proceso .services-path-container .service-path-item {
-    max-width: 700px; 
-    width: 90%;
 }
