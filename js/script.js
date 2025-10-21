@@ -139,12 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const viewportCenterY = window.innerHeight / 2;
         let closestCard = null;
         let minDistance = Infinity;
-        let activeIndex = -1; // Guardar índice
         
-        serviceCards.forEach((card, index) => { // Añadir índice
+        serviceCards.forEach((card) => { 
             const cardRect = card.getBoundingClientRect();
-            // Solo considerar tarjetas parcialmente visibles para highlight
-            if (cardRect.bottom < (viewportCenterY - cardRect.height * 0.5) || cardRect.top > (viewportCenterY + cardRect.height * 0.5)) { // Ajustar umbral basado en altura tarjeta
+            if (cardRect.bottom < (viewportCenterY - cardRect.height * 0.5) || cardRect.top > (viewportCenterY + cardRect.height * 0.5)) {
                  card.classList.remove('highlighted'); 
             } else {
                  const cardCenterY = cardRect.top + cardRect.height / 2;
@@ -152,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
                  if (distance < minDistance) {
                      minDistance = distance;
                      closestCard = card;
-                     activeIndex = index; // Guardar el índice
                  }
             }
         });
@@ -160,21 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.toggle('highlighted', card === closestCard);
         });
 
-        // --- Posición del Indicador (tren) ---
+        // --- LÓGICA DE SCROLL CONTINUO ---
         let scrollProgress = 0;
-        const numServiceCards = serviceCards.length;
-        if(activeIndex !== -1) {
-            // Mapear el índice activo (0 a N-1) a un progreso (0 a 1)
-            scrollProgress = activeIndex / (numServiceCards - 1);
-        } else {
-             // Si ninguna tarjeta está activa (muy arriba o muy abajo), calcular basado en la visibilidad general
-             const sectionRect = servicesSection.getBoundingClientRect();
-             const scrollStartPoint = sectionRect.top + window.scrollY - window.innerHeight * 0.8; 
-             const scrollEndPoint = sectionRect.bottom + window.scrollY - window.innerHeight * 0.2; 
-             const totalScrollDistance = scrollEndPoint - scrollStartPoint;
-             scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
-             scrollProgress = Math.max(0, Math.min(1, scrollProgress)); 
-        }
+        const containerRect = servicesContainer.getBoundingClientRect();
+        const scrollStartPoint = containerRect.top + window.scrollY - (window.innerHeight / 2);
+        const scrollEndPoint = (containerRect.top + containerRect.height) + window.scrollY - (window.innerHeight / 2);
+        const totalScrollDistance = scrollEndPoint - scrollStartPoint;
+        scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
+        scrollProgress = Math.max(0, Math.min(1, scrollProgress)); 
 
         if (!isNaN(scrollProgress)) {
             const point = servicesPath.getPointAtLength(scrollProgress * servicesPathLength);
@@ -184,24 +174,35 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.addEventListener('scroll', debounce(handleServiceHighlightOnScroll, 10)); 
-    // handleServiceHighlightOnScroll se llama ahora después de calcular pathLength
 
-     // ==================== HIGHLIGHT SCROLL VENTAJAS Y BARRA PROGRESO =====================
+    
+    // ==================== HIGHLIGHT SCROLL VENTAJAS Y BARRA PROGRESO (MODIFICADO) =====================
     const advantageCards = document.querySelectorAll('.advantage-card-list-item');
-    const advantagesProgressBar = document.querySelector('#ventajas .progress-bar'); 
     const advantagesList = document.querySelector('.advantages-list-container'); 
     
+    const advantagesPath = document.getElementById('advantagesPath');
+    const advantagesIndicator = document.getElementById('advantages-indicator');
+    
+    let advantagesPathLength = 0;
+    if (advantagesPath && advantagesList) { // << Añadido check de advantagesList
+        setTimeout(() => { 
+            try {
+                advantagesPathLength = advantagesPath.getTotalLength(); 
+                handleAdvantageHighlightOnScroll(); // << Llamada inicial
+            } catch(e) { console.error("Error getting advantages path length:", e); }
+        }, 100); 
+    }
+    
     const handleAdvantageHighlightOnScroll = () => {
-        // Asegurarse que solo afecte las tarjetas dentro de .advantages-list-container
         const cardsInList = advantagesList ? advantagesList.querySelectorAll('.advantage-card-list-item') : [];
-        if (cardsInList.length === 0 || !advantagesProgressBar || !advantagesList) return; 
+        
+        if (cardsInList.length === 0 || !advantagesIndicator || !advantagesList || advantagesPathLength === 0) return; 
 
         const viewportCenterY = window.innerHeight / 2;
         let closestCard = null;
         let minDistance = Infinity;
-        let activeIndex = -1; 
 
-        cardsInList.forEach((card, index) => { 
+        cardsInList.forEach((card) => { 
             const cardRect = card.getBoundingClientRect();
              if (cardRect.bottom < 0 || cardRect.top > window.innerHeight) {
                  card.classList.remove('highlighted');
@@ -213,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (distance < minDistance) {
                 minDistance = distance;
                 closestCard = card;
-                activeIndex = index; 
             }
         });
 
@@ -221,18 +221,31 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.toggle('highlighted', card === closestCard);
         });
 
-        let progress = 0;
-        const totalCardsInList = cardsInList.length; 
-        if (activeIndex !== -1 && totalCardsInList > 0) {
-            progress = (activeIndex + 1) / totalCardsInList; 
-        }
+        // --- INICIO DE LA CORRECCIÓN: Lógica de scroll continuo ---
+        let scrollProgress = 0;
+        // Usamos 'advantagesList' (el contenedor de las tarjetas) para el cálculo
+        const advantagesContainerRect = advantagesList.getBoundingClientRect();
+
+        // Progreso 0 = El inicio del *contenedor* (advantagesList) llega al centro de la pantalla
+        const scrollStartPoint = advantagesContainerRect.top + window.scrollY - (window.innerHeight / 2);
+        // Progreso 1 = El final del *contenedor* (advantagesList) llega al centro de la pantalla
+        const scrollEndPoint = (advantagesContainerRect.top + advantagesContainerRect.height) + window.scrollY - (window.innerHeight / 2);
         
-        advantagesProgressBar.style.height = `${progress * 100}%`;
+        const totalScrollDistance = scrollEndPoint - scrollStartPoint;
+
+        scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
+        scrollProgress = Math.max(0, Math.min(1, scrollProgress));
+        // --- FIN DE LA CORRECCIÓN ---
+        
+        if (!isNaN(scrollProgress)) {
+            const point = advantagesPath.getPointAtLength(scrollProgress * advantagesPathLength);
+            advantagesIndicator.setAttribute('cx', point.x);
+            advantagesIndicator.setAttribute('cy', point.y);
+        }
     };
 
-    window.addEventListener('scroll', debounce(handleAdvantageHighlightOnScroll, 50)); 
-    handleAdvantageHighlightOnScroll(); 
-
+    window.addEventListener('scroll', debounce(handleAdvantageHighlightOnScroll, 10));
+    
     // ==================== TABS PORTFOLIO ===============================
     const portfolioTabs = document.querySelectorAll('.portfolio-tab');
     const portfolioPanels = document.querySelectorAll('.portfolio-content-panel');

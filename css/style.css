@@ -42,7 +42,7 @@
     --small-font-size: 0.875rem; 
 
     --transition-smooth: all 0.2s ease-in-out;
-    --transition-highlight: box-shadow 0.4s ease-out; /* Simplificada */
+    --transition-highlight: box-shadow 0.4s ease-out, border-color 0.4s ease-out; /* Incluye border-color */
     --shadow-light: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
     --shadow-medium: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.2);
     --shadow-large: 0 8px 16px rgba(0,0,0,0.3); 
@@ -399,7 +399,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     display: flex;
     flex-direction: column;
     align-items: center; 
-    gap: 6rem; 
+    gap: 15rem; /* <<< CORRECCIÓN: AUMENTADO DE 6rem a 15rem */
     padding: 4rem 0; 
 }
 .service-path-item {
@@ -408,6 +408,12 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     position: relative; 
     z-index: 2; 
 }
+
+.service-path-item.animate-on-scroll {
+    opacity: 1;
+    transform: none;
+}
+
 .service-path-item:nth-child(odd) { 
     align-self: flex-start; 
     padding-right: 10%; 
@@ -416,6 +422,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     align-self: flex-end; 
      padding-left: 10%; 
 }
+
 .service-card-path {
     background-color: var(--secondaryBg); 
     padding: 2.5rem; 
@@ -424,10 +431,14 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     transition: var(--transition-highlight); 
     box-shadow: var(--shadow-medium); 
     opacity: 1; 
+    border: 1px solid rgba(255, 255, 255, 0.10); /* Borde permanente */
 }
+
 .service-card-path.highlighted {
     box-shadow: var(--shadow-large), var(--highlight-glow); 
+    border-color: hsla(280, 80%, 60%, 0.5); /* Borde iluminado */
 }
+
 .service-card-path i.service-icon { 
     font-size: 2rem; 
     color: var(--accent-color); 
@@ -506,45 +517,51 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     margin-left: auto; 
     margin-right: auto;
 }
+
 .advantages-layout {
     display: grid;
+    /* La primera columna (80px) es para el SVG, la segunda (1fr) para las tarjetas */
     grid-template-columns: 80px 1fr; 
     gap: 4rem; 
     align-items: start; 
+    position: relative; /* Necesario para el posicionamiento absoluto del indicador */
 }
 .advantages-progress-indicator {
-    position: sticky; 
-    top: calc(50vh - 100px); 
-    height: 200px; 
-    width: 2px; 
-    margin-left: auto; 
-    margin-right: 1rem; 
+    position: absolute;   /* Posición absoluta relativa a .advantages-layout */
+    top: 0;               /* Alinear arriba */
+    left: 0;              /* Alinear a la izquierda (en la primera columna) */
+    height: 100%;         /* Ocupar toda la altura */
+    width: 80px;          /* Ocupar el ancho de la primera columna */
+    margin: 0;            
     z-index: 1; 
+    pointer-events: none; /* Para poder hacer clic "a través" de él si fuera necesario */
 }
-.progress-line {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* Regla para el nuevo SVG vertical */
+.connecting-line-vertical {
     width: 100%;
     height: 100%;
-    background-color: var(--gray-300); 
-    opacity: 0.3;
+    overflow: visible;
 }
-.progress-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 0%; 
-    background-color: var(--accent-color); 
-    transition: height 0.3s ease-out; 
+/* Estas reglas ya no son necesarias */
+.progress-line { display: none; }
+.progress-bar { display: none; }
+
+
+.advantages-progress-indicator.animate-on-scroll {
+    opacity: 1;
+    transform: none;
 }
+
 .advantages-list-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start; 
-    gap: 8rem; 
+    gap: 15rem; /* <<< CORRECCIÓN: AUMENTADO DE 8rem a 15rem */
     opacity: 1; 
+    /* AÑADIDO: Asegura que el contenedor de tarjetas esté en la segunda columna */
+    grid-column: 2 / 3;
+    position: relative; /* z-index para que esté sobre el SVG */
+    z-index: 2;
 }
 .advantage-card.advantage-card-list-item {
     background-color: var(--secondaryBg); 
@@ -556,9 +573,11 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     transition: var(--transition-highlight); 
     box-shadow: var(--shadow-medium); 
     opacity: 1; 
+    border: 1px solid rgba(255, 255, 255, 0.10); /* Borde permanente */
 }
 .advantage-card.advantage-card-list-item.highlighted {
     box-shadow: var(--shadow-large), var(--highlight-glow); 
+    border-color: hsla(280, 80%, 60%, 0.5); /* Borde iluminado */
 }
 .advantage-card-list-item i { 
     font-size: 2rem; 
@@ -666,6 +685,8 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
 
     .advantages-layout { grid-template-columns: 1fr; } 
     .advantages-progress-indicator { display: none; } 
+    /* AÑADIDO: Resetear el grid-column en responsive */
+    .advantages-list-container { grid-column: 1 / -1; }
     .advantage-card.advantage-card-list-item { width: 100%; opacity: 1; filter: none; transform: scale(1); box-shadow: var(--shadow-medium);} 
     .advantage-card.advantage-card-list-item.highlighted { box-shadow: var(--shadow-large);} 
 
