@@ -63,10 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // No aplicar a los items de servicio ni ventajas (tienen su propia lógica)
             if (entry.isIntersecting && 
                 !entry.target.classList.contains('service-card-path') && 
-                !entry.target.classList.contains('service-path-item') &&
-                !entry.target.classList.contains('advantage-card-list-item') && // Excluir tarjetas de ventajas
-                !entry.target.classList.contains('advantages-list-container') && // Excluir contenedor lista ventajas
-                !entry.target.classList.contains('advantages-progress-indicator') // Excluir indicador ventajas
+                !entry.target.classList.contains('service-path-item')
+                /* Ya no necesitamos excluir .advantage-card-list-item */
                 ) {
                 entry.target.classList.add('animated');
                 obs.unobserve(entry.target);
@@ -117,11 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ==================== HIGHLIGHT SCROLL SERVICIOS Y TREN SVG =====================
-    const serviceCards = document.querySelectorAll('.service-card-path');
+    
+    // --- Selectores de SERVICIOS (ahora delimitados a #servicios) ---
+    const serviceCards = document.querySelectorAll('#servicios .service-card-path');
     const servicesPath = document.getElementById('servicesPath');
     const pathIndicator = document.getElementById('path-indicator-capsule'); 
     const servicesSection = document.getElementById('servicios'); 
-    const servicesContainer = document.querySelector('.services-path-container'); 
+    const servicesContainer = document.querySelector('#servicios .services-path-container'); 
 
     let servicesPathLength = 0; 
     if (servicesPath && servicesContainer) { 
@@ -176,15 +176,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', debounce(handleServiceHighlightOnScroll, 10)); 
 
     
-    // ==================== HIGHLIGHT SCROLL VENTAJAS Y BARRA PROGRESO (MODIFICADO) =====================
-    const advantageCards = document.querySelectorAll('.advantage-card-list-item');
-    const advantagesList = document.querySelector('.advantages-list-container'); 
+    // ==================== HIGHLIGHT SCROLL VENTAJAS (NUEVA LÓGICA) =====================
     
+    // --- Selectores de VENTAJAS (delimitados a #ventajas) ---
+    const advantageCards = document.querySelectorAll('#ventajas .service-card-path');
     const advantagesPath = document.getElementById('advantagesPath');
     const advantagesIndicator = document.getElementById('advantages-indicator');
+    const advantagesSection = document.getElementById('ventajas');
+    const advantagesContainer = document.querySelector('#ventajas .advantages-path-container');
     
     let advantagesPathLength = 0;
-    if (advantagesPath && advantagesList) { // << Añadido check de advantagesList
+    if (advantagesPath && advantagesContainer) {
         setTimeout(() => { 
             try {
                 advantagesPathLength = advantagesPath.getTotalLength(); 
@@ -193,18 +195,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100); 
     }
     
+    // --- Nueva función, copia de la de "Servicios" ---
     const handleAdvantageHighlightOnScroll = () => {
-        const cardsInList = advantagesList ? advantagesList.querySelectorAll('.advantage-card-list-item') : [];
-        
-        if (cardsInList.length === 0 || !advantagesIndicator || !advantagesList || advantagesPathLength === 0) return; 
+        if (advantageCards.length === 0 || !advantagesPath || !advantagesIndicator || !advantagesSection || advantagesPathLength === 0 || !advantagesContainer) return; 
 
         const viewportCenterY = window.innerHeight / 2;
         let closestCard = null;
         let minDistance = Infinity;
 
-        cardsInList.forEach((card) => { 
+        advantageCards.forEach((card) => { 
             const cardRect = card.getBoundingClientRect();
-             if (cardRect.bottom < 0 || cardRect.top > window.innerHeight) {
+             if (cardRect.bottom < (viewportCenterY - cardRect.height * 0.5) || cardRect.top > (viewportCenterY + cardRect.height * 0.5)) {
                  card.classList.remove('highlighted');
                  return;
              }
@@ -217,25 +218,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        cardsInList.forEach(card => { 
+        advantageCards.forEach(card => { 
             card.classList.toggle('highlighted', card === closestCard);
         });
 
-        // --- INICIO DE LA CORRECCIÓN: Lógica de scroll continuo ---
+        // --- Lógica de scroll continuo ---
         let scrollProgress = 0;
-        // Usamos 'advantagesList' (el contenedor de las tarjetas) para el cálculo
-        const advantagesContainerRect = advantagesList.getBoundingClientRect();
-
-        // Progreso 0 = El inicio del *contenedor* (advantagesList) llega al centro de la pantalla
-        const scrollStartPoint = advantagesContainerRect.top + window.scrollY - (window.innerHeight / 2);
-        // Progreso 1 = El final del *contenedor* (advantagesList) llega al centro de la pantalla
-        const scrollEndPoint = (advantagesContainerRect.top + advantagesContainerRect.height) + window.scrollY - (window.innerHeight / 2);
+        const containerRect = advantagesContainer.getBoundingClientRect();
+        const scrollStartPoint = containerRect.top + window.scrollY - (window.innerHeight / 2);
+        const scrollEndPoint = (containerRect.top + containerRect.height) + window.scrollY - (window.innerHeight / 2);
         
         const totalScrollDistance = scrollEndPoint - scrollStartPoint;
 
         scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
         scrollProgress = Math.max(0, Math.min(1, scrollProgress));
-        // --- FIN DE LA CORRECCIÓN ---
         
         if (!isNaN(scrollProgress)) {
             const point = advantagesPath.getPointAtLength(scrollProgress * advantagesPathLength);

@@ -394,12 +394,13 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
 #servicios {
     overflow: hidden; 
 }
-.services-path-container {
+.services-path-container,
+.advantages-path-container { /* <<< AÑADIDO: Aplicar mismo layout a Ventajas */
     position: relative; 
     display: flex;
     flex-direction: column;
     align-items: center; 
-    gap: 15rem; /* <<< CORRECCIÓN: AUMENTADO DE 6rem a 15rem */
+    gap: 15rem; 
     padding: 4rem 0; 
 }
 .service-path-item {
@@ -439,19 +440,22 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     border-color: hsla(280, 80%, 60%, 0.5); /* Borde iluminado */
 }
 
-.service-card-path i.service-icon { 
+.service-card-path i.service-icon,
+.service-card-path i { /* <<< AÑADIDO: Aplicar a todos los <i> */
     font-size: 2rem; 
     color: var(--accent-color); 
     margin-bottom: 1rem; 
     display: inline-block; 
 }
-.service-card-path h4.service-title { 
+.service-card-path h4.service-title,
+.service-card-path h4 { /* <<< AÑADIDO: Aplicar a todos los <h4> */
     font-size: 1.5rem; 
     color: var(--foreground); 
     margin-bottom: 0.75rem; 
     font-weight: 600; 
 }
-.service-card-path p.service-description { 
+.service-card-path p.service-description,
+.service-card-path p { /* <<< AÑADIDO: Aplicar a todos los <p> */
     font-size: 1rem; 
     color: var(--gray-600);
     line-height: 1.6; 
@@ -474,7 +478,8 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     fill: none;
     stroke-dasharray: 5, 5; 
 }
-#path-indicator-capsule {
+#path-indicator-capsule,
+#advantages-indicator { /* <<< AÑADIDO: Aplicar a ambas bolas */
     transition: transform 0.1s linear; 
     transform-origin: center center; 
 }
@@ -518,84 +523,32 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     margin-right: auto;
 }
 
-.advantages-layout {
-    display: grid;
-    /* La primera columna (80px) es para el SVG, la segunda (1fr) para las tarjetas */
-    grid-template-columns: 80px 1fr; 
-    gap: 4rem; 
-    align-items: start; 
-    position: relative; /* Necesario para el posicionamiento absoluto del indicador */
-}
-.advantages-progress-indicator {
-    position: absolute;   /* Posición absoluta relativa a .advantages-layout */
-    top: 0;               /* Alinear arriba */
-    left: 0;              /* Alinear a la izquierda (en la primera columna) */
-    height: 100%;         /* Ocupar toda la altura */
-    width: 80px;          /* Ocupar el ancho de la primera columna */
-    margin: 0;            
-    z-index: 1; 
-    pointer-events: none; /* Para poder hacer clic "a través" de él si fuera necesario */
-}
-/* Regla para el nuevo SVG vertical */
-.connecting-line-vertical {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-}
-/* Estas reglas ya no son necesarias */
-.progress-line { display: none; }
-.progress-bar { display: none; }
+/* === INICIO MODIFICACIÓN: REGLAS ANTIGUAS ELIMINADAS === */
+/* Se eliminaron las reglas: */
+/* .advantages-layout */
+/* .advantages-progress-indicator */
+/* .connecting-line-vertical */
+/* .progress-line */
+/* .progress-bar */
+/* .advantages-list-container */
+/* .advantage-card.advantage-card-list-item */
+/* .advantage-card.advantage-card-list-item.highlighted */
+/* .advantage-card-list-item i */
+/* .advantage-card-list-item h4 */
+/* .advantage-card-list-item p */
+/* === FIN MODIFICACIÓN === */
 
 
-.advantages-progress-indicator.animate-on-scroll {
-    opacity: 1;
-    transform: none;
+/* === INICIO MODIFICACIÓN: NUEVA REGLA PARA ALINEAR TARJETAS === */
+/* Forzar todas las tarjetas en #ventajas a la derecha */
+#ventajas .service-path-item:nth-child(odd),
+#ventajas .service-path-item:nth-child(even) {
+    align-self: flex-end;
+    padding-left: 10%;
+    padding-right: 0; /* Resetear padding-right */
 }
+/* === FIN MODIFICACIÓN === */
 
-.advantages-list-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
-    gap: 15rem; /* <<< CORRECCIÓN: AUMENTADO DE 8rem a 15rem */
-    opacity: 1; 
-    /* AÑADIDO: Asegura que el contenedor de tarjetas esté en la segunda columna */
-    grid-column: 2 / 3;
-    position: relative; /* z-index para que esté sobre el SVG */
-    z-index: 2;
-}
-.advantage-card.advantage-card-list-item {
-    background-color: var(--secondaryBg); 
-    padding: 3rem; 
-    border-radius: 12px; 
-    text-align: left;
-    width: 700px; 
-    max-width: 100%; 
-    transition: var(--transition-highlight); 
-    box-shadow: var(--shadow-medium); 
-    opacity: 1; 
-    border: 1px solid rgba(255, 255, 255, 0.10); /* Borde permanente */
-}
-.advantage-card.advantage-card-list-item.highlighted {
-    box-shadow: var(--shadow-large), var(--highlight-glow); 
-    border-color: hsla(280, 80%, 60%, 0.5); /* Borde iluminado */
-}
-.advantage-card-list-item i { 
-    font-size: 2rem; 
-    color: var(--accent-color); 
-    margin-bottom: 1rem; 
-    display: inline-block; 
-}
-.advantage-card-list-item h4 { 
-    font-size: 1.6rem; 
-    color: var(--foreground); 
-    margin-bottom: 0.75rem; 
-    font-weight: 600; 
-}
-.advantage-card-list-item p { 
-    font-size: 1rem; 
-    color: var(--gray-600);
-    line-height: 1.6; 
-}
 
 /* ==================== TESTIMONIALS ==================== */
 .testimonial-card {
@@ -669,7 +622,10 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .about-us-content p { margin-left: auto; margin-right: auto;}
     .about-us-image { max-width: 400px; margin: 0 auto; }
     
-    .services-path-container { gap: 4rem; } 
+    .services-path-container,
+    .advantages-path-container { /* <<< AÑADIDO */
+        gap: 4rem; 
+    } 
     .service-path-item { 
         opacity: 1 !important; 
         filter: none !important;
@@ -683,12 +639,13 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .service-card-path { width: 90%; opacity: 1; } 
     .connecting-line { display: none; } 
 
-    .advantages-layout { grid-template-columns: 1fr; } 
-    .advantages-progress-indicator { display: none; } 
-    /* AÑADIDO: Resetear el grid-column en responsive */
-    .advantages-list-container { grid-column: 1 / -1; }
-    .advantage-card.advantage-card-list-item { width: 100%; opacity: 1; filter: none; transform: scale(1); box-shadow: var(--shadow-medium);} 
-    .advantage-card.advantage-card-list-item.highlighted { box-shadow: var(--shadow-large);} 
+    /* === INICIO MODIFICACIÓN: REGLAS ANTIGUAS ELIMINADAS === */
+    /* Se eliminaron las reglas responsive de: */
+    /* .advantages-layout */
+    /* .advantages-progress-indicator */
+    /* .advantages-list-container */
+    /* .advantage-card.advantage-card-list-item */
+    /* === FIN MODIFICACIÓN === */
 
     .footer-container { grid-template-columns: 1fr 1fr; }
     .footer-about { grid-column: 1 / -1; text-align: center; }
@@ -723,7 +680,10 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .portfolio-content-panel:not(#panel-web).active { grid-template-columns: 1fr; } 
     .scroller__inner img { height: 180px; max-width: 300px; } 
 
-    .services-path-container { gap: 2.5rem; } 
+    .services-path-container,
+    .advantages-path-container { /* <<< AÑADIDO */
+        gap: 2.5rem;
+    } 
     .service-card-path { width: 95%; padding: 2rem; opacity: 1; } 
      .service-card-path.highlighted { box-shadow: var(--shadow-large); }
     .connecting-line { display: none; } 
@@ -732,19 +692,12 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .about-us-container { grid-template-columns: 1fr; gap: 2rem; } 
     .about-us-image { order: -1; margin-bottom: 2rem;} 
 
-    .advantages-layout { grid-template-columns: 1fr; } 
-    .advantages-progress-indicator { display: none; } 
-    .advantage-card.advantage-card-list-item { 
-        width: 90vw; 
-        padding: 2rem; 
-        opacity: 1; 
-        filter: none; 
-        transform: scale(1); 
-    } 
-    .advantage-card.advantage-card-list-item.highlighted { 
-        box-shadow: var(--shadow-large); 
-    } 
-    .advantage-card-list-item h4 { font-size: 1.4rem; } 
+    /* === INICIO MODIFICACIÓN: REGLAS ANTIGUAS ELIMINADAS === */
+    /* Se eliminaron las reglas responsive de: */
+    /* .advantages-layout */
+    /* .advantages-progress-indicator */
+    /* .advantage-card.advantage-card-list-item */
+    /* === FIN MODIFICACIÓN === */
 
     .footer-container { grid-template-columns: 1fr; text-align: center; }
     .footer-group ul { align-items: center; }

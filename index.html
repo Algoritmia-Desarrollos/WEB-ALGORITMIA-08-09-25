@@ -244,51 +244,77 @@
                         <p>Cada aspecto de nuestro desarrollo se enfoca en entregar resultados excepcionales y duraderos.</p>
                     </div>
                     
-                    <div class="advantages-layout">
+                    <div class="advantages-path-container">
                         
-                        <div class="advantages-progress-indicator animate-on-scroll">
-                            <svg class="connecting-line-vertical" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style="overflow: visible;">
-                                <path id="advantagesPath" d="M 50 0 L 50 100" stroke="url(#lineGradient)" stroke-width="1.5" fill="none" stroke-dasharray="5, 5" />
-                                <circle id="advantages-indicator" r="2" fill="url(#indicatorGradient)" filter="url(#indicatorGlow)" />
-                            </svg>
-                        </div>
-                        <div class="advantages-list-container"> 
-                            <div class="advantage-card advantage-card-list-item"> 
+                        <svg class="connecting-line" width="100%" height="100%" viewBox="0 0 100 120" preserveAspectRatio="none" style="overflow: visible;">
+                            
+                            <defs>
+                                <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:hsl(280, 80%, 75%);stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:hsl(280, 80%, 45%);stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="indicatorGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:hsl(280, 90%, 80%);stop-opacity:1" /> 
+                                    <stop offset="100%" style="stop-color:hsl(280, 80%, 60%);stop-opacity:1" /> 
+                                </linearGradient>
+                                <filter id="indicatorGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <path id="advantagesPath" d="M 25 10 L 25 110" stroke="url(#lineGradient)" stroke-width="1.5" fill="none" stroke-dasharray="5, 5" />
+                            <circle id="advantages-indicator" r="4" fill="url(#indicatorGradient)" filter="url(#indicatorGlow)" />
+                        </svg>
+
+                        <div class="service-path-item animate-on-scroll">
+                            <div class="service-card-path"> 
                                 <i class='bx bx-mobile-alt'></i>
-                                <h4>Optimización Multiplataforma</h4>
-                                <p>Tu web se verá y funcionará perfecto en cualquier pantalla, garantizado.</p>
+                                <h4 class="service-title">Optimización Multiplataforma</h4>
+                                <p class="service-description">Tu web se verá y funcionará perfecto en cualquier pantalla, garantizado.</p>
                             </div>
-                             <div class="advantage-card advantage-card-list-item">
+                        </div>
+                         <div class="service-path-item animate-on-scroll">
+                            <div class="service-card-path">
                                 <i class='bx bx-layer'></i>
-                                <h4>Diseños Impresionantes</h4>
-                                <p>Creamos experiencias visuales intuitivas, atractivas y que convierten.</p>
+                                <h4 class="service-title">Diseños Impresionantes</h4>
+                                <p class="service-description">Creamos experiencias visuales intuitivas, atractivas y que convierten.</p>
                             </div>
-                            <div class="advantage-card advantage-card-list-item">
+                        </div>
+                        <div class="service-path-item animate-on-scroll">
+                            <div class="service-card-path">
                                 <i class='bx bx-rocket'></i>
-                                <h4>Máxima Velocidad</h4>
-                                <p>Optimizamos cada recurso para que tu sitio cargue a la velocidad de la luz.</p>
+                                <h4 class="service-title">Máxima Velocidad</h4>
+                                <p class="service-description">Optimizamos cada recurso para que tu sitio cargue a la velocidad de la luz.</p>
                             </div>
-                             <div class="advantage-card advantage-card-list-item">
+                        </div>
+                         <div class="service-path-item animate-on-scroll">
+                            <div class="service-card-path">
                                 <i class='bx bx-shield-quarter'></i>
-                                <h4>Seguridad de Vanguardia</h4>
-                                <p>Implementamos las últimas medidas de seguridad y mantenimiento preventivo.</p>
+                                <h4 class="service-title">Seguridad de Vanguardia</h4>
+                                <p class="service-description">Implementamos las últimas medidas de seguridad y mantenimiento preventivo.</p>
                             </div>
-                            <div class="advantage-card advantage-card-list-item"> 
+                        </div>
+                        <div class="service-path-item animate-on-scroll">
+                            <div class="service-card-path"> 
                                 <i class='bx bx-customize'></i>
-                                <h4>Aplicaciones a Medida</h4>
-                                <p>Desarrollamos soluciones web personalizadas para optimizar tus procesos internos.</p>
+                                <h4 class="service-title">Aplicaciones a Medida</h4>
+                                <p class="service-description">Desarrollamos soluciones web personalizadas para optimizar tus procesos internos.</p>
                             </div>
-                            <div class="advantage-card advantage-card-list-item"> 
+                        </div>
+                        <div class="service-path-item animate-on-scroll">
+                            <div class="service-card-path"> 
                                  <i class='bx bx-line-chart'></i>
-                                <h4>Marketing y SEO</h4>
-                                <p>Potenciamos tu visibilidad online para atraer más clientes y hacer crecer tu marca.</p>
+                                 <h4 class="service-title">Marketing y SEO</h4>
+                                 <p class="service-description">Potenciamos tu visibilidad online para atraer más clientes y hacer crecer tu marca.</p>
                             </div>
-                        </div> 
-                    </div>
+                        </div>
+                    </div> 
                 </div> 
             </div> 
         </section>
-        
         <section class="section" id="testimonios"> 
             <div class="container">
                 <div class="section-header animate-on-scroll">
