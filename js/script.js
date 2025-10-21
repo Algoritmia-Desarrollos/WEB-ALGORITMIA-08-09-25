@@ -183,7 +183,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const advantagesPath = document.getElementById('advantagesPath');
     const advantagesIndicator = document.getElementById('advantages-indicator');
     const advantagesSection = document.getElementById('ventajas');
-    const advantagesContainer = document.querySelector('#ventajas .advantages-path-container');
+    
+    // ===== INICIO DE LA MODIFICACIÓN =====
+    // El contenedor ahora es la lista de tarjetas, no el grid
+    const advantagesContainer = document.querySelector('#ventajas .advantages-card-list');
+    // ===== FIN DE LA MODIFICACIÓN =====
     
     let advantagesPathLength = 0;
     if (advantagesPath && advantagesContainer) {

@@ -394,8 +394,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
 #servicios {
     overflow: hidden; 
 }
-.services-path-container,
-.advantages-path-container { /* <<< AÑADIDO: Aplicar mismo layout a Ventajas */
+.services-path-container {
     position: relative; 
     display: flex;
     flex-direction: column;
@@ -478,8 +477,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     fill: none;
     stroke-dasharray: 5, 5; 
 }
-#path-indicator-capsule,
-#advantages-indicator { /* <<< AÑADIDO: Aplicar a ambas bolas */
+#path-indicator-capsule {
     transition: transform 0.1s linear; 
     transform-origin: center center; 
 }
@@ -508,7 +506,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     width: 100%;
 }
 
-/* ==================== ADVANTAGES (LISTA VERTICAL CON INDICADOR) ==================== */
+/* ==================== ADVANTAGES (NUEVO LAYOUT 2 COLUMNAS) ==================== */
 #ventajas .container.advantages-section-container {
      position: relative; 
 }
@@ -523,31 +521,57 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     margin-right: auto;
 }
 
-/* === INICIO MODIFICACIÓN: REGLAS ANTIGUAS ELIMINADAS === */
-/* Se eliminaron las reglas: */
-/* .advantages-layout */
-/* .advantages-progress-indicator */
-/* .connecting-line-vertical */
-/* .progress-line */
-/* .progress-bar */
-/* .advantages-list-container */
-/* .advantage-card.advantage-card-list-item */
-/* .advantage-card.advantage-card-list-item.highlighted */
-/* .advantage-card-list-item i */
-/* .advantage-card-list-item h4 */
-/* .advantage-card-list-item p */
-/* === FIN MODIFICACIÓN === */
+/* 1. Contenedor principal de Ventajas (GRID) */
+.advantages-path-container {
+    position: relative; 
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 columnas */
+    gap: 3rem;                     
+    padding: 4rem 0; 
+    align-items: start; /* Align columns to the top */
+}
 
+/* 2. Columna Izquierda (Círculo) */
+.advantages-sticky-visual {
+    position: sticky;
+    top: 50vh; /* Stick its top to the viewport's vertical center */
+    transform: translateY(-50%); /* Pull it up by half its own height to truly center it */
+    align-self: start; 
+    /* El height viene del SVG de adentro */
+}
+/* ===== INICIO DE LA CORRECCIÓN ===== */
+.advantages-sticky-visual .connecting-line {
+    /* El SVG ahora tiene altura y no es 'absolute' */
+    width: 100%;
+    height: 250px; /* Alto fijo para el SVG, para que la línea sea visible */
+    position: relative; /* Quitar absolute */
+}
 
-/* === INICIO MODIFICACIÓN: NUEVA REGLA PARA ALINEAR TARJETAS === */
-/* Forzar todas las tarjetas en #ventajas a la derecha */
+/* 3. Columna Derecha (Tarjetas) */
+.advantages-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15rem; /* El espacio vertical entre tarjetas */
+}
+
+/* 4. Anular la alineación de las tarjetas */
 #ventajas .service-path-item:nth-child(odd),
 #ventajas .service-path-item:nth-child(even) {
-    align-self: flex-end;
-    padding-left: 10%;
-    padding-right: 0; /* Resetear padding-right */
+    align-self: auto;   /* Quitar alineación (ya está en su columna) */
+    padding-right: 0;   /* Quitar padding */
+    padding-left: 0;    /* Quitar padding */
 }
-/* === FIN MODIFICACIÓN === */
+
+/* 5. Estilos del círculo (más grande y brillante) */
+#advantages-indicator {
+    r: 15; /* Radio del núcleo, coincide con HTML */
+    fill: url(#indicatorGradientAdv);
+    opacity: 1; /* Opacidad completa */
+    filter: url(#indicatorGlowAdv); /* Aplicar el filtro definido en HTML */
+    transition: transform 0.1s linear; 
+    transform-origin: center center; 
+}
+/* ===== FIN DE LA CORRECCIÓN ===== */
 
 
 /* ==================== TESTIMONIALS ==================== */
@@ -622,8 +646,7 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .about-us-content p { margin-left: auto; margin-right: auto;}
     .about-us-image { max-width: 400px; margin: 0 auto; }
     
-    .services-path-container,
-    .advantages-path-container { /* <<< AÑADIDO */
+    .services-path-container {
         gap: 4rem; 
     } 
     .service-path-item { 
@@ -639,13 +662,20 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .service-card-path { width: 90%; opacity: 1; } 
     .connecting-line { display: none; } 
 
-    /* === INICIO MODIFICACIÓN: REGLAS ANTIGUAS ELIMINADAS === */
-    /* Se eliminaron las reglas responsive de: */
-    /* .advantages-layout */
-    /* .advantages-progress-indicator */
-    /* .advantages-list-container */
-    /* .advantage-card.advantage-card-list-item */
-    /* === FIN MODIFICACIÓN === */
+    /* === RESPONSIVE PARA VENTAJAS === */
+    .advantages-path-container {
+        grid-template-columns: 1fr; /* 1 columna en móvil */
+        gap: 4rem;
+        padding-top: 2rem;
+    }
+    .advantages-sticky-visual {
+        display: none; /* Ocultar el círculo y la línea en móvil */
+    }
+    #ventajas .service-path-item:nth-child(odd),
+    #ventajas .service-path-item:nth-child(even) {
+        align-self: center; /* Centrar las tarjetas (como en servicios) */
+    }
+    /* === FIN RESPONSIVE VENTAJAS === */
 
     .footer-container { grid-template-columns: 1fr 1fr; }
     .footer-about { grid-column: 1 / -1; text-align: center; }
@@ -680,8 +710,7 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .portfolio-content-panel:not(#panel-web).active { grid-template-columns: 1fr; } 
     .scroller__inner img { height: 180px; max-width: 300px; } 
 
-    .services-path-container,
-    .advantages-path-container { /* <<< AÑADIDO */
+    .services-path-container {
         gap: 2.5rem;
     } 
     .service-card-path { width: 95%; padding: 2rem; opacity: 1; } 
@@ -692,12 +721,14 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .about-us-container { grid-template-columns: 1fr; gap: 2rem; } 
     .about-us-image { order: -1; margin-bottom: 2rem;} 
 
-    /* === INICIO MODIFICACIÓN: REGLAS ANTIGUAS ELIMINADAS === */
-    /* Se eliminaron las reglas responsive de: */
-    /* .advantages-layout */
-    /* .advantages-progress-indicator */
-    /* .advantage-card.advantage-card-list-item */
-    /* === FIN MODIFICACIÓN === */
+    /* === RESPONSIVE VENTAJAS === */
+    .advantages-path-container {
+        gap: 2.5rem; /* Menos espacio en móvil */
+    }
+    .advantages-sticky-visual {
+        display: none; /* Ocultar el círculo en móvil */
+    }
+    /* === FIN RESPONSIVE VENTAJAS === */
 
     .footer-container { grid-template-columns: 1fr; text-align: center; }
     .footer-group ul { align-items: center; }
