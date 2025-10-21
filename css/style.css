@@ -736,3 +736,11 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
 
     .whatsapp-float { width: 45px; height: 45px; font-size: 22px; bottom: 15px; right: 15px; }
 }
+
+/* ... (después del bloque .advantages-sticky-visual .connecting-line) ... */
+
+/* === CORRECCIÓN LÍNEA VENTAJAS SÓLIDA === */
+#advantagesPath {
+    stroke-dasharray: none !important;
+}
+/* === FIN CORRECCIÓN === */
