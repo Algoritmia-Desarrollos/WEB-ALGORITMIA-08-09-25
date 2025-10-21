@@ -645,7 +645,7 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
 @media screen and (max-width: 992px) {
-    .container { padding: 0 0px; }
+    .container { padding: 0px 10px; }
     .section { padding: 4rem 0; } 
     .section-card-bg { max-width: calc(100% - 30px); padding: 5rem 0;} 
     .section-light { padding-top: 1.5rem; padding-bottom: 1.5rem; }
