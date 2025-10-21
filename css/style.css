@@ -399,7 +399,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     display: flex;
     flex-direction: column;
     align-items: center; 
-    gap: 15rem; 
+    gap: 10rem; 
     padding: 4rem 0; 
 }
 .service-path-item {
@@ -493,9 +493,11 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     align-items: center;
 }
 .about-us-content p {
-    color: var(--gray-600);
-    margin-bottom: 2rem; 
-    max-width: 500px;
+    font-size: var(--hero-description-font-size); 
+    line-height: var(--hero-description-line-height); 
+    color: var(--gray-500); 
+    max-width: 750px; 
+    margin: 0 0 2.5rem; 
 }
 .about-us-content .btn {
     margin-top: 1rem; 
