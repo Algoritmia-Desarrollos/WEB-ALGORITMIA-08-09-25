@@ -54,17 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleScrollHeader = () => {
         if (header) header.classList.toggle('scrolled', window.scrollY >= 50);
     };
-    window.addEventListener('scroll', handleScrollHeader);
+    window.addEventListener('scroll', debounce(handleScrollHeader, 15, true)); 
     handleScrollHeader(); 
 
     // ==================== ANIMACIONES ON SCROLL (GENERALES) ====================
     const generalObserver = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
-            // No aplicar a los items de servicio ni ventajas (tienen su propia lógica)
             if (entry.isIntersecting && 
                 !entry.target.classList.contains('service-card-path') && 
                 !entry.target.classList.contains('service-path-item')
-                /* Ya no necesitamos excluir .advantage-card-list-item */
                 ) {
                 entry.target.classList.add('animated');
                 obs.unobserve(entry.target);
@@ -81,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollerElement.setAttribute('data-animated', true); 
             const scrollerInner = scrollerElement.querySelector(".scroller__inner");
             if (scrollerInner) {
-                 const originalItemCount = scrollerInner.querySelectorAll('img').length;
+                 const originalItemCount = scrollerInner.querySelectorAll('img, .testimonial-card').length; 
                  const currentItemCount = scrollerInner.children.length;
                  if (originalItemCount > 0 && currentItemCount <= originalItemCount) { 
                      const scrollerContent = Array.from(scrollerInner.children);
@@ -94,10 +92,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    const testimonialScroller = document.querySelector('#testimonios .scroller');
-    if(testimonialScroller) initializeScroller(testimonialScroller);
+    const testimonialScrollers = document.querySelectorAll('#testimonios .scroller');
+    if (testimonialScrollers.length > 0) {
+        testimonialScrollers.forEach(scroller => initializeScroller(scroller));
+    }
 
-    // ==================== FUNCIÓN DEBOUNCE =====================
+
+    // ==================== FUNCIÓN DEBOUNCE (Usada solo por el Header ahora) =====================
     function debounce(func, wait = 15, immediate = false) { 
       let timeout;
       return function executedFunction() {
@@ -114,23 +115,55 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     };
 
-    // ==================== HIGHLIGHT SCROLL SERVICIOS Y TREN SVG =====================
-    
-    // --- Selectores de SERVICIOS (ahora delimitados a #servicios) ---
+    // =========================================================================
+    // === INICIO DE LA MEJORA DE FLUIDEZ (ANIMACIÓN SVG CON LERP) ===
+    // =========================================================================
+
+    // --- Constante de suavizado (0.1 = suave y fluido) ---
+    const SMOOTHING_FACTOR = 0.1;
+
+    // --- Lógica para "Servicios" (Cápsula) ---
     const serviceCards = document.querySelectorAll('#servicios .service-card-path');
     const servicesPath = document.getElementById('servicesPath');
     const pathIndicator = document.getElementById('path-indicator-capsule'); 
     const servicesSection = document.getElementById('servicios'); 
     const servicesContainer = document.querySelector('#servicios .services-path-container'); 
-
     let servicesPathLength = 0; 
+    let servicesIndicator_currentPos = { x: 0, y: 0 };
+    let servicesIndicator_targetPos = { x: 0, y: 0 };
+    let servicesAnimationId = null;
+
     if (servicesPath && servicesContainer) { 
         setTimeout(() => { 
             try {
                 servicesPathLength = servicesPath.getTotalLength(); 
-                handleServiceHighlightOnScroll(); 
+                const startPoint = servicesPath.getPointAtLength(0);
+                servicesIndicator_currentPos = { x: startPoint.x, y: startPoint.y };
+                servicesIndicator_targetPos = { x: startPoint.x, y: startPoint.y };
+                pathIndicator.setAttribute('cx', startPoint.x);
+                pathIndicator.setAttribute('cy', startPoint.y);
+                
+                startServicesAnimationLoop(); // Iniciar bucle de animación
+                handleServiceHighlightOnScroll(); // Ejecutar una vez
             } catch(e) { console.error("Error getting services path length:", e); }
         }, 100); 
+    }
+
+    function startServicesAnimationLoop() {
+        if (servicesAnimationId) cancelAnimationFrame(servicesAnimationId);
+        function loop() {
+            const dx = servicesIndicator_targetPos.x - servicesIndicator_currentPos.x;
+            const dy = servicesIndicator_targetPos.y - servicesIndicator_currentPos.y;
+
+            if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+                servicesIndicator_currentPos.x += dx * SMOOTHING_FACTOR;
+                servicesIndicator_currentPos.y += dy * SMOOTHING_FACTOR;
+                pathIndicator.setAttribute('cx', servicesIndicator_currentPos.x);
+                pathIndicator.setAttribute('cy', servicesIndicator_currentPos.y);
+            }
+            servicesAnimationId = requestAnimationFrame(loop);
+        }
+        loop();
     }
 
     const handleServiceHighlightOnScroll = () => { 
@@ -157,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.toggle('highlighted', card === closestCard);
         });
 
-        // --- LÓGICA DE SCROLL CONTINUO ---
         let scrollProgress = 0;
         const containerRect = servicesContainer.getBoundingClientRect();
         const scrollStartPoint = containerRect.top + window.scrollY - (window.innerHeight / 2);
@@ -168,38 +200,145 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isNaN(scrollProgress)) {
             const point = servicesPath.getPointAtLength(scrollProgress * servicesPathLength);
-            pathIndicator.setAttribute('cx', point.x);
-            pathIndicator.setAttribute('cy', point.y);
+            servicesIndicator_targetPos = { x: point.x, y: point.y };
         }
     };
+    window.addEventListener('scroll', handleServiceHighlightOnScroll); 
 
-    window.addEventListener('scroll', debounce(handleServiceHighlightOnScroll, 10)); 
+
+    // =========================================================================
+    // === CÓDIGO DUPLICADO PARA "PROCESO" (CORREGIDO) ===
+    // =========================================================================
+
+    const procesoCards = document.querySelectorAll('#proceso .service-card-path');
+    const procesoPath = document.getElementById('procesoPath');
+    const procesoIndicator = document.getElementById('proceso-indicator-capsule'); 
+    const procesoSection = document.getElementById('proceso'); 
+    // CORRECCIÓN: Apunta al selector de CSS correcto
+    const procesoContainer = document.querySelector('#proceso .services-path-container'); 
+    let procesoPathLength = 0; 
+    let procesoIndicator_currentPos = { x: 0, y: 0 };
+    let procesoIndicator_targetPos = { x: 0, y: 0 };
+    let procesoAnimationId = null;
+
+    if (procesoPath && procesoContainer) { 
+        setTimeout(() => { 
+            try {
+                procesoPathLength = procesoPath.getTotalLength(); 
+                const startPoint = procesoPath.getPointAtLength(0);
+                procesoIndicator_currentPos = { x: startPoint.x, y: startPoint.y };
+                procesoIndicator_targetPos = { x: startPoint.x, y: startPoint.y };
+                procesoIndicator.setAttribute('cx', startPoint.x);
+                procesoIndicator.setAttribute('cy', startPoint.y);
+                
+                startProcesoAnimationLoop(); // Iniciar bucle de animación
+                handleProcesoHighlightOnScroll(); // Ejecutar una vez
+            } catch(e) { console.error("Error getting proceso path length:", e); }
+        }, 100); 
+    }
+
+    function startProcesoAnimationLoop() {
+        if (procesoAnimationId) cancelAnimationFrame(procesoAnimationId);
+        function loop() {
+            const dx = procesoIndicator_targetPos.x - procesoIndicator_currentPos.x;
+            const dy = procesoIndicator_targetPos.y - procesoIndicator_currentPos.y;
+
+            if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+                procesoIndicator_currentPos.x += dx * SMOOTHING_FACTOR;
+                procesoIndicator_currentPos.y += dy * SMOOTHING_FACTOR;
+                procesoIndicator.setAttribute('cx', procesoIndicator_currentPos.x);
+                procesoIndicator.setAttribute('cy', procesoIndicator_currentPos.y);
+            }
+            procesoAnimationId = requestAnimationFrame(loop);
+        }
+        loop();
+    }
+
+    const handleProcesoHighlightOnScroll = () => { 
+        if (procesoCards.length === 0 || !procesoPath || !procesoIndicator || !procesoSection || procesoPathLength === 0 || !procesoContainer) return; 
+
+        const viewportCenterY = window.innerHeight / 2;
+        let closestCard = null;
+        let minDistance = Infinity;
+        
+        procesoCards.forEach((card) => { 
+            const cardRect = card.getBoundingClientRect();
+            if (cardRect.bottom < (viewportCenterY - cardRect.height * 0.5) || cardRect.top > (viewportCenterY + cardRect.height * 0.5)) {
+                 card.classList.remove('highlighted'); 
+            } else {
+                 const cardCenterY = cardRect.top + cardRect.height / 2;
+                 const distance = Math.abs(viewportCenterY - cardCenterY);
+                 if (distance < minDistance) {
+                     minDistance = distance;
+                     closestCard = card;
+                 }
+            }
+        });
+        procesoCards.forEach(card => {
+            card.classList.toggle('highlighted', card === closestCard);
+        });
+
+        let scrollProgress = 0;
+        const containerRect = procesoContainer.getBoundingClientRect();
+        const scrollStartPoint = containerRect.top + window.scrollY - (window.innerHeight / 2);
+        const scrollEndPoint = (containerRect.top + containerRect.height) + window.scrollY - (window.innerHeight / 2);
+        const totalScrollDistance = scrollEndPoint - scrollStartPoint;
+        scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
+        scrollProgress = Math.max(0, Math.min(1, scrollProgress)); 
+
+        if (!isNaN(scrollProgress)) {
+            const point = procesoPath.getPointAtLength(scrollProgress * procesoPathLength);
+            procesoIndicator_targetPos = { x: point.x, y: point.y };
+        }
+    };
+    window.addEventListener('scroll', handleProcesoHighlightOnScroll); 
+
+    // =========================================================================
+    // === FIN CÓDIGO DUPLICADO PARA "PROCESO" ===
+    // =========================================================================
+
 
     
-    // ==================== HIGHLIGHT SCROLL VENTAJAS (NUEVA LÓGICA) =====================
-    
-    // --- Selectores de VENTAJAS (delimitados a #ventajas) ---
+    // --- Lógica para "Ventajas" (La "Bola") ---
     const advantageCards = document.querySelectorAll('#ventajas .service-card-path');
     const advantagesPath = document.getElementById('advantagesPath');
     const advantagesIndicator = document.getElementById('advantages-indicator');
     const advantagesSection = document.getElementById('ventajas');
-    
-    // ===== INICIO DE LA MODIFICACIÓN =====
-    // El contenedor ahora es la lista de tarjetas, no el grid
     const advantagesContainer = document.querySelector('#ventajas .advantages-card-list');
-    // ===== FIN DE LA MODIFICACIÓN =====
-    
     let advantagesPathLength = 0;
+    let advantagesIndicator_currentPos = { x: 0, y: 0 };
+    let advantagesIndicator_targetPos = { x: 0, y: 0 };
+    let advantagesAnimationId = null;
+
     if (advantagesPath && advantagesContainer) {
         setTimeout(() => { 
             try {
                 advantagesPathLength = advantagesPath.getTotalLength(); 
-                handleAdvantageHighlightOnScroll(); // << Llamada inicial
+                const startPoint = advantagesPath.getPointAtLength(0);
+                advantagesIndicator_currentPos = { x: startPoint.x, y: startPoint.y };
+                advantagesIndicator_targetPos = { x: startPoint.x, y: startPoint.y };
+                advantagesIndicator.setAttribute('cx', startPoint.x);
+                advantagesIndicator.setAttribute('cy', startPoint.y);
+                
+                startAdvantagesAnimationLoop(); // Iniciar bucle de animación
+                handleAdvantageHighlightOnScroll(); // Ejecutar una vez
             } catch(e) { console.error("Error getting advantages path length:", e); }
         }, 100); 
     }
     
-    // --- Nueva función, copia de la de "Servicios" ---
+    function startAdvantagesAnimationLoop() {
+        if (advantagesAnimationId) cancelAnimationFrame(advantagesAnimationId);
+        function loop() {
+            const dy = advantagesIndicator_targetPos.y - advantagesIndicator_currentPos.y;
+            if (Math.abs(dy) > 0.1) {
+                advantagesIndicator_currentPos.y += dy * SMOOTHING_FACTOR;
+                advantagesIndicator.setAttribute('cy', advantagesIndicator_currentPos.y);
+            }
+            advantagesAnimationId = requestAnimationFrame(loop);
+        }
+        loop();
+    }
+
     const handleAdvantageHighlightOnScroll = () => {
         if (advantageCards.length === 0 || !advantagesPath || !advantagesIndicator || !advantagesSection || advantagesPathLength === 0 || !advantagesContainer) return; 
 
@@ -226,25 +365,21 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.toggle('highlighted', card === closestCard);
         });
 
-        // --- Lógica de scroll continuo ---
         let scrollProgress = 0;
         const containerRect = advantagesContainer.getBoundingClientRect();
         const scrollStartPoint = containerRect.top + window.scrollY - (window.innerHeight / 2);
         const scrollEndPoint = (containerRect.top + containerRect.height) + window.scrollY - (window.innerHeight / 2);
-        
         const totalScrollDistance = scrollEndPoint - scrollStartPoint;
-
         scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
         scrollProgress = Math.max(0, Math.min(1, scrollProgress));
         
         if (!isNaN(scrollProgress)) {
             const point = advantagesPath.getPointAtLength(scrollProgress * advantagesPathLength);
-            advantagesIndicator.setAttribute('cx', point.x);
-            advantagesIndicator.setAttribute('cy', point.y);
+            advantagesIndicator_targetPos = { x: point.x, y: point.y };
         }
     };
+    window.addEventListener('scroll', handleAdvantageHighlightOnScroll);
 
-    window.addEventListener('scroll', debounce(handleAdvantageHighlightOnScroll, 10));
     
     // ==================== TABS PORTFOLIO ===============================
     const portfolioTabs = document.querySelectorAll('.portfolio-tab');

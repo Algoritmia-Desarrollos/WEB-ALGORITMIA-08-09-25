@@ -147,7 +147,7 @@ button { background: none; border: none; font-family: inherit; }
 nav.container { height: var(--header-height); display: flex; justify-content: space-between; align-items: center; }
 .logo { display: flex; align-items: center; gap: 0.5rem; font-family: var(--title-font); font-size: 1.25rem; color: var(--foreground); font-weight: 600; transition: var(--transition-smooth); }
 .logo:hover { opacity: 0.8; }
-.logo img { height: 32px; }
+.logo img { height: 45px; }
 .logo span { color: var(--foreground); }
 .nav-list { display: flex; align-items: center; gap: 1rem; }
 .nav-link { 
@@ -744,3 +744,55 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     stroke-dasharray: none !important;
 }
 /* === FIN CORRECCIÓN === */
+
+/* ... (todo tu CSS existente va aquí arriba) ... */
+
+/* === CORRECCIÓN LÍNEA VENTAJAS SÓLIDA === */
+#advantagesPath {
+    stroke-dasharray: none !important;
+}
+
+/* ==================== MODIFICACIÓN PROCESO (CENTRALIZADO) ==================== */
+/* Anula el zig-zag (flex-start/flex-end) solo para la sección #proceso,
+  haciendo que las tarjetas se centren.
+*/
+#proceso .service-path-item:nth-child(odd),
+#proceso .service-path-item:nth-child(even) { 
+    align-self: center; /* Centra las tarjetas en la columna */
+    padding-left: 0;    /* Resetea el padding del zig-zag */
+    padding-right: 0;   /* Resetea el padding del zig-zag */
+}
+
+/* Asegura que todas las tarjetas de proceso tengan el mismo ancho máximo
+  para que se vean uniformes y del "mismo tamaño".
+*/
+#proceso .service-path-item {
+    max-width: 700px; 
+    width: 90%;
+}
+
+/* ... (todo tu CSS existente va aquí arriba) ... */
+
+/* === CORRECCIÓN LÍNEA VENTAJAS SÓLIDA === */
+#advantagesPath {
+    stroke-dasharray: none !important;
+}
+
+/* ==================== MODIFICACIÓN PROCESO (CENTRALIZADO) ==================== */
+/* Anula el zig-zag (flex-start/flex-end) solo para la sección #proceso,
+  haciendo que las tarjetas se centren.
+*/
+#proceso .services-path-container .service-path-item:nth-child(odd),
+#proceso .services-path-container .service-path-item:nth-child(even) { 
+    align-self: center; /* Centra las tarjetas en la columna */
+    padding-left: 0;    /* Resetea el padding del zig-zag */
+    padding-right: 0;   /* Resetea el padding del zig-zag */
+}
+
+/* Asegura que todas las tarjetas de proceso tengan el mismo ancho máximo
+  para que se vean uniformes y del "mismo tamaño".
+*/
+#proceso .services-path-container .service-path-item {
+    max-width: 700px; 
+    width: 90%;
+}
