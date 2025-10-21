@@ -31,7 +31,7 @@
     --h2-font-size: clamp(2rem, 7vw, 40px); 
     --h2-line-height: 1.3; 
 
-    --hero-description-font-size: clamp(1.25rem, 3vw, 24px); 
+    --hero-description-font-size: clamp(1.8rem, 3vw, 24px); 
     --hero-description-line-height: 1.5; 
 
     --nav-button-font-size: 14px;
@@ -400,7 +400,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     flex-direction: column;
     align-items: center; 
     gap: 10rem; 
-    padding: 4rem 0; 
+    padding: 2rem 0; 
 }
 .service-path-item {
     width: 90%; 
@@ -515,7 +515,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     line-height: var(--hero-description-line-height); 
     color: var(--gray-500); 
     max-width: 750px; 
-    margin: 0 0 2.5rem; 
+    margin: 0 0 1.5rem; 
 }
 .about-us-content .btn {
     margin-top: 1rem; 
@@ -645,18 +645,19 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
 @media screen and (max-width: 992px) {
-    .container { padding: 0 20px; }
-    .section { padding: 5rem 0; } 
+    .container { padding: 0 0px; }
+    .section { padding: 4rem 0; } 
     .section-card-bg { max-width: calc(100% - 30px); padding: 5rem 0;} 
     .section-light { padding-top: 1.5rem; padding-bottom: 1.5rem; }
 
     .about-us-container { grid-template-columns: 1fr; text-align: center;}
-    .about-us-content p { margin-left: auto; margin-right: auto;}
+    .about-us-content p { font-size: 18px; margin-left: auto; margin-right: auto;}
     .about-us-image { max-width: 400px; margin: 0 auto; }
     
     .services-path-container {
         gap: 4rem; 
     } 
+   
     .service-path-item { 
         opacity: 1 !important; 
         filter: none !important;
@@ -716,7 +717,7 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
 
     .hero { min-height: 70vh; text-align: center; padding-top: calc(var(--header-height) + 2rem); }
     .hero-content-wrapper { margin: 0 auto; }
-    .hero-title { font-size: clamp(2rem, 10vw, 3rem); }
+    .hero-title { font-size: clamp(1.5rem, 10vw, 3rem); }
     .hero-description { font-size: 1.1rem; margin-left: auto; margin-right: auto; max-width: 90%; } 
     .hero-buttons { justify-content: center; } 
     
