@@ -5,21 +5,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const preloader = document.getElementById('preloader');
     const mainContent = document.getElementById('main-content');
     const navMenu = document.getElementById('nav-menu');
-    const navToggle = document.getElementById('nav-toggle'); 
+    const navToggle = document.getElementById('nav-toggle');
     const navLinks = document.querySelectorAll('.nav-link');
-
-    let navToggleIcon; 
 
     // ==================== PRELOADER ====================
     if (preloader) {
         preloader.classList.add('loaded');
-        const ANIMATION_DURATION = 1000; 
+        const ANIMATION_DURATION = 1000;
         setTimeout(() => {
             if (mainContent) mainContent.classList.add('loaded');
-            window.dispatchEvent(new Event('scroll')); 
-        }, ANIMATION_DURATION / 2); 
+            window.dispatchEvent(new Event('scroll'));
+        }, ANIMATION_DURATION / 2);
         setTimeout(() => {
-            preloader.style.display = 'none'; 
+            preloader.style.display = 'none';
         }, ANIMATION_DURATION);
     } else {
          if (mainContent) mainContent.classList.add('loaded');
@@ -28,24 +26,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ==================== MENÚ MÓVIL ====================
     const toggleMenu = () => {
-        if (!navMenu || !navToggle) return; 
+        if (!navMenu || !navToggle) return;
         const isMenuOpen = navMenu.classList.toggle('show-menu');
         document.body.classList.toggle('menu-open', isMenuOpen);
-        if (navToggleIcon) {
-            navToggleIcon.classList.toggle('bx-menu', !isMenuOpen);
-            navToggleIcon.classList.toggle('bx-x', isMenuOpen);
+
+        // Ocultamos/mostramos el botón hamburguesa (navToggle)
+        if (isMenuOpen) {
+            navToggle.style.display = 'none';
+        } else {
+            navToggle.style.display = 'block';
         }
     };
     if (navToggle) {
-        navToggleIcon = navToggle.querySelector('i'); 
         navToggle.addEventListener('click', toggleMenu);
         const navClose = document.getElementById('nav-close');
-        if (navClose) navClose.addEventListener('click', toggleMenu); 
+        if (navClose) navClose.addEventListener('click', toggleMenu);
     }
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             if (navMenu && navMenu.classList.contains('show-menu')) {
-                toggleMenu(); 
+                toggleMenu();
             }
         });
     });
@@ -54,34 +54,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleScrollHeader = () => {
         if (header) header.classList.toggle('scrolled', window.scrollY >= 50);
     };
-    window.addEventListener('scroll', debounce(handleScrollHeader, 15, true)); 
-    handleScrollHeader(); 
+    window.addEventListener('scroll', debounce(handleScrollHeader, 15, true));
+    handleScrollHeader();
 
     // ==================== ANIMACIONES ON SCROLL (GENERALES) ====================
     const generalObserver = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && 
-                !entry.target.classList.contains('service-card-path') && 
+            // === MODIFICADO === Excluimos también las tarjetas de #proceso
+            if (entry.isIntersecting &&
+                !entry.target.classList.contains('service-card-path') && // Excluye servicios y ventajas
                 !entry.target.classList.contains('service-path-item')
                 ) {
                 entry.target.classList.add('animated');
                 obs.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.1 }); 
+    }, { threshold: 0.1 });
     document.querySelectorAll('.animate-on-scroll').forEach(el => generalObserver.observe(el));
 
 
     // ==================== FUNCIÓN PARA INICIALIZAR SCROLLERS ====================
     const initializeScroller = (scrollerElement) => {
-        if (!scrollerElement || scrollerElement.getAttribute('data-animated') === 'true') return; 
+        if (!scrollerElement || scrollerElement.getAttribute('data-animated') === 'true') return;
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            scrollerElement.setAttribute('data-animated', true); 
+            scrollerElement.setAttribute('data-animated', true);
             const scrollerInner = scrollerElement.querySelector(".scroller__inner");
             if (scrollerInner) {
-                 const originalItemCount = scrollerInner.querySelectorAll('img, .testimonial-card').length; 
+                 const originalItemCount = scrollerInner.querySelectorAll('img, .testimonial-card').length;
                  const currentItemCount = scrollerInner.children.length;
-                 if (originalItemCount > 0 && currentItemCount <= originalItemCount) { 
+                 if (originalItemCount > 0 && currentItemCount <= originalItemCount) {
                      const scrollerContent = Array.from(scrollerInner.children);
                      scrollerContent.forEach(item => {
                          const duplicatedItem = item.cloneNode(true);
@@ -98,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // ==================== FUNCIÓN DEBOUNCE (Usada solo por el Header ahora) =====================
-    function debounce(func, wait = 15, immediate = false) { 
+    // ==================== FUNCIÓN DEBOUNCE =====================
+    function debounce(func, wait = 15, immediate = false) {
       let timeout;
       return function executedFunction() {
         const context = this;
@@ -122,26 +123,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const SMOOTHING_FACTOR = 0.1;
 
     // =========================================================================
-    // === INICIO LÓGICA "SERVICIOS" (CON SWAP DE PATH) ===
+    // === LÓGICA "SERVICIOS" (CON SWAP DE PATH Y HIGHLIGHT EN SCROLL) ===
     // =========================================================================
     const serviceCards = document.querySelectorAll('#servicios .service-card-path');
     const servicesPathDesktop = document.getElementById('servicesPathDesktop');
     const servicesPathMobile = document.getElementById('servicesPathMobile');
-    const pathIndicator = document.getElementById('path-indicator-capsule'); 
-    const servicesSection = document.getElementById('servicios'); 
-    const servicesContainer = document.querySelector('#servicios .services-path-container'); 
-    
-    let servicesPath; // Esta variable contendrá el path ACTIVO (desktop o mobile)
-    let servicesPathLength = 0; 
+    const pathIndicator = document.getElementById('path-indicator-capsule');
+    const servicesSection = document.getElementById('servicios');
+    const servicesContainer = document.querySelector('#servicios .services-path-container');
+
+    let servicesPath;
+    let servicesPathLength = 0;
     let servicesIndicator_currentPos = { x: 0, y: 0 };
     let servicesIndicator_targetPos = { x: 0, y: 0 };
     let servicesAnimationId = null;
 
-    // Función para determinar qué path (línea) usar
     function updateAndInitializeServicesPath() {
         if (!servicesPathDesktop || !servicesPathMobile || !pathIndicator) return;
 
-        // Revisa cuál path está visible según el CSS
         if (window.getComputedStyle(servicesPathMobile).display !== 'none') {
             servicesPath = servicesPathMobile;
         } else {
@@ -149,35 +148,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            servicesPathLength = servicesPath.getTotalLength(); 
+            servicesPathLength = servicesPath.getTotalLength();
             const startPoint = servicesPath.getPointAtLength(0);
-            
-            // Si la animación no ha empezado, setea la posición inicial
-            if (!servicesAnimationId) { 
+
+            if (!servicesAnimationId) {
                 servicesIndicator_currentPos = { x: startPoint.x, y: startPoint.y };
                 pathIndicator.setAttribute('cx', startPoint.x);
                 pathIndicator.setAttribute('cy', startPoint.y);
             }
-            // La posición objetivo se actualiza para que el círculo "salte" al nuevo path si es necesario
             servicesIndicator_targetPos = { x: startPoint.x, y: startPoint.y };
-            
-        } catch(e) { 
-            console.error("Error getting services path length:", e); 
+
+        } catch(e) {
+            console.error("Error getting services path length:", e);
             servicesPathLength = 0;
         }
     }
 
-    if (servicesContainer) { 
-        setTimeout(() => { 
-            updateAndInitializeServicesPath(); // Llama al inicializador
-            
+    if (servicesContainer) {
+        setTimeout(() => {
+            updateAndInitializeServicesPath();
+
             if (servicesPathLength > 0) {
-                startServicesAnimationLoop(); // Iniciar bucle de animación
-                handleServiceHighlightOnScroll(); // Ejecutar una vez para posicionar
+                startServicesAnimationLoop();
+                handleServiceHighlightOnScroll();
             }
-        }, 100); 
-        
-        // Vuelve a calcular el path si la ventana cambia de tamaño (ej. de desktop a mobile)
+        }, 100);
+
         window.addEventListener('resize', debounce(updateAndInitializeServicesPath, 200));
     }
 
@@ -198,18 +194,19 @@ document.addEventListener('DOMContentLoaded', () => {
         loop();
     }
 
-    const handleServiceHighlightOnScroll = () => { 
-        // Ahora servicesPath es dinámico, no necesita ser chequeado
-        if (serviceCards.length === 0 || !pathIndicator || !servicesSection || servicesPathLength === 0 || !servicesContainer) return; 
+    const handleServiceHighlightOnScroll = () => {
+        if (serviceCards.length === 0 || !pathIndicator || !servicesSection || servicesPathLength === 0 || !servicesContainer) return;
 
         const viewportCenterY = window.innerHeight / 2;
         let closestCard = null;
         let minDistance = Infinity;
-        
-        serviceCards.forEach((card) => { 
+
+        serviceCards.forEach((card) => {
             const cardRect = card.getBoundingClientRect();
-            if (cardRect.bottom < (viewportCenterY - cardRect.height * 0.5) || cardRect.top > (viewportCenterY + cardRect.height * 0.5)) {
-                 card.classList.remove('highlighted'); 
+            // === MODIFICADO === Agregamos un margen para activar el highlight un poco antes/después
+            const activationMargin = cardRect.height * 0.3; // 30% de la altura
+            if (cardRect.bottom < (viewportCenterY - activationMargin) || cardRect.top > (viewportCenterY + activationMargin)) {
+                 card.classList.remove('highlighted');
             } else {
                  const cardCenterY = cardRect.top + cardRect.height / 2;
                  const distance = Math.abs(viewportCenterY - cardCenterY);
@@ -229,204 +226,76 @@ document.addEventListener('DOMContentLoaded', () => {
         const scrollEndPoint = (containerRect.top + containerRect.height) + window.scrollY - (window.innerHeight / 2);
         const totalScrollDistance = scrollEndPoint - scrollStartPoint;
         scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
-        scrollProgress = Math.max(0, Math.min(1, scrollProgress)); 
+        scrollProgress = Math.max(0, Math.min(1, scrollProgress));
 
-        if (!isNaN(scrollProgress) && servicesPath) { // Asegurarse que servicesPath esté definido
+        if (!isNaN(scrollProgress) && servicesPath) {
             try {
                 const point = servicesPath.getPointAtLength(scrollProgress * servicesPathLength);
                 servicesIndicator_targetPos = { x: point.x, y: point.y };
             } catch(e) {
-                // servicesPathLength podría ser 0 si el resize falló, esto lo previene.
+                // Previene error si servicesPathLength es 0
             }
         }
     };
-    window.addEventListener('scroll', handleServiceHighlightOnScroll); 
-    
+    window.addEventListener('scroll', handleServiceHighlightOnScroll);
+
     // =========================================================================
     // === FIN LÓGICA "SERVICIOS" ===
     // =========================================================================
 
 
     // =========================================================================
-    // === CÓDIGO PARA "PROCESO" (Sin cambios) ===
+    // === AÑADIDO: LÓGICA HIGHLIGHT EN SCROLL PARA VENTAJAS (RESPONSIVE) ===
     // =========================================================================
+    const advantageCards = document.querySelectorAll('#proceso .service-card-path');
+    const RESPONSIVE_BREAKPOINT = 992; // El mismo breakpoint que usas en CSS
 
-    const procesoCards = document.querySelectorAll('#proceso .service-card-path');
-    const procesoPath = document.getElementById('procesoPath');
-    const procesoIndicator = document.getElementById('proceso-indicator-capsule'); 
-    const procesoSection = document.getElementById('proceso'); 
-    const procesoContainer = document.querySelector('#proceso .services-path-container'); 
-    let procesoPathLength = 0; 
-    let procesoIndicator_currentPos = { x: 0, y: 0 };
-    let procesoIndicator_targetPos = { x: 0, y: 0 };
-    let procesoAnimationId = null;
-
-    if (procesoPath && procesoContainer) { 
-        setTimeout(() => { 
-            try {
-                procesoPathLength = procesoPath.getTotalLength(); 
-                const startPoint = procesoPath.getPointAtLength(0);
-                procesoIndicator_currentPos = { x: startPoint.x, y: startPoint.y };
-                procesoIndicator_targetPos = { x: startPoint.x, y: startPoint.y };
-                procesoIndicator.setAttribute('cx', startPoint.x);
-                procesoIndicator.setAttribute('cy', startPoint.y);
-                
-                startProcesoAnimationLoop(); 
-                handleProcesoHighlightOnScroll(); 
-            } catch(e) { console.error("Error getting proceso path length:", e); }
-        }, 100); 
-    }
-
-    function startProcesoAnimationLoop() {
-        if (procesoAnimationId) cancelAnimationFrame(procesoAnimationId);
-        function loop() {
-            const dx = procesoIndicator_targetPos.x - procesoIndicator_currentPos.x;
-            const dy = procesoIndicator_targetPos.y - procesoIndicator_currentPos.y;
-
-            if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
-                procesoIndicator_currentPos.x += dx * SMOOTHING_FACTOR;
-                procesoIndicator_currentPos.y += dy * SMOOTHING_FACTOR;
-                procesoIndicator.setAttribute('cx', procesoIndicator_currentPos.x);
-                procesoIndicator.setAttribute('cy', procesoIndicator_currentPos.y);
-            }
-            procesoAnimationId = requestAnimationFrame(loop);
+    const handleAdvantageHighlightResponsive = () => {
+        // Solo ejecutar en pantallas menores o iguales al breakpoint
+        if (window.innerWidth > RESPONSIVE_BREAKPOINT) {
+            // Si estamos en escritorio, quitamos la clase de todas las tarjetas (el hover CSS se encargará)
+            advantageCards.forEach(card => card.classList.remove('highlighted'));
+            return;
         }
-        loop();
-    }
-
-    const handleProcesoHighlightOnScroll = () => { 
-        if (procesoCards.length === 0 || !procesoPath || !procesoIndicator || !procesoSection || procesoPathLength === 0 || !procesoContainer) return; 
 
         const viewportCenterY = window.innerHeight / 2;
         let closestCard = null;
         let minDistance = Infinity;
-        
-        procesoCards.forEach((card) => { 
+
+        advantageCards.forEach((card) => {
             const cardRect = card.getBoundingClientRect();
-            if (cardRect.bottom < (viewportCenterY - cardRect.height * 0.5) || cardRect.top > (viewportCenterY + cardRect.height * 0.5)) {
-                 card.classList.remove('highlighted'); 
+            // Usamos el mismo margen de activación que en servicios
+            const activationMargin = cardRect.height * 0.3;
+            if (cardRect.bottom < (viewportCenterY - activationMargin) || cardRect.top > (viewportCenterY + activationMargin)) {
+                card.classList.remove('highlighted');
             } else {
-                 const cardCenterY = cardRect.top + cardRect.height / 2;
-                 const distance = Math.abs(viewportCenterY - cardCenterY);
-                 if (distance < minDistance) {
-                     minDistance = distance;
-                     closestCard = card;
-                 }
+                const cardCenterY = cardRect.top + cardRect.height / 2;
+                const distance = Math.abs(viewportCenterY - cardCenterY);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestCard = card;
+                }
             }
         });
-        procesoCards.forEach(card => {
+
+        // Aplicar la clase solo a la tarjeta más cercana
+        advantageCards.forEach(card => {
             card.classList.toggle('highlighted', card === closestCard);
         });
-
-        let scrollProgress = 0;
-        const containerRect = procesoContainer.getBoundingClientRect();
-        const scrollStartPoint = containerRect.top + window.scrollY - (window.innerHeight / 2);
-        const scrollEndPoint = (containerRect.top + containerRect.height) + window.scrollY - (window.innerHeight / 2);
-        const totalScrollDistance = scrollEndPoint - scrollStartPoint;
-        scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
-        scrollProgress = Math.max(0, Math.min(1, scrollProgress)); 
-
-        if (!isNaN(scrollProgress)) {
-            const point = procesoPath.getPointAtLength(scrollProgress * procesoPathLength);
-            procesoIndicator_targetPos = { x: point.x, y: point.y };
-        }
     };
-    window.addEventListener('scroll', handleProcesoHighlightOnScroll); 
+
+    // Llamar la función al cargar y en cada scroll
+    window.addEventListener('scroll', handleAdvantageHighlightResponsive);
+    // Llamar también al redimensionar, por si se cambia de tamaño de ventana
+    window.addEventListener('resize', debounce(handleAdvantageHighlightResponsive, 100));
+    // Ejecutar una vez al inicio
+    handleAdvantageHighlightResponsive();
 
     // =========================================================================
-    // === FIN CÓDIGO "PROCESO" ===
+    // === FIN LÓGICA VENTAJAS RESPONSIVE ===
     // =========================================================================
 
 
-    
-    // --- Lógica para "Ventajas" (La "Bola") ---
-    const advantageCards = document.querySelectorAll('#ventajas .service-card-path');
-    const advantagesPath = document.getElementById('advantagesPath');
-    const advantagesIndicator = document.getElementById('advantages-indicator');
-    const advantagesSection = document.getElementById('ventajas');
-    const advantagesContainer = document.querySelector('#ventajas .advantages-card-list');
-    let advantagesPathLength = 0;
-    let advantagesIndicator_currentPos = { x: 0, y: 0 };
-    let advantagesIndicator_targetPos = { x: 0, y: 0 };
-    let advantagesAnimationId = null;
-
-    if (advantagesPath && advantagesContainer) {
-        setTimeout(() => { 
-            try {
-                advantagesPathLength = advantagesPath.getTotalLength(); 
-                const startPoint = advantagesPath.getPointAtLength(0);
-                advantagesIndicator_currentPos = { x: startPoint.x, y: startPoint.y };
-                advantagesIndicator_targetPos = { x: startPoint.x, y: startPoint.y };
-                advantagesIndicator.setAttribute('cx', startPoint.x);
-                advantagesIndicator.setAttribute('cy', startPoint.y);
-                
-                startAdvantagesAnimationLoop(); 
-                handleAdvantageHighlightOnScroll(); 
-            } catch(e) { console.error("Error getting advantages path length:", e); }
-        }, 100); 
-    }
-    
-    function startAdvantagesAnimationLoop() {
-        if (advantagesAnimationId) cancelAnimationFrame(advantagesAnimationId);
-        function loop() {
-            const dx = advantagesIndicator_targetPos.x - advantagesIndicator_currentPos.x;
-            const dy = advantagesIndicator_targetPos.y - advantagesIndicator_currentPos.y;
-
-            if (Math.abs(dx) > 0.1) {
-                 advantagesIndicator_currentPos.x += dx * SMOOTHING_FACTOR;
-                 advantagesIndicator.setAttribute('cx', advantagesIndicator_currentPos.x);
-            }
-             if (Math.abs(dy) > 0.1) {
-                advantagesIndicator_currentPos.y += dy * SMOOTHING_FACTOR;
-                advantagesIndicator.setAttribute('cy', advantagesIndicator_currentPos.y);
-            }
-            advantagesAnimationId = requestAnimationFrame(loop);
-        }
-        loop();
-    }
-
-    const handleAdvantageHighlightOnScroll = () => {
-        if (advantageCards.length === 0 || !advantagesPath || !advantagesIndicator || !advantagesSection || advantagesPathLength === 0 || !advantagesContainer) return; 
-
-        const viewportCenterY = window.innerHeight / 2;
-        let closestCard = null;
-        let minDistance = Infinity;
-
-        advantageCards.forEach((card) => { 
-            const cardRect = card.getBoundingClientRect();
-             if (cardRect.bottom < (viewportCenterY - cardRect.height * 0.5) || cardRect.top > (viewportCenterY + cardRect.height * 0.5)) {
-                 card.classList.remove('highlighted');
-                 return;
-             }
-            const cardCenterY = cardRect.top + cardRect.height / 2;
-            const distance = Math.abs(viewportCenterY - cardCenterY);
-            
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestCard = card;
-            }
-        });
-
-        advantageCards.forEach(card => { 
-            card.classList.toggle('highlighted', card === closestCard);
-        });
-
-        let scrollProgress = 0;
-        const containerRect = advantagesContainer.getBoundingClientRect();
-        const scrollStartPoint = containerRect.top + window.scrollY - (window.innerHeight / 2);
-        const scrollEndPoint = (containerRect.top + containerRect.height) + window.scrollY - (window.innerHeight / 2);
-        const totalScrollDistance = scrollEndPoint - scrollStartPoint;
-        scrollProgress = (window.scrollY - scrollStartPoint) / totalScrollDistance;
-        scrollProgress = Math.max(0, Math.min(1, scrollProgress));
-        
-        if (!isNaN(scrollProgress)) {
-            const point = advantagesPath.getPointAtLength(scrollProgress * advantagesPathLength);
-            advantagesIndicator_targetPos = { x: point.x, y: point.y };
-        }
-    };
-    window.addEventListener('scroll', handleAdvantageHighlightOnScroll);
-
-    
     // ==================== TABS PORTFOLIO ===============================
     const portfolioTabs = document.querySelectorAll('.portfolio-tab');
     const portfolioPanels = document.querySelectorAll('.portfolio-content-panel');
@@ -434,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (portfolioTabs.length > 0 && portfolioPanels.length > 0) {
         portfolioTabs.forEach(tab => {
             tab.addEventListener('click', (e) => {
-                e.preventDefault(); 
+                e.preventDefault();
                 const tabId = tab.getAttribute('data-tab');
                 portfolioTabs.forEach(t => t.classList.remove('active'));
                 portfolioPanels.forEach(p => p.classList.remove('active'));
@@ -443,16 +312,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (activePanel) {
                     activePanel.classList.add('active');
                     if (tabId === 'panel-web') {
-                        const webScrollers = activePanel.querySelectorAll('.scroller'); 
-                        webScrollers.forEach(scroller => initializeScroller(scroller)); 
+                        const webScrollers = activePanel.querySelectorAll('.scroller');
+                        webScrollers.forEach(scroller => initializeScroller(scroller));
                     }
                 }
             });
         });
         const initialActiveTab = document.querySelector('.portfolio-tab.active');
         if (initialActiveTab && initialActiveTab.getAttribute('data-tab') === 'panel-web') {
-             const initialWebScrollers = document.querySelectorAll('#panel-web .scroller'); 
-             initialWebScrollers.forEach(scroller => initializeScroller(scroller)); 
+             const initialWebScrollers = document.querySelectorAll('#panel-web .scroller');
+             initialWebScrollers.forEach(scroller => initializeScroller(scroller));
         }
     }
 
