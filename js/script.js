@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
 
 
-    // ==================== TABS PORTFOLIO ===============================
+    // ==================== TABS PORTFOLIO (MODIFICADO) =====================
     const portfolioTabs = document.querySelectorAll('.portfolio-tab');
     const portfolioPanels = document.querySelectorAll('.portfolio-content-panel');
 
@@ -305,23 +305,32 @@ document.addEventListener('DOMContentLoaded', () => {
             tab.addEventListener('click', (e) => {
                 e.preventDefault();
                 const tabId = tab.getAttribute('data-tab');
+                
                 portfolioTabs.forEach(t => t.classList.remove('active'));
                 portfolioPanels.forEach(p => p.classList.remove('active'));
+                
                 tab.classList.add('active');
                 const activePanel = document.getElementById(tabId);
+                
                 if (activePanel) {
                     activePanel.classList.add('active');
-                    if (tabId === 'panel-web') {
-                        const webScrollers = activePanel.querySelectorAll('.scroller');
-                        webScrollers.forEach(scroller => initializeScroller(scroller));
-                    }
+                    
+                    // MODIFICACIÓN: Inicializar scrollers en CUALQUIER panel activo
+                    const scrollersInPanel = activePanel.querySelectorAll('.scroller');
+                    scrollersInPanel.forEach(scroller => initializeScroller(scroller));
                 }
             });
         });
+        
+        // MODIFICACIÓN: Inicializar scrollers en el panel activo inicial (que es 'panel-web')
         const initialActiveTab = document.querySelector('.portfolio-tab.active');
-        if (initialActiveTab && initialActiveTab.getAttribute('data-tab') === 'panel-web') {
-             const initialWebScrollers = document.querySelectorAll('#panel-web .scroller');
-             initialWebScrollers.forEach(scroller => initializeScroller(scroller));
+        if (initialActiveTab) {
+             const initialActivePanelId = initialActiveTab.getAttribute('data-tab');
+             const initialActivePanel = document.getElementById(initialActivePanelId);
+             if (initialActivePanel) {
+                 const initialScrollers = initialActivePanel.querySelectorAll('.scroller');
+                 initialScrollers.forEach(scroller => initializeScroller(scroller));
+             }
         }
     }
 

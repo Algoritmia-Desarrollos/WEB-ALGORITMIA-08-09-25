@@ -7,13 +7,13 @@
     --secondaryBg: #0d0c14; /* Fondo de tarjetas/secciones alternas */
     --gray-100: hsl(246, 18%, 15%);
     --gray-200: hsl(246, 11%, 22%);
-    --gray-300: hsl(246,  8%, 35%); /* Usado para borde de btn-secondary */
-    --gray-400: hsl(246,  7%, 45%);
-    --gray-500: hsl(246,  6%, 65%); 
-    --gray-600: hsl(246,  6%, 65%); 
-    --gray-700: hsl(246,  6%, 78%); /* Usado para texto de btn-secondary */
-    --gray-800: hsl(246,  6%, 87%);
-    --gray-900: hsl(246,  6%, 95%);
+    --gray-300: hsl(246, 8%, 35%); /* Usado para borde de btn-secondary */
+    --gray-400: hsl(246, 7%, 45%);
+    --gray-500: hsl(246, 6%, 65%); 
+    --gray-600: hsl(246, 6%, 65%); 
+    --gray-700: hsl(246, 6%, 78%); /* Usado para texto de btn-secondary */
+    --gray-800: hsl(246, 6%, 87%);
+    --gray-900: hsl(246, 6%, 95%);
     
     --accent-color: hsl(280, 80%, 60%); 
     --accent-color-hover: hsl(280, 90%, 70%); 
@@ -122,8 +122,8 @@ button { background: none; border: none; font-family: inherit; }
     z-index: 0; 
 }
 .section-light .container {
-     padding-top: 0; 
-     padding-bottom: 0;
+    padding-top: 0; 
+    padding-bottom: 0;
 }
 .section-light h2, .section-light h3, .section-light h4 { color: var(--foreground); }
 .section-header { text-align: center; margin-bottom: 4rem; }
@@ -200,8 +200,8 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
 .hero-background-overlay { display: none; }
 .hero-container { position: relative; z-index: 2; width: 100%; }
 .hero-content-wrapper {
-     max-width: 1000px; 
-     margin: 0; 
+    max-width: 1000px; 
+    margin: 0; 
 }
 .hero-title {
     font-size: var(--h1-font-size);
@@ -312,9 +312,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     display: block; 
 }
 .portfolio-content-panel:not(#panel-web).active {
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    display: block;
 }
 .portfolio-item {
     background: var(--secondaryBg);
@@ -360,33 +358,92 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     to { opacity: 1; }
 }
 
+/* --- INICIO: Estilos para carrusel de Logos --- */
+.portfolio-logo-img {
+    background-color: #f4f4f8; /* Fondo claro para logos oscuros */
+    border-radius: 8px;
+    padding: 1rem;
+    height: 260px; /* AUMENTADO */
+    width: auto; /* Ancho automático para mantener proporción */
+    max-width: 320px; /* AUMENTADO */
+    object-fit: contain; /* Asegura que el logo entre completo */
+    box-shadow: var(--shadow-medium);
+    transition: background-color 0.3s;
+}
+
+/* Anulación para logos blancos */
+.portfolio-logo-img.logo-invert-bg {
+    background-color: #111; /* Fondo oscuro para logos blancos */
+}
+
+/* Para que no se puedan seleccionar/arrastrar */
+.scroller[data-type="logos"] {
+    pointer-events: none;
+}
+/* --- FIN: Estilos de Logos --- */
+
+
 /* ==================== INFINITE SCROLLER (TESTIMONIOS & PORTFOLIO WEB) ==================== */
 .scroller {
     -webkit-mask: linear-gradient(90deg, transparent, white 10%, white 90%, transparent);
     mask: linear-gradient(90deg, transparent, white 10%, white 90%, transparent);
 }
-#panel-web .scroller + .scroller {
-    margin-top: 1.5rem; 
+
+/* ESTA ES LA REGLA ACTUALIZADA */
+#panel-web .scroller + .scroller,
+#panel-apps .scroller + .scroller,
+#panel-presencia .scroller + .scroller {
+margin-top: 1.5rem; 
 }
+
+
 #testimonios .scroller { 
-     margin-bottom: 1.5rem; 
+    margin-bottom: 1.5rem; 
 }
-.scroller__inner { display: flex; gap: 1.5rem; width: max-content; }
-.scroller[data-animated="true"] .scroller__inner { animation: scroll 40s linear infinite; }
+.scroller__inner { display: flex; gap: 2.5rem; width: max-content; }
 .scroller[data-direction="right"] .scroller__inner { animation-direction: reverse; }
-.scroller[data-speed="slow"] .scroller__inner { animation-duration: 60s; } 
+
+/* === NUEVAS REGLAS DE ANIMACIÓN === */
+/* 1. Regla base para activar la animación */
+.scroller[data-animated="true"] .scroller__inner {
+    animation-name: scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    /* La duración se define abajo */
+}
+
+/* 2. Velocidades específicas por panel */
+#panel-web .scroller__inner {
+    animation-duration: 45s; /* Tu valor para Páginas Webs */
+}
+#panel-apps .scroller__inner {
+    animation-duration: 15s; /* Tu valor para Apps */
+}
+#panel-presencia .scroller__inner {
+    animation-duration: 25s; /* Tu valor para Marketing */
+}
+/* Asegúrate de que los testimonios sigan teniendo una velocidad */
+#testimonios .scroller__inner {
+    animation-duration: 25s; 
+}
 @keyframes scroll { to { transform: translate(calc(-50% - 0.75rem)); } }
-.scroller__inner img {
-    height: 220px;
+
+/* --- DESPUÉS (Opacidad completa) --- */
+/* Estilos SÓLO para screenshots de WEBS */
+#panel-web .scroller__inner img {
+    height: 220px; 
     width: auto;
-    max-width: 350px;
+    max-width: 350px; 
     border-radius: 8px;
     object-fit: cover;
     object-position: top;
     transition: var(--transition-smooth);
-    opacity: 0.8;
+    opacity: 1; /* <-- CAMBIADO A 1 PARA MÁXIMA NITIDEZ */
     box-shadow: var(--shadow-medium);
+    image-rendering: auto; /* Opcional: Ayuda al navegador a priorizar calidad */
 }
+
+/* El :hover debe aplicar a TODAS las imágenes del scroller, incluidas las de panel-web */
 .scroller__inner img:hover { 
     transform: scale(1.03); 
     opacity: 1; 
@@ -402,7 +459,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     display: flex;
     flex-direction: column;
     align-items: center !important; 
-    gap: 18rem; 
+    gap: 12rem; 
     padding: 0rem 0; 
 }
 .service-path-item {
@@ -423,7 +480,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
 }
 #servicios .service-path-item:nth-child(even) { 
     align-self: flex-end; 
-     padding-left: 10%; 
+    padding-left: 10%; 
 }
 
 .service-card-path {
@@ -450,7 +507,6 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
 .service-card-path:hover {
     box-shadow: var(--shadow-large), var(--highlight-glow); 
     border-color: hsla(280, 80%, 60%, 0.5); 
-    transform: translateY(-5px); /* Opcional: Levanta la tarjeta */
 }
 
 
@@ -490,7 +546,7 @@ nav.container { height: var(--header-height); display: flex; justify-content: sp
     display: block; 
 }
 #servicesPathMobile { 
-    display: none;  
+    display: none; 
 }
 .connecting-line path {
     stroke-width: 1.5; 
@@ -626,7 +682,7 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .services-path-container {
         gap: 4rem; 
     } 
-   
+    
     .service-path-item { 
         opacity: 1 !important; 
         filter: none !important;
@@ -654,7 +710,7 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
         transform: translateY(0); /* Sin elevación */
     }
 
-.footer-container { 
+    .footer-container { 
         grid-template-columns: 1fr; 
         justify-items: center;
     }
@@ -699,17 +755,20 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
     .portfolio-tabs { gap: 0.1rem; justify-content: space-between; flex-wrap: wrap;} 
     .portfolio-tab { font-size: 0.7rem; padding: 0.7rem 0.05rem; } 
     
-    .portfolio-content-panel:not(#panel-web).active { 
-        grid-template-columns: 1fr; 
-        justify-items: center; 
-    } 
-    .portfolio-content-panel:not(#panel-web).active .portfolio-item {
-        width: 90%;
-        max-width: 350px; 
+    /* Apuntamos solo a los logos de Apps y Marketing */
+    #panel-apps .portfolio-logo-img,
+    #panel-presencia .portfolio-logo-img {
+        height: 120px !important; /* AUMENTADO */
+        padding: 0.75rem;
+        max-width: 200px; /* AÑADIDO un tope móvil */
     }
 
-    .scroller__inner img { height: 180px; max-width: 300px; } 
-
+    /* Apuntamos solo a las imágenes de la pestaña Web */
+   /* Apuntamos solo a las imágenes de la pestaña Web */
+#panel-web .scroller__inner img { 
+height: 120px !important; /* REDUCIDO para que coincida con las otras pestañas */
+max-width: 180px !important; /* REDUCIDO para que coincida con las otras pestañas */
+}
     .services-path-container {
         gap: 4rem;
     } 
@@ -724,7 +783,7 @@ ul.footer-contact i { font-size: 1.1rem; color: var(--gray-500); }
         gap: 2rem;
     }
     
-   .footer-container { 
+    .footer-container { 
         grid-template-columns: 1fr; 
         text-align: center;
         gap: 1.5rem;
