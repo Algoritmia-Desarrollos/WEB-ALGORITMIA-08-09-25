@@ -1,0 +1,350 @@
+/* ==================== LANDING PAGE META ADS (landing-meta.css) ==================== */
+
+/* --- Reseteos y Base --- */
+body {
+    background-color: var(--background); /* Fondo principal de tu web */
+    color: var(--foreground);
+    font-family: var(--body-font);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.container {
+    max-width: 1100px; /* Ancho ajustado para landing */
+    margin: 0 auto;
+    padding: 0 1rem; /* Padding base */
+}
+
+/* --- Header Simple --- */
+.landing-header {
+    background-color: var(--secondaryBg); /* Fondo oscuro coherente */
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--gray-300);
+}
+
+.landing-header .logo {
+    color: var(--foreground);
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.landing-header .logo img {
+    height: 40px;
+    margin-right: 0.5rem;
+}
+
+/* --- Hero Section --- */
+.hero-landing {
+    background: linear-gradient(rgba(4, 4, 4, 0.85), rgba(8, 7, 12, 0.95)), url('/img/fondoalgo4.webp') no-repeat center center/cover; /* Fondo con overlay */
+    padding: 4rem 0 3rem 0; /* Padding ajustado */
+    color: var(--foreground);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-landing-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas */
+    gap: 3rem;
+    align-items: center;
+}
+
+.hero-landing-content .hero-title {
+    font-size: clamp(2.2rem, 5vw, 3.2rem); /* Título grande */
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: var(--foreground);
+}
+
+.hero-landing-content .hero-title .highlight {
+    color: var(--accent-color); /* Color de acento */
+}
+
+.hero-landing-content .hero-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+    color: var(--gray-500);
+    margin-bottom: 2rem;
+    max-width: 550px;
+}
+
+.hero-landing-content .hero-subtitle .bold {
+    color: var(--foreground);
+    font-weight: 600;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.benefits-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    font-size: 1.05rem;
+    color: var(--gray-600);
+}
+
+.benefits-list li i {
+    color: var(--accent-color);
+    margin-right: 0.8rem;
+    font-size: 1.4rem;
+}
+
+.cta-arrow {
+    margin-top: 2rem;
+    text-align: center; /* Centra la flecha y el texto */
+}
+.cta-arrow p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--foreground);
+}
+.cta-arrow i {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-15px);}
+    60% {transform: translateY(-8px);}
+}
+
+
+/* --- Form Card --- */
+.form-landing-card {
+    background-color: var(--secondaryBg);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border-radius: 10px;
+    box-shadow: var(--shadow-large);
+    border: 1px solid var(--gray-300);
+}
+
+.form-landing-card h2 {
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+    font-weight: 600;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    color: var(--foreground);
+}
+.form-landing-card h2 .highlight {
+    color: var(--accent-color);
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--gray-700);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="url"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    background-color: var(--gray-100);
+    color: var(--foreground);
+    font-family: var(--body-font);
+    font-size: 1rem;
+    transition: var(--transition-smooth);
+    box-sizing: border-box; /* Asegura que padding no afecte el ancho */
+}
+
+.form-group select {
+     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1.1em;
+    padding-right: 2.2rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.form-group select option {
+    background-color: var(--gray-100);
+    color: var(--foreground);
+}
+
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--gray-500);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px hsla(280, 80%, 60%, 0.3);
+    background-color: var(--gray-200);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.btn-submit-landing {
+    /* Hereda estilos de .btn y .btn-primary de style.css */
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.9rem 1.5rem;
+    font-size: 1.1rem;
+    gap: 0.5rem;
+}
+
+/* --- Testimonials Section --- */
+.testimonials-landing {
+    padding: 4rem 0;
+    background-color: var(--background); /* Fondo principal */
+}
+
+.testimonials-landing .section-title {
+     font-size: clamp(1.8rem, 4vw, 2.5rem);
+     text-align: center;
+     margin-bottom: 3rem;
+}
+.testimonials-landing .section-title .highlight {
+    color: var(--accent-color);
+}
+
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.testimonial-card-landing {
+    background-color: var(--secondaryBg);
+    padding: 1.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--gray-300);
+    box-shadow: var(--shadow-medium);
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-card-landing p {
+    font-size: 1rem;
+    color: var(--foreground);
+    margin: 0 0 1rem 0;
+    font-style: italic;
+    flex-grow: 1; /* Empuja el autor hacia abajo */
+}
+
+.testimonial-card-landing .testimonial-author {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    font-weight: 500;
+    margin-top: auto; /* Se alinea abajo */
+}
+
+.final-cta {
+    text-align: center;
+    margin-top: 2rem;
+}
+.final-cta .btn {
+    padding: 1rem 2rem;
+    font-size: 1.15rem;
+}
+
+/* --- Footer Simple --- */
+.landing-footer {
+    background-color: var(--secondaryBg);
+    color: var(--gray-500);
+    padding: 1.5rem 0;
+    text-align: center;
+    border-top: 1px solid var(--gray-300);
+    font-size: 0.9rem;
+}
+
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .hero-landing-container {
+        grid-template-columns: 1fr; /* Una columna en tablet */
+        gap: 2rem;
+        text-align: center;
+    }
+    .hero-landing-content {
+        order: 1; /* Contenido primero en tablet */
+    }
+    .form-landing-card {
+        order: 2; /* Formulario después */
+        max-width: 600px; /* Limita ancho del form */
+        margin: 0 auto; /* Centra el form */
+    }
+     .hero-landing-content .hero-subtitle {
+         margin-left: auto;
+         margin-right: auto;
+     }
+    .benefits-list {
+         max-width: 400px; /* Limita ancho */
+         margin-left: auto;
+         margin-right: auto;
+         text-align: left; /* Alinea texto a la izquierda */
+     }
+    .cta-arrow {
+         margin-top: 1.5rem;
+     }
+}
+
+@media (max-width: 576px) {
+    .hero-landing {
+        padding: 3rem 0 2rem 0;
+    }
+    .hero-landing-content .hero-title {
+        font-size: 1.8rem;
+    }
+     .hero-landing-content .hero-subtitle {
+        font-size: 1rem;
+    }
+    .benefits-list li {
+        font-size: 0.95rem;
+    }
+    .form-landing-card {
+        padding: 1.5rem;
+    }
+    .form-landing-card h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+    }
+    .testimonials-landing {
+        padding: 3rem 0;
+    }
+    .testimonials-landing .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 2rem;
+    }
+     .testimonial-card-landing {
+         padding: 1.5rem;
+     }
+      .final-cta .btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+}
