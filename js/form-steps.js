@@ -215,14 +215,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- FIN ENVÍO ---
     });
 
-    // --- Función showSuccessMessage ---
+   // --- Función showSuccessMessage (MODIFICADA PARA REDIRIGIR) ---
     function showSuccessMessage() {
-        formElement.style.display = 'none';
-        stepIndicator.style.display = 'none';
-        formTitle.style.display = 'none';
-        formSubtitle.style.display = 'none';
-        graciasMensaje.style.display = 'block';
-        formContainer.classList.add('show-success');
+        // Redirige a la página de agradecimiento
+        window.location.href = '/gracias.html'; 
     }
 
 });

@@ -1,0 +1,435 @@
+/* ==================== FORMULARIO DE CONTACTO (form-steps-integrated.css) ==================== */
+
+/* === BASE: Asegura que el body y el main ocupen toda la pantalla y centren el formulario === */
+body {
+    height: 100svh; /* Usa svh para una altura de viewport más consistente */
+    display: grid; /* Usa grid para centrar el contenido */
+    place-items: center; /* Centra horizontal y verticalmente */
+    overflow: hidden; /* Evita el scroll global */
+    padding: 0;
+    /* Hereda el fondo oscuro y fuente de style.css */
+}
+
+#main-content {
+    height: 100%; /* Ocupa toda la altura disponible del body */
+    width: 100%; /* Ocupa todo el ancho disponible */
+    display: flex; /* Para centrar el form-steps-card */
+    justify-content: center;
+    align-items: center;
+    padding: 1rem; /* Padding para evitar que el formulario toque los bordes */
+    overflow: hidden; /* Oculta el scroll interno del main, el form-steps-card lo manejará */
+}
+
+/* --- Contenedor Principal del Formulario --- */
+.form-steps-card {
+    width: 100%;
+    max-width: 600px; /* Ancho máximo para el formulario */
+    background-color: var(--secondaryBg); /* Fondo de tarjeta de tu web */
+    border-radius: 12px;
+    padding: clamp(1rem, 3vw, 2rem); /* Padding reducido */
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: var(--shadow-large);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100svh - 2rem); /* Altura máxima para el formulario */
+    overflow-y: auto; /* Permite scroll interno si un paso es muy largo */
+    -ms-overflow-style: none; /* Oculta scrollbar para IE/Edge */
+    scrollbar-width: none; /* Oculta scrollbar para Firefox */
+}
+
+/* Oculta scrollbar para Chrome, Safari y Opera */
+.form-steps-card::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* === CABECERA COMPACTA === */
+.form-header {
+    text-align: center;
+    margin-bottom: 1.5rem; /* Margen inferior reducido */
+}
+
+.form-logo {
+    width: 60px; /* Logo más pequeño */
+    height: 60px;
+    margin: 0 auto 1rem; /* Margen inferior reducido */
+}
+
+.form-steps-card .section-subtitle { 
+    font-size: 1rem; /* Subtítulo más pequeño */
+    margin-bottom: 0.25rem; /* Margen inferior reducido */
+}
+
+.form-steps-card .section-title { 
+    font-size: clamp(1.8rem, 4vw, 2.5rem); /* Título más pequeño */
+    margin-bottom: 0.75rem; /* Margen inferior reducido */
+}
+
+.form-intro {
+   display: none; /* Descripción oculta */
+}
+
+/* --- Indicador de Paso --- */
+.step-indicator {
+    font-family: var(--heading-font); 
+    color: var(--primary-color); 
+    font-size: 1rem; /* Indicador más pequeño */
+    letter-spacing: 0.5px;
+    margin-top: 0.5rem; /* Margen superior reducido */
+    font-weight: 500;
+}
+
+/* --- Formulario de Pasos --- */
+#contact-form {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+}
+
+.form-step {
+    display: none; /* Oculto por defecto */
+    flex-direction: column;
+    gap: 1.2rem; 
+    flex-grow: 1; 
+}
+.form-step.active {
+    display: flex; /* SOLO el paso activo se muestra */
+}
+
+.step-subheading {
+    font-family: var(--heading-font);
+    font-size: 1.2rem; /* Subtítulo de paso más pequeño */
+    color: var(--foreground); 
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+
+/* --- Estilos de Campos (Inputs, Selects, Textareas) --- */
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem; /* Margen reducido */
+    color: var(--gray-700);
+    font-weight: 500;
+    font-size: 0.95rem; /* Label más pequeño */
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem; /* Padding reducido */
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    background-color: var(--gray-100); 
+    color: var(--foreground); 
+    font-family: var(--body-font);
+    font-size: 0.95rem; /* Tamaño de fuente reducido */
+    transition: var(--transition-smooth);
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.form-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); 
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center; /* Ajuste de posición de flecha */
+    background-size: 1.1em; /* Flecha más pequeña */
+    padding-right: 2.2rem; /* Espacio ajustado */
+}
+
+.form-group select option {
+    background-color: var(--gray-100); 
+    color: var(--foreground); 
+}
+
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--gray-500);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px hsla(280, 80%, 60%, 0.3); 
+    background-color: var(--gray-200); 
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px; /* Altura mínima reducida */
+}
+
+/* --- Estilos de Error --- */
+.form-group input.form-error,
+.form-group select.form-error,
+.form-group textarea.form-error {
+    border-color: #e74c3c !important; 
+}
+.form-group .iti.form-error { 
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 3px hsla(9, 81%, 59%, 0.3); 
+}
+
+/* --- Estilos Campos Dinámicos (Paso 3) --- */
+.service-specific-questions {
+    display: none;
+    flex-direction: column;
+    gap: 1rem; 
+    margin-top: 1rem; /* Margen reducido */
+    border-top: 1px solid var(--gray-300); 
+    padding-top: 1rem; /* Padding reducido */
+}
+.service-specific-questions.active {
+    display: flex; 
+}
+
+
+/* --- Botones de Navegación --- */
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto; 
+    padding-top: 1rem; /* Padding reducido */
+    border-top: 1px solid var(--gray-300); 
+    width: 100%;
+}
+.form-step[data-step="1"] .form-navigation {
+    justify-content: flex-end; 
+}
+
+.form-navigation .btn {
+    min-width: 110px; /* Ancho mínimo reducido */
+    padding: 0.8rem 1.3rem; /* Padding reducido */
+    font-size: 0.95rem; /* Tamaño de fuente reducido */
+    text-transform: none; 
+}
+
+.form-navigation .btn-prev {
+    background-color: transparent;
+    color: var(--gray-600);
+    border: 1px solid var(--gray-300);
+}
+.form-navigation .btn-prev:hover {
+    background-color: var(--gray-200);
+    color: var(--foreground);
+    border-color: var(--gray-400);
+}
+.form-navigation .btn-prev i {
+    font-size: 1.1rem; /* Icono más pequeño */
+}
+
+.form-navigation .btn-next,
+.form-navigation .btn-submit {
+    gap: 0.4rem; /* Gap reducido */
+}
+.form-navigation .btn-next i,
+.form-navigation .btn-submit i {
+    font-size: 1.1rem; /* Icono más pequeño */
+}
+
+/* --- Mensaje de Gracias --- */
+#gracias-mensaje {
+    display: none; /* OCULTO POR DEFECTO */
+    text-align: center;
+    padding-top: 1.5rem; /* Padding reducido */
+    flex-grow: 1; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#gracias-mensaje.active { 
+    display: flex;
+}
+
+#gracias-mensaje h3 {
+    font-family: var(--heading-font);
+    font-size: clamp(2rem, 4.5vw, 2.8rem); /* Ajuste de tamaño */
+    color: var(--accent-color);
+    margin-bottom: 0.7rem; /* Margen reducido */
+    line-height: 1.2;
+}
+#gracias-mensaje p {
+    font-size: clamp(0.95rem, 2.2vw, 1.1rem); /* Ajuste de tamaño */
+    color: var(--gray-600);
+    line-height: 1.6;
+    max-width: 480px; /* Ancho ajustado */
+    margin: 0.7rem auto; /* Margen reducido */
+}
+.saludo-final {
+    font-family: var(--heading-font); 
+    font-size: clamp(1.2rem, 2.8vw, 1.6rem); /* Ajuste de tamaño */
+    color: var(--primary-color);
+    letter-spacing: 0.5px;
+    margin-top: 1rem; /* Margen reducido */
+}
+
+
+/* === ESTILOS INT'L TEL INPUT (BANDERITAS) ADAPTADOS === */
+.iti {
+    width: 100%;
+    background-color: var(--gray-100); 
+    border: 1px solid var(--gray-300); 
+    border-radius: 6px;
+    transition: var(--transition-smooth);
+}
+
+.iti input[type="tel"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0;
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 85px !important; /* Padding ajustado */
+    font-family: var(--body-font);
+    font-size: 0.95rem; /* Tamaño de fuente ajustado */
+    color: var(--foreground); 
+}
+
+.iti__selected-flag {
+    background-color: transparent;
+    border-radius: 6px 0 0 6px; 
+    width: 75px; /* Ancho ajustado */
+    left: 0; 
+    height: 100%; 
+    padding-left: 8px; /* Padding ajustado */
+    display: flex;
+    align-items: center;
+}
+
+.iti__selected-dial-code {
+    color: var(--gray-600); 
+    margin-left: 4px; /* Margen ajustado */
+    font-size: 0.95rem; /* Tamaño de fuente ajustado */
+}
+
+.iti__country-list {
+    background-color: var(--background); 
+    border: 1px solid var(--gray-300);
+    box-shadow: var(--shadow-small);
+    border-radius: 8px;
+}
+.iti__country {
+    color: var(--foreground);
+    padding: 8px 15px; /* Padding ajustado */
+    font-size: 0.9rem; /* Tamaño de fuente ajustado */
+}
+.iti__country:hover, .iti__country.iti__highlight {
+    background-color: var(--gray-200); 
+    color: var(--foreground);
+}
+.iti__dial-code {
+    color: var(--gray-500);
+}
+.iti__flag-container {
+    height: 100%; 
+    display: flex;
+    align-items: center;
+}
+
+.iti:focus-within {
+     border-color: var(--accent-color);
+     box-shadow: 0 0 0 3px hsla(280, 80%, 60%, 0.3);
+}
+
+.iti input[type="tel"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* === Responsive (Ajustes finos para mantener todo visible) === */
+@media screen and (max-width: 768px) {
+    .form-steps-card {
+        padding: 1.5rem; /* Menos padding en tablet */
+    }
+     .form-header .section-title {
+        font-size: 2rem;
+    }
+     .step-indicator {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .form-steps-card {
+        padding: 1rem; /* Aún menos padding en móvil */
+         max-height: calc(100svh - 1rem); 
+    }
+    .form-header .section-title {
+        font-size: 1.8rem;
+    }
+     .form-navigation {
+        padding-top: 0.8rem;
+    }
+    .form-navigation .btn {
+         padding: 0.7rem 1rem;
+         font-size: 0.9rem;
+    }
+    .iti input[type="tel"] {
+        padding: 0.7rem 0.8rem 0.7rem 75px !important;
+        font-size: 0.9rem;
+    }
+    .iti__selected-flag {
+        width: 65px;
+    }
+     .iti__selected-dial-code {
+        font-size: 0.9rem;
+    }
+}
+
+/* Ajuste específico para pantallas muy bajas (ej. móvil horizontal) */
+@media (max-height: 500px) and (min-width: 481px) {
+     .form-steps-card {
+        padding: 1rem;
+    }
+    .form-logo {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 0.5rem;
+    }
+     .form-header .section-subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 0.1rem;
+    }
+     .form-header .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 0.4rem;
+    }
+     .step-indicator {
+         font-size: 0.9rem;
+         margin-top: 0.3rem;
+     }
+     .form-step {
+         gap: 0.8rem;
+     }
+      .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+    }
+      .form-group input, .form-group select, .form-group textarea {
+        padding: 0.7rem 0.9rem;
+        font-size: 0.9rem;
+    }
+     .form-navigation {
+         padding-top: 0.8rem;
+     }
+      .form-navigation .btn {
+         padding: 0.7rem 1rem;
+         font-size: 0.9rem;
+     }
+}

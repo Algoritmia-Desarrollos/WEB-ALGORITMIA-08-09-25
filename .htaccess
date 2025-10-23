@@ -1,0 +1,23 @@
+# Activar el motor de reescritura de URLs
+RewriteEngine On
+
+# Forzar el uso de HTTPS para mayor seguridad
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- REGLAS PARA URLS AMIGABLES (SIN .html) ---
+
+# 1. Redirigir 'index.html' a la raíz del sitio ('/')
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/
+RewriteRule ^index\.html$ / [R=301,L]
+
+# 2. Quitar la extensión .html de cualquier archivo para el acceso interno
+#    (Permite acceder a /formulario en vez de /formulario.html)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^([^/]+)$ $1.html [L]
+
+# 3. Redirigir URLs que se escriban CON .html a la versión SIN .html
+#    (Si alguien escribe /formulario.html, lo redirige a /formulario)
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
