@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comienza tu Proyecto | Algoritmia Desarrollos</title>
-    
-    <meta name="description" content="Da el primer paso para transformar tu idea en una realidad digital. Contáctanos hoy.">
-    <meta property="og:title" content="Comienza tu Proyecto | Algoritmia Desarrollos">
-    <meta property="og:description" content="Da el primer paso para transformar tu idea en una realidad digital.">
-    <meta property="og:image" content="/img/algoritmia_logo.png">
-    <meta property="og:url" content="https://www.algoritmiadesarrollos.com.ar/formulario">
-    <meta property="og:type" content="website">
+    <title>Impulsa Tu Negocio Online | Asesoría Gratuita - Algoritmia</title> 
+<meta name="description" content="¿Listo para aumentar tus ventas online? Obtén una asesoría gratuita y descubre cómo Algoritmia crea estrategias digitales que generan resultados.">
+    <meta name="robots" content="noindex, nofollow"> 
+
+    <link rel="canonical" href="https://www.algoritmiadesarrollos.com.ar/landing-meta"> 
 
     <link rel="icon" href="/img/algoritmia_logo.png" type="image/png">
     <link rel="apple-touch-icon" href="/img/algoritmia_logo.png">
@@ -20,13 +17,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
-    
     <link rel="stylesheet" href="/css/style.css"> 
-    <link rel="stylesheet" href="/css/form-steps-integrated.css">
+    <link rel="stylesheet" href="/css/landing-meta.css"> 
 
-    <script>
-        // Tus scripts de Facebook Pixel o Analytics si son necesarios aquí
+<script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
         n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -35,8 +29,9 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '558246843661902');
+        fbq('init', '558246843661902'); // TU PIXEL ID
         fbq('track', 'PageView');
+        // El evento Lead se disparará en la página de gracias o al enviar el form
     </script>
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=558246843661902&ev=PageView&noscript=1"
@@ -44,161 +39,142 @@
 </head>
 <body>
 
-    <div id="preloader">
-        <img src="/img/algoritmia_logo.png" alt="Logo Algoritmia Desarrollos" class="preloader-logo">
-    </div>
-
-    <main id="main-content" class="form-fullscreen-wrapper">
-        <div class="form-steps-card">
-            <div class="form-header">
-                <img src="/img/algoritmia_logo.png" alt="Logo Algoritmia Desarrollos" class="form-logo">
-                <h3 class="section-subtitle" id="form-subtitle">¡Contáctanos!</h3>
-                <h2 class="section-title" id="form-title">Empecemos tu <span>Proyecto Digital</span></h2>
-                
-                <p class="step-indicator">Paso 1 de 4</p>
-            </div>
-
-            <form id="contact-form" novalidate>
-                
-                <div class="form-step active" data-step="1">
-                    <div class="form-group">
-                        <label for="nombre">Tu Nombre</label>
-                        <input type="text" id="nombre" name="nombre" required autocomplete="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Tu Email</label>
-                        <input type="email" id="email" name="email" required autocomplete="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono">Tu WhatsApp</label>
-                        <input type="tel" id="telefono" name="telefono" required autocomplete="tel"> 
-                        <input type="hidden" name="telefono_full"> 
-                    </div>
-                    <div class="form-navigation">
-                        <button type="button" class="btn btn-primary btn-next">Siguiente <i class='bx bx-right-arrow-alt'></i></button>
-                    </div>
-                </div>
-                
-                <div class="form-step" data-step="2">
-                    <div class="form-group">
-                        <label for="servicio">¿Qué servicio principal necesitas?</label>
-                        <select id="servicio" name="servicio_principal" required>
-                            <option value="" disabled selected>Selecciona una opción...</option>
-                            <option value="diseno-web">Diseño y Desarrollo Web</option>
-                            <option value="app-web">Aplicación Web a Medida</option>
-                            <option value="marketing-seo">Marketing Digital y SEO</option>
-                            <option value="otro">Otro</option>
-                        </select>
-                    </div>
-                    <div class="form-navigation">
-                        <button type="button" class="btn btn-secondary btn-prev"><i class='bx bx-left-arrow-alt'></i> Anterior</button>
-                        <button type="button" class="btn btn-primary btn-next">Siguiente <i class='bx bx-right-arrow-alt'></i></button>
-                    </div>
-                </div>
-
-                <div class="form-step" data-step="3">                    
-                    <div class="service-specific-questions" id="web-design-questions">
-                        <div class="form-group">
-                            <label for="web_existente">¿Ya tienes un sitio web?</label>
-                            <select id="web_existente" name="web_existente">
-                                <option value="no" selected>No</option>
-                                <option value="si">Sí</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="web_tipo">¿Qué tipo de web necesitas?</label>
-                            <select id="web_tipo" name="web_tipo">
-                                <option value="informativa" selected>Informativa / Landing</option>
-                                <option value="ecommerce">E-commerce (Tienda)</option>
-                                <option value="blog">Blog</option>
-                                <option value="portfolio">Portfolio</option>
-                                <option value="otro">Otro</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="diseno_listo">¿Tienes el diseño (UI/UX) listo?</label>
-                            <select id="diseno_listo" name="diseno_listo">
-                                <option value="no" selected>No</option>
-                                <option value="si">Sí</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="service-specific-questions" id="web-app-questions">
-                        <div class="form-group">
-                            <label for="app-descripcion">Describe la función principal</label>
-                            <textarea id="app-descripcion" name="app_descripcion" rows="4" placeholder="Ej: Sistema de turnos..."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="service-specific-questions" id="seo-questions">
-                        <div class="form-group">
-                            <label for="seo-website">Tu sitio web actual (si tienes)</label>
-                            <input type="text" id="seo-website" name="seo_sitio_actual" placeholder="https://www.ejemplo.com">
-                        </div>
-                        <div class="form-group">
-                            <label for="presupuesto_publicidad">Presupuesto mensual para publicidad</label>
-                            <select id="presupuesto_publicidad" name="presupuesto_publicidad" required>
-                                <option value="" disabled selected>Selecciona...</option>
-                                <option value="<300USD">&lt; $300 USD</option>
-                                <option value="300-800USD">$300 - $800 USD</option>
-                                <option value=">800USD">&gt; $800 USD</option>
-                                <option value="no-decidido">No decidido</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="service-specific-questions" id="other-questions">
-                        <div class="form-group">
-                            <label for="otro-descripcion">¿Qué necesitas?</label>
-                            <textarea id="otro-descripcion" name="otro_descripcion" rows="4"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-navigation">
-                        <button type="button" class="btn btn-secondary btn-prev"><i class='bx bx-left-arrow-alt'></i> Anterior</button>
-                        <button type="button" class="btn btn-primary btn-next">Siguiente <i class='bx bx-right-arrow-alt'></i></button>
-                    </div>
-                </div>
-
-                <div class="form-step" data-step="4">
-                    <div class="form-group">
-                        <label for="como-nos-encontro">¿Cómo nos encontraste?</label>
-                        <select id="como-nos-encontro" name="fuente" required>
-                            <option value="" disabled selected>Selecciona...</option>
-                            <option value="Google">Google</option>
-                            <option value="Instagram">Instagram</option>
-                            <option value="Facebook">Facebook</option>
-                            <option value="Recomendacion">Recomendación</option>
-                            <option value="LinkedIn">LinkedIn</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="mensaje-final">¿Algo más que debamos saber? (opcional)</label>
-                        <textarea id="mensaje-final" name="mensaje_final" rows="4"></textarea>
-                    </div>
-                    <div class="form-navigation">
-                        <button type="button" class="btn btn-secondary btn-prev"><i class='bx bx-left-arrow-alt'></i> Anterior</button>
-                        <button type="submit" class="btn btn-primary btn-submit">Enviar Solicitud</button>
-                    </div>
-                </div>
-
-            </form>
-
-            <div id="gracias-mensaje">
-                <h3>¡Gracias por tu consulta!</h3>
-                <p>Hemos recibido tu solicitud. Te contactaremos a la brevedad para coordinar una llamada.</p>
-                <p class="saludo-final">¡Saludos del equipo de Algoritmia!</p>
-                <a href="/" class="btn btn-primary" style="margin-top: 2rem;">Volver al Inicio</a>
-            </div>
+    <header class="landing-header">
+        <div class="container">
+            <a href="/" class="logo" aria-label="Volver al inicio (Opcional)">
+                <img src="/img/algoritmia_logo.png" alt="Logo de Algoritmia Desarrollos">
+                <span>Algoritmia</span>
+            </a>
         </div>
-    </main>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    </header>
 
-    <script src="/js/script.js"></script> 
-    <script src="/js/form-steps.js"></script> 
+    <main class="landing-main">
+        <section class="hero-landing">
+            <div class="container hero-landing-container">
+                
+                <div class="hero-landing-content">
+                    <h1 class="hero-title">
+                        Hacemos más que solo tu web.
+ <br> 
+                        Diseñamos tu  <span class="highlight">crecimiento online</span>.
+                    </h1>
+                    <p class="hero-subtitle">
+                        Creamos sitios web, gestionamos publicidad y optimizamos tu estrategia digital para que <span class="bold">atraigas más clientes y aumentes tu rentabilidad</span>. Deja de perder oportunidades.
+                    </p>
+                    <ul class="benefits-list">
+                        <li><i class='bx bx-trending-up'></i> Estrategias de Marketing Digital enfocadas en ROAS.</li> 
+                        <li><i class='bx bx-target-lock'></i> Publicidad efectiva en Redes Sociales y Google.</li> 
+                        <li><i class='bx bx-rocket'></i> Webs y Apps optimizadas para convertir visitas en ventas.</li>
+                    </ul>
+                    <div class="cta-arrow">
+                         <p>¡Solicita tu <span class="bold">Asesoría Gratuita</span> ahora!</p>
+                        <i class='bx bx-down-arrow-alt'></i>
+                    </div>
+                </div>
+
+                
+                <div class="form-landing-card" id="form-section">
+                    <h2>Obtén tu Diagnóstico y Plan de Acción <span class="highlight">Gratis</span></h2>
+                    <form action="/gracias" method="POST" id="landingForm">
+                        <div class="form-group">
+                            <label for="name">Nombre completo:</label>
+                            <input type="text" id="name" name="name" placeholder="Tu nombre y apellido" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email de trabajo:</label>
+                            <input type="email" id="email" name="email" placeholder="tuemail@tuempresa.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Tu WhatsApp:</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+54 9..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="website">Tu sitio web actual (si tienes):</label>
+                            <input type="url" id="website" name="website" placeholder="https://www.tuweb.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="goal">¿Cuál es tu principal objetivo?</label>
+                            <select id="goal" name="goal" required>
+                                <option value="" disabled selected>Selecciona una opción...</option>
+                                <option value="Aumentar Ventas / Leads">Aumentar Ventas / Leads</option>
+                                <option value="Mejorar Publicidad / ROAS">Mejorar Publicidad / ROAS</option> 
+                                <option value="Crear / Rediseñar Sitio Web">Crear / Rediseñar Sitio Web</option> 
+                                <option value="Optimizar SEO / Visibilidad">Optimizar SEO / Visibilidad</option> 
+                                <option value="Crear App a Medida">Crear App a Medida</option> 
+                                <option value="Otro">Otro (detallar abajo)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="details">Describe brevemente tu necesidad:</label>
+                            <textarea id="details" name="details" rows="4" placeholder="Ej: Quiero mejorar mis campañas de Meta Ads para conseguir más clientes..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit-landing">
+                            Solicitar Asesoría Gratuita <i class='bx bx-right-arrow-alt'></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="testimonials-landing">
+            <div class="container">
+                <h2 class="section-title">Clientes que <span class="highlight">ya están creciendo</span> con nosotros</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card-landing">
+                        <p>"Necesitábamos vender online y gracias a ellos pudimos empezar. Muy agradecidos con todo el proceso."</p>
+                        <span class="testimonial-author">- Burmés Deco, Tienda Online</span>
+                    </div>
+                    <div class="testimonial-card-landing">
+                        <p>"Las ventas aumentaron muchísimo respecto al año pasado. Su estrategia digital realmente funciona."</p>
+                        <span class="testimonial-author">- The Cousins Estética</span>
+                    </div>
+                     <div class="testimonial-card-landing">
+                        <p>"Nos ayudaron a armar una app interna que nos simplificó un montón de trabajo. Son unos genios."</p> 
+                        <span class="testimonial-author">- Fagaz S.A., Servicios</span>
+                    </div>
+                </div>
+                <div class="final-cta">
+                    <a href="#form-section" class="btn btn-primary">¡Quiero mi Asesoría Gratuita!</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="landing-footer">
+        <div class="container">
+            <p>&copy; 2025 Algoritmia Desarrollos. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    
+<script>
+        document.getElementById('landingForm').addEventListener('submit', function(event) {
+            // Previene el envío default si necesitas hacer validación extra
+            // event.preventDefault(); 
+            
+            // Dispara el evento Lead al intentar enviar
+            fbq('track', 'Lead');
+            
+            // Si no preveniste el default, el form continuará al 'action'
+            // Si preveniste, aquí tendrías que manejar el envío con JS (Fetch API o similar)
+            // y luego redirigir a /gracias
+        });
+
+        // Script simple para manejar el preloader (si aplica)
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.getElementById('main-content');
+            if (preloader && mainContent) {
+                window.addEventListener('load', () => {
+                    preloader.classList.add('loaded');
+                    mainContent.classList.add('loaded');
+                });
+            } else if (mainContent) {
+                 mainContent.classList.add('loaded'); // Si no hay preloader
+            }
+        });
+    </script>
 </body>
 </html>
