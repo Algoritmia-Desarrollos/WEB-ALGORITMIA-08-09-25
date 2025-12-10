@@ -17,9 +17,8 @@ body {
 
 /* --- Header Simple --- */
 .landing-header {
-    background-color: var(--secondaryBg); /* Fondo oscuro coherente */
+    background: var(--background); 
     padding: 0.8rem 0;
-    border-bottom: 1px solid var(--gray-300);
 }
 
 .landing-header .logo {
@@ -29,6 +28,7 @@ body {
     font-weight: 600;
     display: flex;
     align-items: center;
+    
 }
 
 .landing-header .logo img {
@@ -38,7 +38,7 @@ body {
 
 /* --- Hero Section --- */
 .hero-landing {
-    background: linear-gradient(rgba(4, 4, 4, 0.85), rgba(8, 7, 12, 0.95)), url('/img/fondoalgo4.webp') no-repeat center center/cover; /* Fondo con overlay */
+    background: var(--background); 
     padding: 4rem 0 3rem 0; /* Padding ajustado */
     color: var(--foreground);
     min-height: 60vh;
