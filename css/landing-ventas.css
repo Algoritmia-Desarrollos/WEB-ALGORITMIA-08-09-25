@@ -327,3 +327,188 @@ body {
     .dash-img-wrapper { height: 220px; }
     .modal-content-img { width: 100%; max-width: 95%; }
 }
+
+
+/* --- TARJETAS DE CARACTERÍSTICAS (DISEÑO SOLICITADO) --- */
+    
+    .features-grid-2col {
+        grid-template-columns: 1fr; /* Una sola columna para que sean anchas */
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    .feature-card {
+        display: grid;
+        /* Definimos 2 columnas: una para el icono (auto) y otra para el resto (1fr) */
+        grid-template-columns: auto 1fr; 
+        /* Definimos filas automáticas */
+        grid-template-rows: auto auto; 
+        gap: 0.8rem 1rem; /* Gap vertical 0.8rem, Gap horizontal 1rem */
+        padding: 1.5rem;
+        text-align: left; /* Alineación izquierda */
+        align-items: center; /* Centrar verticalmente el título con el icono */
+    }
+
+    .icon-box {
+        grid-row: 1;      /* Fila 1 */
+        grid-column: 1;   /* Columna 1 */
+        margin-bottom: 0; /* Quitamos margen porque usaremos la grilla */
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+        /* Aseguramos que el icono no se deforme */
+        flex-shrink: 0; 
+    }
+
+    /* TRUCO: "Rompemos" el contenedor .feature-content para que sus hijos (h4 y p) 
+       se comporten como hijos directos de la grilla .feature-card */
+    .feature-content {
+        display: contents; 
+    }
+
+    .feature-content h4 {
+        grid-row: 1;      /* Fila 1 (Misma que el icono) */
+        grid-column: 2;   /* Columna 2 (A la derecha del icono) */
+        margin-bottom: 0;
+        font-size: 1.1rem;
+        line-height: 1.2;
+    }
+
+    .feature-content p {
+        grid-row: 2;          /* Fila 2 (Abajo) */
+        grid-column: 1 / -1;  /* Ocupa TODO el ancho (desde linea 1 hasta final) */
+        margin-top: 0;
+        color: #b0b0b0;
+        font-size: 0.95rem;
+    }
+
+
+    /* =========================================
+   RESPONSIVE DESIGN (MÓVIL OPTIMIZADO)
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+    
+    /* --- HERO SECTION --- */
+    .lp-hero {
+        /* Ocupamos toda la pantalla y centramos */
+        min-height: 100svh;
+        padding-top: 5.5rem; /* Ajuste para que no se pegue al header */
+        padding-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .lp-grid {
+        display: flex;
+        flex-direction: column;
+        /* AQUÍ ESTÁ LA CLAVE DEL ESPACIADO: */
+        gap: 1.5rem; /* Reducido para acercar el video al texto */
+        text-align: center;
+        width: 100%;
+        margin: 0;
+    }
+
+    .lp-subtitle {
+        margin-bottom: 1.5rem; /* Espacio justo antes del botón */
+        font-size: 1rem;
+        line-height: 1.4;
+        padding: 0 10px;
+    }
+
+    /* --- BOTÓN EN UNA LÍNEA --- */
+    .btn-action {
+        width: 100%;
+        max-width: 100%; /* Aprovecha todo el ancho disponible */
+        padding: 1rem 0.5rem; /* Reducimos padding lateral */
+        font-size: 0.8rem; /* Letra ajustada para que entre todo */
+        font-weight: 800;
+        white-space: nowrap; /* Fuerza el texto en una sola línea */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px; /* Espacio entre texto y flecha */
+    }
+    
+    .btn-action i {
+        font-size: 1.1rem; /* Flecha un poco más grande para compensar */
+    }
+
+    /* --- VIDEO --- */
+    .video-container {
+        width: 100%;
+        max-height: 30vh; /* Altura controlada */
+        margin-top: 0.5rem; /* Mínimo margen superior */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* --- RESTO DE SECCIONES (Ajustes generales) --- */
+    .dashboard-grid { grid-template-columns: 1fr; gap: 2rem; padding: 0 1rem; }
+    .dash-img-wrapper { height: 200px; }
+    .testi-card-lp { width: 85vw; padding: 1.5rem; }
+    .testimonials-track { gap: 1rem; }
+    .features-grid-2col { grid-template-columns: 1fr; gap: 1.5rem; }
+    .feature-card { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+    .lp-form-section { padding: 3rem 1rem; }
+    .form-card-pro { padding: 1.5rem; }
+    
+    /* Evita zoom en inputs de iPhone */
+    .input-group input, .input-group select, .input-group textarea { font-size: 16px !important; }
+    
+    .modal-content-img { width: 95%; }
+}
+
+/* --- TARJETAS DE CARACTERÍSTICAS (DISEÑO SOLICITADO) --- */
+    
+    .features-grid-2col {
+        grid-template-columns: 1fr; /* Una sola columna para que sean anchas */
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    .feature-card {
+        display: grid;
+        /* Definimos 2 columnas: una para el icono (auto) y otra para el resto (1fr) */
+        grid-template-columns: auto 1fr; 
+        /* Definimos filas automáticas */
+        grid-template-rows: auto auto; 
+        gap: 0.8rem 1rem; /* Gap vertical 0.8rem, Gap horizontal 1rem */
+        padding: 1.5rem;
+        text-align: left; /* Alineación izquierda */
+        align-items: center; /* Centrar verticalmente el título con el icono */
+    }
+
+    .icon-box {
+        grid-row: 1;      /* Fila 1 */
+        grid-column: 1;   /* Columna 1 */
+        margin-bottom: 0; /* Quitamos margen porque usaremos la grilla */
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+        /* Aseguramos que el icono no se deforme */
+        flex-shrink: 0; 
+    }
+
+    /* TRUCO: "Rompemos" el contenedor .feature-content para que sus hijos (h4 y p) 
+       se comporten como hijos directos de la grilla .feature-card */
+    .feature-content {
+        display: contents; 
+    }
+
+    .feature-content h4 {
+        grid-row: 1;      /* Fila 1 (Misma que el icono) */
+        grid-column: 2;   /* Columna 2 (A la derecha del icono) */
+        margin-bottom: 0;
+        font-size: 1.1rem;
+        line-height: 1.2;
+    }
+
+    .feature-content p {
+        grid-row: 2;          /* Fila 2 (Abajo) */
+        grid-column: 1 / -1;  /* Ocupa TODO el ancho (desde linea 1 hasta final) */
+        margin-top: 0;
+        color: #b0b0b0;
+        font-size: 0.95rem;
+    }
