@@ -74,8 +74,8 @@ body {
 }
 .testi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 
-.client-logo-img { height: 40px; width: auto; max-width: 140px; object-fit: contain; }
-/* .white-logo-filter eliminado para mostrar logos a color */
+/* AUMENTO DE TAMAÑO DE LOGOS */
+.client-logo-img { height: 65px; width: auto; max-width: 160px; object-fit: contain; }
 
 .client-logo-text { font-size: 1.4rem; color: white; font-weight: 800; letter-spacing: -0.5px; text-transform: uppercase; margin: 0; }
 .font-serif { font-family: serif; letter-spacing: 1px; }
@@ -172,8 +172,9 @@ body {
     opacity: 0.7;
 }
 
-/* ICONO DE LUPA CORREGIDO (\eb88) */
+/* ICONO DE LUPA (CORREGIDO) */
 .dash-img-wrapper::after {
+    /* Código Unicode para 'bx-zoom-in' (Lupa con +) */
     content: '\eb88'; 
     font-family: 'boxicons' !important;
     position: absolute;
@@ -181,7 +182,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
     color: white;
-    font-size: 4rem; 
+    font-size: 4rem; /* Un poco más grande para que se vea bien */
     font-weight: 400;
     opacity: 0;
     transition: all 0.3s ease;
@@ -295,7 +296,10 @@ body {
 .testimonials-track { display: flex; gap: 2rem; width: max-content; will-change: transform; }
 .track-left { animation: scroll-left 50s linear infinite; }
 .track-right { animation: scroll-right 50s linear infinite; }
-.testimonials-track:hover { animation-play-state: paused; }
+
+/* SE QUITÓ EL PAUSADO AL HACER HOVER PARA QUE NO SE FRENE */
+/* .testimonials-track:hover { animation-play-state: paused; } */
+
 @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
 
