@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. CARRUSEL INFINITO
+    // =========================================
+    // 1. CARRUSEL INFINITO (Testimonios)
+    // =========================================
     const tracks = document.querySelectorAll('.testimonials-track');
     if (tracks.length > 0) {
         tracks.forEach(track => {
@@ -13,7 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. LIGHTBOX (ZOOM IMAGENES DASHBOARD)
+    // =========================================
+    // 2. LIGHTBOX (Zoom Imágenes Dashboard)
+    // =========================================
     const modal = document.getElementById("myModal");
     const modalImg = document.getElementById("img01");
     const captionText = document.getElementById("caption");
@@ -23,14 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modal && imageWrappers.length > 0) {
         const closeModal = () => {
             modal.style.display = "none";
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "auto"; // Reactivar scroll
         };
 
         const openModal = (imgSrc, imgAlt) => {
-            modal.style.display = "flex"; // Usamos flex para centrar
+            modal.style.display = "flex"; 
             modalImg.src = imgSrc;
-            if(captionText) captionText.innerHTML = imgAlt;
-            document.body.style.overflow = "hidden";
+            if(captionText) captionText.innerHTML = imgAlt || '';
+            document.body.style.overflow = "hidden"; // Bloquear scroll
         };
 
         imageWrappers.forEach(wrapper => {
@@ -56,19 +60,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // =========================================
     // 3. CONFIGURACIÓN EMAILJS
-    const EMAILJS_PUBLIC_KEY = 'veUMyXHA-8TBOkGAL'; 
+    // =========================================
+    const EMAILJS_PUBLIC_KEY = 'veUMyXHA-8TBOkGAL'; // Tu Public Key
+    
     if (typeof emailjs !== 'undefined') {
          emailjs.init(EMAILJS_PUBLIC_KEY);
     } else {
-        console.warn("EmailJS no cargado. El formulario no funcionará.");
+        console.error("EmailJS no ha cargado correctamente.");
     }
 
-    // 4. CONFIGURACIÓN TELÉFONO
+    // =========================================
+    // 4. CONFIGURACIÓN INPUT TELÉFONO
+    // =========================================
     const phoneInputField = document.querySelector("#phone");
     const errorMsg = document.querySelector("#error-msg");
     const validMsg = document.querySelector("#valid-msg");
     let iti;
+    
+    // Mensajes de error personalizados
     const errorMap = ["Número inválido", "Código de país inválido", "Muy corto", "Muy largo", "Número inválido"];
 
     const resetInput = () => {
@@ -90,19 +101,22 @@ document.addEventListener('DOMContentLoaded', () => {
             autoPlaceholder: "aggressive", 
         });
 
+        // Validación en tiempo real al escribir
         phoneInputField.addEventListener('input', function(e) {
             if (e.inputType !== 'deleteContentBackward') {
                 const currentVal = phoneInputField.value;
-                const cleanVal = currentVal.replace(/\D/g, '');
-                if (cleanVal.length > 0 && typeof intlTelInputUtils !== 'undefined') {
-                    iti.setNumber(cleanVal); 
-                }
+                const cleanVal = currentVal.replace(/\D/g, ''); // Solo deja números
+                // Esto ayuda a la librería a formatear mejor si el usuario pega números
+                // pero lo dejamos comentado si causa conflictos de UX
+                // if (cleanVal.length > 0 && typeof intlTelInputUtils !== 'undefined') { iti.setNumber(cleanVal); }
             }
             resetInput(); 
         });
     }
 
+    // =========================================
     // 5. ENVÍO DEL FORMULARIO
+    // =========================================
     const landingForm = document.getElementById('landingForm'); 
     const submitButton = landingForm ? landingForm.querySelector('.btn-submit-landing') : null; 
     const emailInput = document.getElementById('email');
@@ -118,12 +132,14 @@ document.addEventListener('DOMContentLoaded', () => {
             resetInput();
             let hasError = false;
 
+            // Validación Email
             if (!validateEmail(emailInput.value)) {
-                alert("El email ingresado no es válido.");
+                alert("Por favor, ingresa un email válido.");
                 emailInput.classList.add('input-error');
                 hasError = true;
             }
 
+            // Validación Teléfono
             if (iti) {
                 if (!iti.isValidNumber()) {
                     const errorCode = iti.getValidationError();
@@ -139,34 +155,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            if (hasError) return;
+            if (hasError) return; // Si hay error, no envía
 
+            // Estado de carga del botón
             const originalBtnText = submitButton.innerHTML;
             submitButton.disabled = true;
             submitButton.innerHTML = 'Enviando... <i class="bx bx-loader bx-spin"></i>'; 
 
+            // Obtener número completo con código de país
             const fullPhoneNumber = iti ? iti.getNumber() : phoneInputField.value;
 
+            // Obtener valor del Radio Button seleccionado
+            const situacionSeleccionada = document.querySelector('input[name="situacion_web"]:checked')?.value || 'No especificado';
+
+            // Parámetros para EmailJS (Deben coincidir con tu plantilla)
             const templateParams = {
                 nombre: document.getElementById('name').value, 
                 email: emailInput.value, 
                 telefono_full: fullPhoneNumber, 
-                servicio_principal: document.getElementById('goal').value, 
-                mensaje_final: document.getElementById('details').value,
-                web_existente: 'No aplica', 
-                web_tipo: 'E-commerce', 
-                fuente: 'Landing Page Ventas'
+                
+                // Datos específicos de esta landing
+                situacion_web: situacionSeleccionada,
+                origen: 'Landing E-commerce (Sin Comisiones)', // Para que sepas de dónde viene
+                
+                // Campos opcionales que podrías necesitar si usas una plantilla genérica
+                servicio_principal: 'E-commerce', 
+                mensaje_final: 'Interesado en tienda sin comisiones.' 
             };
             
+            // IDs de tu servicio (Estos son los que vi en tus archivos anteriores)
             const SERVICE_ID = 'service_jm0kq2j'; 
             const TEMPLATE_ID = 'template_xxpx1qq'; 
 
             emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
                 .then(() => {
-                    window.location.href = '../../gracias.html'; 
+                    // Éxito: Redirigir a página de gracias
+                    // Asegurate que la ruta sea correcta según dónde esté tu archivo gracias.html
+                    window.location.href = '/gracias.html'; 
                 }, (error) => {
                     console.error('Error:', error);
-                    alert('Hubo un error al enviar. Por favor contactanos por WhatsApp.');
+                    alert('Hubo un error al enviar la solicitud. Por favor contactanos directamente por WhatsApp.');
                     submitButton.disabled = false;
                     submitButton.innerHTML = originalBtnText;
                 });
