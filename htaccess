@@ -1,36 +1,26 @@
+# Activar el motor de reescritura de URLs
 RewriteEngine On
 
-# --- REGLA PARA LA LANDING E-COMMERCE ---
-# Esto hace que al entrar a tudominio.com/ecommerce se vea la landing
-RewriteRule ^ecommerce/?$ landing/ecommerce/index.html [L,NC]
-
-# (Si decidiste NO cambiar el nombre y dejarlo como ecommerce.html, usá esta línea en su lugar):
-# RewriteRule ^ecommerce/?$ landing/ecommerce/ecommerce.html [L,NC]
-
-# --- REGLA PARA MANEJAR ERRORES 404 ---
-# Esta es la forma estándar. Si una URL da 404,
-# el servidor mostrará internamente el contenido de /index.html
-ErrorDocument 404 /index.html
-
-# --- REGLAS BÁSICAS (HTTPS e index) ---
-
-# 1. Forzar el uso de HTTPS
+# 1. Forzar el uso de HTTPS para mayor seguridad
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- REGLA ESPECÍFICA PARA LA LANDING E-COMMERCE ---
+# Esto conecta "tudominio.com/ecommerce" con el archivo real en la carpeta
+RewriteRule ^ecommerce/?$ landing/ecommerce/index.html [L,NC]
+
+# --- REGLAS PARA EL RESTO DEL SITIO (URLS AMIGABLES) ---
 
 # 2. Redirigir 'index.html' a la raíz del sitio ('/')
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/
 RewriteRule ^index\.html$ / [R=301,L]
 
-# --- REGLAS PARA URLS AMIGABLES (SIN .html) ---
-
-# 3. Redirigir URLs que se escriban CON .html a la versión SIN .html (SEO)
-RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
-RewriteRule ^ /%1 [R=301,L]
-
-# 4. Servir el .html correspondiente para URLs SIN .html
-#    (Ej: /formulario -> sirve internamente /formulario.html)
-RewriteCond %{REQUEST_FILENAME} !-f
+# 3. Quitar la extensión .html de cualquier archivo para el acceso interno
+#    (Permite acceder a /formulario en vez de /formulario.html)
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f
 RewriteRule ^([^/]+)$ $1.html [L]
+
+# 4. Redirigir URLs que se escriban CON .html a la versión SIN .html
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
