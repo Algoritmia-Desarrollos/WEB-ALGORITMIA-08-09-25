@@ -78,10 +78,6 @@
                         <a href="#formulario-pro" class="btn btn-action btn-lg">
                             QUIERO VENDER SIN COMISIONES <i class='bx bx-right-arrow-alt'></i>
                         </a>
-                        <a href="https://libreriamayoristaleo.com.ar/" target="_blank" rel="noopener" class="btn btn-outline-hero">
-                            <i class='bx bx-show'></i> Ver una Tienda de Ejemplo Real
-                        </a>
-                        
                         <span class="cta-note desktop-only"><i class='bx bxs-check-shield'></i> Garantía de Calidad Algoritmia</span>
                     </div>
                 </div>
@@ -104,7 +100,7 @@
             </div>
         </section>
 
-<section class="lp-dashboard-preview">
+        <section class="lp-dashboard-preview">
             <div class="container">
                 <div class="section-header-lp">
                     <h3>Control Total</h3>
@@ -181,10 +177,13 @@
                 </div>
             </div>
         </section>
+
         <div id="myModal" class="modal-lightbox">
-            <span class="close-modal">&times;</span>
-            <img class="modal-content-img" id="img01" alt="Imagen ampliada">
-            <div id="caption"></div>
+            <div class="close-modal"><i class='bx bx-x'></i></div>
+            <div class="modal-content-wrapper">
+                <img class="modal-content-img" id="img01" alt="Imagen ampliada">
+                <div id="caption"></div>
+            </div>
         </div>
 
         <section class="lp-social-proof">
@@ -258,7 +257,7 @@
                     </div>
                     <div class="testi-card-lp">
                         <div class="testi-header">
-                            <img src="/img/Marketing/9.png" alt="Atermicos Pinamar" class="client-logo-img">
+                            <img src="/img/Marketing/9.png" alt="AtermicosPinamar" class="client-logo-img">
                             <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
                         </div>
                         <p class="testi-quote">"Desde que tenemos la tienda, los pedidos nos llegan ordenados. Ahorramos muchísimo tiempo administrativo."</p>
@@ -412,55 +411,73 @@
             </div>
         </section>
 
-        <section id="formulario-pro" class="lp-form-section">
+<section id="formulario-pro" class="lp-form-section">
             <div class="container">
                 
                 <div class="form-grid-wrapper">
                     
                     <div class="form-column">
                         <div class="form-card-pro animate-on-scroll">
+                            
                             <div class="form-header">
-                                <h2>Empezá a vender profesionalmente</h2>
-                                <p>Analizamos tu negocio y te mostramos cómo funciona.</p>
+                                <div class="scarcity-alert">
+                                    <span class="pulse-dot"></span>
+                                    <p>Solo tomamos 5 proyectos por mes.<br> <strong>Ya se ocuparon 3. Quedan 2.</strong></p>
+                                </div>
+                                <h2>Empezá a vender más</h2>
+                                <p>Déjanos tus datos y te contactamos.</p>
                             </div>
 
                             <form id="landingForm" class="compact-form">
                                 
-                                <div class="input-group">
-                                    <label>Nombre y Apellido</label>
-                                    <input type="text" id="name" name="nombre" placeholder="Tu nombre" required>
-                                </div>
+                                <div class="input-row">
+                                    <div class="input-group half">
+                                        <label>Nombre</label>
+                                        <input type="text" id="name" name="nombre" placeholder="Tu nombre" required>
+                                    </div>
 
-                                <div class="input-group">
-                                    <label>Tu Email</label>
-                                    <input type="email" id="email" name="email" placeholder="tuemail@ejemplo.com" required>
+                                    <div class="input-group half">
+                                        <label>Email</label>
+                                        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                                    </div>
                                 </div>
                                 
                                 <div class="input-group">
-                                    <label>Tu WhatsApp</label>
+                                    <label>WhatsApp</label>
                                     <input type="tel" id="phone" name="telefono" required>
                                     <span id="valid-msg" class="hide">✓ Válido</span>
                                     <span id="error-msg" class="hide"></span>
                                 </div>
 
-                                <div class="input-group text-area-group">
-                                    <label>¿Qué productos vendés y qué stock tenés aprox?</label>
-                                    <textarea id="details" name="detalle_productos" rows="3" placeholder="Ej: Vendo zapatillas, tengo unos 50 modelos distintos..." required></textarea>
-                                </div>
-
                                 <div class="input-group">
-                                    <label>¿Cuál es tu situación actual?</label>
-                                    <select id="goal" name="situacion_web" required>
-                                        <option value="" disabled selected>Seleccioná una opción...</option>
-                                        <option value="No tengo sitio web">No tengo sitio web aún</option>
-                                        <option value="Tengo web pero quiero renovarla">Tengo web pero quiero renovarla</option>
-                                        <option value="Tengo web pero no me gusta el sistema">Tengo web pero no me gusta mi sistema</option>
-                                        <option value="Tengo local físico y quiero digitalizarme">Tengo local físico y quiero digitalizarme</option>
-                                    </select>
+                                    <label>¿Cuál es tu situación?</label>
+                                    <div class="radio-options-grid">
+                                        <div class="radio-option">
+                                            <input type="radio" id="sit_no" name="situacion_web" value="No tengo sitio web" required>
+                                            <label for="sit_no">
+                                                <i class='bx bx-ghost'></i>
+                                                <span>Empezar de Cero</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" id="sit_old" name="situacion_web" value="Tengo web pero quiero renovarla">
+                                            <label for="sit_old">
+                                                <i class='bx bx-refresh'></i>
+                                                <span>Renovar mi Web</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" id="sit_bad" name="situacion_web" value="Tengo web pero no me gusta el sistema">
+                                            <label for="sit_bad">
+                                                <i class='bx bx-error'></i>
+                                                <span>Migrar Sistema</span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <button type="submit" class="btn btn-action btn-block btn-submit-landing">
-                                    SOLICITAR DEMO AHORA <i class='bx bxs-paper-plane'></i>
+                                    QUIERO VENDER MÁS <i class='bx bxs-rocket'></i>
                                 </button>
                             </form>
                         </div>
@@ -468,23 +485,23 @@
 
                     <div class="trust-column animate-on-scroll">
                         <div class="trust-content">
-                            <h3>¿Qué incluye tu Plan E-commerce?</h3>
+                            <h3>Tu Plan E-commerce incluye:</h3>
                             <ul class="benefit-list">
                                 <li>
                                     <i class='bx bxs-check-circle'></i>
-                                    <span><strong>0% Comisiones</strong> por venta vía WhatsApp.</span>
+                                    <span><strong>0% Comisiones</strong> por venta.</span>
                                 </li>
                                 <li>
                                     <i class='bx bxs-check-circle'></i>
-                                    <span><strong>Gestión Fácil:</strong> Panel tipo Excel incluido.</span>
+                                    <span><strong>Gestión Fácil:</strong> Panel tipo Excel.</span>
                                 </li>
                                 <li>
                                     <i class='bx bxs-check-circle'></i>
-                                    <span><strong>Diseño Premium</strong> 100% adaptado a móviles.</span>
+                                    <span><strong>Diseño Premium</strong> Mobile First.</span>
                                 </li>
                                 <li>
                                     <i class='bx bxs-video'></i>
-                                    <span><strong>Video Tutoriales</strong> mostrando cómo modificar y hacer todo.</span>
+                                    <span><strong>Video Tutoriales</strong> de uso.</span>
                                 </li>
                             </ul>
 
@@ -493,23 +510,14 @@
                                     <i class='bx bxs-user-voice'></i> 
                                 </div>
                                 <div class="support-text">
-                                    <h4>Soporte Post-Venta Real</h4>
-                                    <p>Nada de robots. Luca y el equipo te enseñan a usar todo con <strong>Video Tutoriales paso a paso</strong> y te ayudan si algo sale mal.</p>
-                                </div>
-                            </div>
-
-                            <div class="guarantee-box">
-                                <i class='bx bxs-shield-check'></i>
-                                <div>
-                                    <h4>Garantía Algoritmia</h4>
-                                    <p>Tu web funcionando perfecto o te devolvemos el dinero.</p>
+                                    <h4>Soporte Real</h4>
+                                    <p>Luca y el equipo te enseñan a usar todo paso a paso. No estás solo.</p>
                                 </div>
                             </div>
 
                             <div class="support-mini">
-                                <p>¿Tenés dudas antes de empezar?</p>
                                 <a href="https://wa.me/5493476245523" target="_blank" class="link-ws">
-                                    <i class='bx bxl-whatsapp'></i> Hablar con un especialista
+                                    <i class='bx bxl-whatsapp'></i> ¿Dudas? Hablar con especialista
                                 </a>
                             </div>
                         </div>
@@ -518,7 +526,6 @@
                 </div>
             </div>
         </section>
-
         <footer class="lp-footer">
             <p>&copy; 2025 Algoritmia Desarrollos. Potenciamos tu negocio.</p>
         </footer>
