@@ -315,7 +315,7 @@ body {
 
 /* Tablets (hasta 991px): Transición suave a 2 columnas */
 @media screen and (max-width: 991px) {
-    .lp-title { font-size: 3rem; }
+    .lp-title { font-size: 2.4rem; }
     .lp-grid { gap: 2rem; }
     
     /* CAMBIO: En tablet bajamos a 2 columnas para que no queden muy apretadas */
@@ -332,7 +332,7 @@ body {
     .lp-hero {
         min-height: 100svh;
         padding-top: 5.5rem;
-        padding-bottom: 1rem;
+        padding-bottom: 3rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -434,7 +434,7 @@ body {
     .testi-card-lp { width: 85vw; padding: 1.5rem; }
     .testimonials-track { gap: 1rem; }
     .lp-form-section { padding: 3rem 1rem; }
-    .form-card-pro { padding: 1.5rem; }
+    .form-card-pro { padding: 1rem; }
     
     .input-group input, .input-group select, .input-group textarea { font-size: 16px !important; }
     
