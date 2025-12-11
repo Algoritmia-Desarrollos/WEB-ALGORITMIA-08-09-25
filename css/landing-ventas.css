@@ -172,29 +172,36 @@ body {
     opacity: 0.7;
 }
 
-/* ICONO DE LUPA (CORREGIDO) */
-.dash-img-wrapper::after {
-    /* Código Unicode para 'bx-zoom-in' (Lupa con +) */
-    content: '\eb88'; 
-    font-family: 'boxicons' !important;
+/* --- CAMBIO: Estilo para el ícono puesto en el HTML --- */
+
+/* css/landing-ventas.css */
+
+.dash-img-wrapper i {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0);
+    /* Quitamos el scale(0) un momento si querés ver si está ahí, 
+       pero para el efecto final usalo así: */
+    transform: translate(-50%, -50%) scale(0); 
     color: white;
-    font-size: 4rem; /* Un poco más grande para que se vea bien */
-    font-weight: 400;
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 2;
-    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    font-size: 4rem; 
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote suave */
+    z-index: 10; /* Aumentamos z-index por las dudas */
+    text-shadow: 0 4px 15px rgba(0,0,0,0.9);
     pointer-events: none;
+    
+    /* AGREGADO IMPORTANTE: */
+    display: block; 
+    line-height: 1;
 }
 
-.dash-card:hover .dash-img-wrapper::after {
+/* Efecto Hover */
+.dash-card:hover .dash-img-wrapper i {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
 }
+
+/* (Asegúrate de BORRAR o comentar la regla anterior que decía .dash-img-wrapper::after) */
 
 .dash-content { padding: 1.5rem; }
 .dash-content h4 { color: white; font-size: 1.25rem; margin-bottom: 0.8rem; font-weight: 700; }
