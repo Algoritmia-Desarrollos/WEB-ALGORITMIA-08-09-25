@@ -1,4 +1,4 @@
-/* ==================== LANDING VENTAS FINAL ==================== */
+/* ==================== LANDING E-COMMERCE (Estilos Específicos) ==================== */
 
 body {
     background-color: var(--background); /* Negro #040404 */
@@ -57,7 +57,7 @@ body {
     box-shadow: 0 15px 40px rgba(0,0,0,0.5); background: #000; border: 1px solid rgba(255,255,255,0.1);
 }
 .video-container iframe,
-.video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
 
 /* --- CARRUSEL DE TESTIMONIOS --- */
 .lp-social-proof {
@@ -74,9 +74,7 @@ body {
 }
 .testi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 
-/* AUMENTO DE TAMAÑO DE LOGOS */
 .client-logo-img { height: 65px; width: auto; max-width: 160px; object-fit: contain; }
-
 .client-logo-text { font-size: 1.4rem; color: white; font-weight: 800; letter-spacing: -0.5px; text-transform: uppercase; margin: 0; }
 .font-serif { font-family: serif; letter-spacing: 1px; }
 
@@ -84,9 +82,16 @@ body {
 .testi-quote { font-size: 0.95rem; color: var(--gray-600); font-style: italic; line-height: 1.5; margin-bottom: 1rem; }
 .testi-author { margin-top: auto; font-size: 0.85rem; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* --- FEATURES --- */
+/* --- FEATURES (WEB / DESKTOP: 3 Columnas) --- */
 .lp-features { padding: 5rem 0; }
-.features-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+
+.features-grid-2col { 
+    display: grid; 
+    /* CAMBIO: 3 Columnas para Desktop */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 2.5rem; 
+}
+
 .feature-card { background: transparent; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; transition: transform 0.3s ease; display: flex; gap: 1.5rem; align-items: flex-start; }
 .feature-card:hover { background: var(--secondaryBg); border-color: var(--accent-color); transform: translateY(-3px); }
 .icon-box { font-size: 2.2rem; color: var(--accent-color); flex-shrink: 0; background: rgba(133,59,206,0.1); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
@@ -114,7 +119,11 @@ body {
 .input-group label { display: block; margin-bottom: 0.4rem; font-size: 0.9rem; font-weight: 500; color: var(--gray-700); }
 .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 0.9rem; background: var(--background); border: 1px solid var(--gray-300); border-radius: 6px; color: white; font-family: var(--body-font); font-size: 1rem; }
 .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--accent-color); outline: none; }
+.text-area-group { margin-top: 15px; }
 .lp-footer { text-align: center; padding: 2rem; color: var(--gray-500); border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
+
+/* --- UTILITIES --- */
+.centered-cta-container { text-align: center; margin-top: 4rem; }
 
 /* ==================== DASHBOARD & LIGHTBOX ==================== */
 
@@ -157,7 +166,6 @@ body {
     cursor: zoom-in;
 }
 
-/* Imagen "Thumbnail" */
 .dash-img-wrapper img {
     width: 100%;
     height: 100%;
@@ -172,36 +180,26 @@ body {
     opacity: 0.7;
 }
 
-/* --- CAMBIO: Estilo para el ícono puesto en el HTML --- */
-
-/* css/landing-ventas.css */
-
+/* --- ÍCONO DE LUPA --- */
 .dash-img-wrapper i {
     position: absolute;
     top: 50%;
     left: 50%;
-    /* Quitamos el scale(0) un momento si querés ver si está ahí, 
-       pero para el efecto final usalo así: */
     transform: translate(-50%, -50%) scale(0); 
     color: white;
     font-size: 4rem; 
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote suave */
-    z-index: 10; /* Aumentamos z-index por las dudas */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    z-index: 10;
     text-shadow: 0 4px 15px rgba(0,0,0,0.9);
     pointer-events: none;
-    
-    /* AGREGADO IMPORTANTE: */
     display: block; 
     line-height: 1;
 }
 
-/* Efecto Hover */
 .dash-card:hover .dash-img-wrapper i {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
 }
-
-/* (Asegúrate de BORRAR o comentar la regla anterior que decía .dash-img-wrapper::after) */
 
 .dash-content { padding: 1.5rem; }
 .dash-content h4 { color: white; font-size: 1.25rem; margin-bottom: 0.8rem; font-weight: 700; }
@@ -268,8 +266,6 @@ body {
     font-size: 1.1rem;
 }
 
-/* ==================== ESTILOS TRANSFERIDOS DE ECOMMERCE.HTML ==================== */
-
 /* FIX INPUT WHATSAPP */
 .iti { width: 100%; display: block; margin-bottom: 5px; }
 .iti__tel-input {
@@ -304,9 +300,6 @@ body {
 .track-left { animation: scroll-left 50s linear infinite; }
 .track-right { animation: scroll-right 50s linear infinite; }
 
-/* SE QUITÓ EL PAUSADO AL HACER HOVER PARA QUE NO SE FRENE */
-/* .testimonials-track:hover { animation-play-state: paused; } */
-
 @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
 
@@ -316,84 +309,29 @@ body {
 .hide { display: none !important; }
 .input-error { border-color: #FF5252 !important; }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-    .lp-hero { padding-top: 5rem; padding-bottom: 2rem; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; }
-    .video-container { max-height: 30vh; }
-    .testi-card-lp { width: 280px; padding: 1.2rem; }
-    .testimonials-track { gap: 1rem; }
-    /* Ajuste Dashboard Mobile */
-    .dashboard-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .dash-img-wrapper { height: 220px; }
-    .modal-content-img { width: 100%; max-width: 95%; }
-}
-
-
-/* --- TARJETAS DE CARACTERÍSTICAS (DISEÑO SOLICITADO) --- */
-    
-    .features-grid-2col {
-        grid-template-columns: 1fr; /* Una sola columna para que sean anchas */
-        gap: 1.5rem;
-        padding: 0 1rem;
-    }
-
-    .feature-card {
-        display: grid;
-        /* Definimos 2 columnas: una para el icono (auto) y otra para el resto (1fr) */
-        grid-template-columns: auto 1fr; 
-        /* Definimos filas automáticas */
-        grid-template-rows: auto auto; 
-        gap: 0.8rem 1rem; /* Gap vertical 0.8rem, Gap horizontal 1rem */
-        padding: 1.5rem;
-        text-align: left; /* Alineación izquierda */
-        align-items: center; /* Centrar verticalmente el título con el icono */
-    }
-
-    .icon-box {
-        grid-row: 1;      /* Fila 1 */
-        grid-column: 1;   /* Columna 1 */
-        margin-bottom: 0; /* Quitamos margen porque usaremos la grilla */
-        width: 50px;
-        height: 50px;
-        font-size: 2rem;
-        /* Aseguramos que el icono no se deforme */
-        flex-shrink: 0; 
-    }
-
-    /* TRUCO: "Rompemos" el contenedor .feature-content para que sus hijos (h4 y p) 
-       se comporten como hijos directos de la grilla .feature-card */
-    .feature-content {
-        display: contents; 
-    }
-
-    .feature-content h4 {
-        grid-row: 1;      /* Fila 1 (Misma que el icono) */
-        grid-column: 2;   /* Columna 2 (A la derecha del icono) */
-        margin-bottom: 0;
-        font-size: 1.1rem;
-        line-height: 1.2;
-    }
-
-    .feature-content p {
-        grid-row: 2;          /* Fila 2 (Abajo) */
-        grid-column: 1 / -1;  /* Ocupa TODO el ancho (desde linea 1 hasta final) */
-        margin-top: 0;
-        color: #b0b0b0;
-        font-size: 0.95rem;
-    }
-
-
-    /* =========================================
-   RESPONSIVE DESIGN (MÓVIL OPTIMIZADO)
+/* =========================================
+   RESPONSIVE DESIGN (FINAL)
    ========================================= */
 
+/* Tablets (hasta 991px): Transición suave a 2 columnas */
+@media screen and (max-width: 991px) {
+    .lp-title { font-size: 3rem; }
+    .lp-grid { gap: 2rem; }
+    
+    /* CAMBIO: En tablet bajamos a 2 columnas para que no queden muy apretadas */
+    .features-grid-2col { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 1.5rem; 
+    }
+}
+
+/* Móviles (hasta 768px): Optimización 100% */
 @media screen and (max-width: 768px) {
     
     /* --- HERO SECTION --- */
     .lp-hero {
-        /* Ocupamos toda la pantalla y centramos */
         min-height: 100svh;
-        padding-top: 5.5rem; /* Ajuste para que no se pegue al header */
+        padding-top: 5.5rem;
         padding-bottom: 1rem;
         display: flex;
         flex-direction: column;
@@ -404,15 +342,14 @@ body {
     .lp-grid {
         display: flex;
         flex-direction: column;
-        /* AQUÍ ESTÁ LA CLAVE DEL ESPACIADO: */
-        gap: 1.5rem; /* Reducido para acercar el video al texto */
+        gap: 1.5rem; 
         text-align: center;
         width: 100%;
         margin: 0;
     }
 
     .lp-subtitle {
-        margin-bottom: 1.5rem; /* Espacio justo antes del botón */
+        margin-bottom: 1.5rem; 
         font-size: 1rem;
         line-height: 1.4;
         padding: 0 10px;
@@ -421,27 +358,74 @@ body {
     /* --- BOTÓN EN UNA LÍNEA --- */
     .btn-action {
         width: 100%;
-        max-width: 100%; /* Aprovecha todo el ancho disponible */
-        padding: 1rem 0.5rem; /* Reducimos padding lateral */
-        font-size: 0.8rem; /* Letra ajustada para que entre todo */
+        max-width: 100%; 
+        padding: 1rem 0.5rem; 
+        font-size: 0.8rem; 
         font-weight: 800;
-        white-space: nowrap; /* Fuerza el texto en una sola línea */
+        white-space: nowrap; 
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 8px; /* Espacio entre texto y flecha */
+        gap: 8px; 
     }
     
     .btn-action i {
-        font-size: 1.1rem; /* Flecha un poco más grande para compensar */
+        font-size: 1.1rem; 
     }
 
     /* --- VIDEO --- */
     .video-container {
         width: 100%;
-        max-height: 30vh; /* Altura controlada */
-        margin-top: 0.5rem; /* Mínimo margen superior */
+        max-height: 30vh; 
+        margin-top: 0.5rem; 
         box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* --- TARJETAS DE CARACTERÍSTICAS (TU DISEÑO PERSONALIZADO MÓVIL) --- */
+    .features-grid-2col {
+        grid-template-columns: 1fr; /* Una columna en móvil */
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    .feature-card {
+        display: grid;
+        grid-template-columns: auto 1fr; 
+        grid-template-rows: auto auto; 
+        gap: 0.8rem 1rem; 
+        padding: 1.5rem;
+        text-align: left; 
+        align-items: center; 
+    }
+
+    .icon-box {
+        grid-row: 1;      
+        grid-column: 1;   
+        margin-bottom: 0; 
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+        flex-shrink: 0; 
+    }
+
+    .feature-content {
+        display: contents; 
+    }
+
+    .feature-content h4 {
+        grid-row: 1;      
+        grid-column: 2;   
+        margin-bottom: 0;
+        font-size: 1.1rem;
+        line-height: 1.2;
+    }
+
+    .feature-content p {
+        grid-row: 2;          
+        grid-column: 1 / -1;  
+        margin-top: 0;
+        color: #b0b0b0;
+        font-size: 0.95rem;
     }
 
     /* --- RESTO DE SECCIONES (Ajustes generales) --- */
@@ -449,66 +433,178 @@ body {
     .dash-img-wrapper { height: 200px; }
     .testi-card-lp { width: 85vw; padding: 1.5rem; }
     .testimonials-track { gap: 1rem; }
-    .features-grid-2col { grid-template-columns: 1fr; gap: 1.5rem; }
-    .feature-card { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
     .lp-form-section { padding: 3rem 1rem; }
     .form-card-pro { padding: 1.5rem; }
     
-    /* Evita zoom en inputs de iPhone */
     .input-group input, .input-group select, .input-group textarea { font-size: 16px !important; }
     
     .modal-content-img { width: 95%; }
 }
 
-/* --- TARJETAS DE CARACTERÍSTICAS (DISEÑO SOLICITADO) --- */
+/* ... (Tus estilos anteriores se mantienen) ... */
+
+/* --- NUEVA ESTRUCTURA DEL FORMULARIO (GRID) --- */
+.form-grid-wrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* Formulario un poco más ancho que el texto */
+    gap: 4rem;
+    align-items: flex-start; /* Alineado arriba */
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Ajustes de la tarjeta del formulario para que encaje en la grilla */
+.form-card-pro {
+    margin: 0; /* Quitamos margin auto porque ahora usa grid */
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Estilos de la Columna Derecha (Trust Box) */
+.trust-content {
+    color: white;
+    padding-top: 1rem;
+}
+
+.trust-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: white;
+    line-height: 1.2;
+}
+
+.benefit-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 3rem;
+}
+
+.benefit-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+    color: var(--gray-500);
+}
+
+.benefit-list li i {
+    color: #00E676; /* Verde check */
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.benefit-list li strong {
+    color: white;
+}
+
+/* Caja de Garantía */
+.guarantee-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.guarantee-box i {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+}
+
+.guarantee-box h4 {
+    margin: 0 0 5px 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.guarantee-box p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    line-height: 1.4;
+}
+
+/* Link de Soporte */
+.support-mini p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+
+.link-ws {
+    color: #00E676;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s;
+}
+
+.link-ws:hover {
+    color: #00C853;
+    text-decoration: underline;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN ACTUALIZADO
+   ========================================= */
+
+/* Tablets (hasta 991px) */
+@media screen and (max-width: 991px) {
+    /* ... (Reglas anteriores) ... */
     
-    .features-grid-2col {
-        grid-template-columns: 1fr; /* Una sola columna para que sean anchas */
-        gap: 1.5rem;
-        padding: 0 1rem;
+    /* CAMBIO: En tablet pasamos a columna única para el formulario también */
+    .form-grid-wrapper {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        max-width: 600px; /* Limitamos ancho para que no se vea gigante */
+    }
+    
+    .trust-content {
+        text-align: center; /* Centramos el texto de confianza en tablet */
+        padding-top: 0;
+    }
+    
+    .benefit-list li {
+        justify-content: flex-start; /* Mantenemos lista alineada izq para leer bien */
+        text-align: left;
+    }
+    
+    .guarantee-box {
+        text-align: left;
+    }
+}
+
+/* Móviles (hasta 768px) */
+@media screen and (max-width: 768px) {
+    /* ... (Reglas anteriores del Hero, etc.) ... */
+
+    /* AJUSTE FORMULARIO MÓVIL */
+    .form-grid-wrapper {
+        gap: 3rem;
     }
 
-    .feature-card {
-        display: grid;
-        /* Definimos 2 columnas: una para el icono (auto) y otra para el resto (1fr) */
-        grid-template-columns: auto 1fr; 
-        /* Definimos filas automáticas */
-        grid-template-rows: auto auto; 
-        gap: 0.8rem 1rem; /* Gap vertical 0.8rem, Gap horizontal 1rem */
-        padding: 1.5rem;
-        text-align: left; /* Alineación izquierda */
-        align-items: center; /* Centrar verticalmente el título con el icono */
+    .trust-content h3 {
+        font-size: 1.5rem;
+        text-align: center;
     }
-
-    .icon-box {
-        grid-row: 1;      /* Fila 1 */
-        grid-column: 1;   /* Columna 1 */
-        margin-bottom: 0; /* Quitamos margen porque usaremos la grilla */
-        width: 50px;
-        height: 50px;
-        font-size: 2rem;
-        /* Aseguramos que el icono no se deforme */
-        flex-shrink: 0; 
-    }
-
-    /* TRUCO: "Rompemos" el contenedor .feature-content para que sus hijos (h4 y p) 
-       se comporten como hijos directos de la grilla .feature-card */
-    .feature-content {
-        display: contents; 
-    }
-
-    .feature-content h4 {
-        grid-row: 1;      /* Fila 1 (Misma que el icono) */
-        grid-column: 2;   /* Columna 2 (A la derecha del icono) */
-        margin-bottom: 0;
-        font-size: 1.1rem;
-        line-height: 1.2;
-    }
-
-    .feature-content p {
-        grid-row: 2;          /* Fila 2 (Abajo) */
-        grid-column: 1 / -1;  /* Ocupa TODO el ancho (desde linea 1 hasta final) */
-        margin-top: 0;
-        color: #b0b0b0;
+    
+    /* Hacemos la lista un poco más compacta */
+    .benefit-list li {
         font-size: 0.95rem;
+        gap: 10px;
     }
+    
+    /* En móvil, ponemos la garantía al final o menos destacada si ocupa mucho */
+    .guarantee-box {
+        padding: 1rem;
+    }
+}
+
+

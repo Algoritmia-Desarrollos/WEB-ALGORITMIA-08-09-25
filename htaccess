@@ -1,5 +1,11 @@
-# Activar el motor de reescritura de URLs
 RewriteEngine On
+
+# --- REGLA PARA LA LANDING E-COMMERCE ---
+# Esto hace que al entrar a tudominio.com/ecommerce se vea la landing
+RewriteRule ^ecommerce/?$ landing/ecommerce/index.html [L,NC]
+
+# (Si decidiste NO cambiar el nombre y dejarlo como ecommerce.html, usá esta línea en su lugar):
+# RewriteRule ^ecommerce/?$ landing/ecommerce/ecommerce.html [L,NC]
 
 # --- REGLA PARA MANEJAR ERRORES 404 ---
 # Esta es la forma estándar. Si una URL da 404,

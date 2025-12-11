@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // ==========================================
     // 1. CARRUSEL INFINITO (DUAL ROW)
-    // ==========================================
     const tracks = document.querySelectorAll('.testimonials-track');
     if (tracks.length > 0) {
         tracks.forEach(track => {
@@ -15,26 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==========================================
     // 2. LIGHTBOX (ZOOM IMAGENES DASHBOARD)
-    // ==========================================
     const modal = document.getElementById("myModal");
     const modalImg = document.getElementById("img01");
     const captionText = document.getElementById("caption");
     const closeBtn = document.querySelector(".close-modal");
-    
-    // Seleccionamos todos los wrappers de imágenes del dashboard
     const imageWrappers = document.querySelectorAll('.dash-img-wrapper');
 
     if (modal && imageWrappers.length > 0) {
-        
-        // Función para cerrar modal
         const closeModal = () => {
             modal.style.display = "none";
-            document.body.style.overflow = "auto"; // Reactivar scroll
+            document.body.style.overflow = "auto";
         };
 
-        // Asignar evento click a cada imagen
         imageWrappers.forEach(wrapper => {
             wrapper.addEventListener('click', function() {
                 const img = this.querySelector('img');
@@ -42,28 +33,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     modal.style.display = "block";
                     modalImg.src = img.src;
                     captionText.innerHTML = img.alt;
-                    document.body.style.overflow = "hidden"; // Bloquear scroll
+                    document.body.style.overflow = "hidden";
                 }
             });
         });
 
-        // Cerrar con la X
         if (closeBtn) closeBtn.onclick = closeModal;
-
-        // Cerrar con click afuera
         modal.onclick = (e) => {
             if (e.target === modal) closeModal();
         };
-
-        // Cerrar con ESC
         document.addEventListener('keydown', (e) => {
             if (e.key === "Escape" && modal.style.display === "block") closeModal();
         });
     }
 
-    // ==========================================
     // 3. CONFIGURACIÓN EMAILJS
-    // ==========================================
     const EMAILJS_PUBLIC_KEY = 'veUMyXHA-8TBOkGAL'; 
     if (typeof emailjs !== 'undefined') {
          emailjs.init(EMAILJS_PUBLIC_KEY);
@@ -71,15 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn("EmailJS no cargado. El formulario no funcionará.");
     }
 
-    // ==========================================
-    // 4. CONFIGURACIÓN TELÉFONO (INTL-TEL-INPUT)
-    // ==========================================
+    // 4. CONFIGURACIÓN TELÉFONO
     const phoneInputField = document.querySelector("#phone");
     const errorMsg = document.querySelector("#error-msg");
     const validMsg = document.querySelector("#valid-msg");
     let iti;
-
-    // Mapa de errores
     const errorMap = ["Número inválido", "Código de país inválido", "Muy corto", "Muy largo", "Número inválido"];
 
     const resetInput = () => {
@@ -92,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (phoneInputField) {
-        // Inicializar librería
         iti = window.intlTelInput(phoneInputField, {
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
             initialCountry: "ar",
@@ -102,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
             autoPlaceholder: "aggressive", 
         });
 
-        // Formateo automático de espacios
         phoneInputField.addEventListener('input', function(e) {
             if (e.inputType !== 'deleteContentBackward') {
                 const currentVal = phoneInputField.value;
@@ -115,9 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==========================================
     // 5. ENVÍO DEL FORMULARIO
-    // ==========================================
     const landingForm = document.getElementById('landingForm'); 
     const submitButton = landingForm ? landingForm.querySelector('.btn-submit-landing') : null; 
     const emailInput = document.getElementById('email');
@@ -133,14 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
             resetInput();
             let hasError = false;
 
-            // Validar Email
             if (!validateEmail(emailInput.value)) {
                 alert("El email ingresado no es válido.");
                 emailInput.classList.add('input-error');
                 hasError = true;
             }
 
-            // Validar Teléfono (Estricto)
             if (iti) {
                 if (!iti.isValidNumber()) {
                     const errorCode = iti.getValidationError();
@@ -158,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (hasError) return;
 
-            // Enviar
             const originalBtnText = submitButton.innerHTML;
             submitButton.disabled = true;
             submitButton.innerHTML = 'Enviando... <i class="bx bx-loader bx-spin"></i>'; 
@@ -181,7 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
                 .then(() => {
-                    window.location.href = 'gracias.html'; 
+                    // Ruta de gracias corregida (subir dos niveles)
+                    window.location.href = '../../gracias.html'; 
                 }, (error) => {
                     console.error('Error:', error);
                     alert('Hubo un error al enviar. Por favor contactanos por WhatsApp.');
