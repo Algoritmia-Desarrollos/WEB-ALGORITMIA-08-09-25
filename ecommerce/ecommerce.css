@@ -315,7 +315,7 @@ body {
 
 /* Tablets (hasta 991px): Transición suave a 2 columnas */
 @media screen and (max-width: 991px) {
-    .lp-title { font-size: 2.4rem; }
+    .lp-title { font-size: 2rem; }
     .lp-grid { gap: 2rem; }
     
     /* CAMBIO: En tablet bajamos a 2 columnas para que no queden muy apretadas */
@@ -342,7 +342,7 @@ body {
     .lp-grid {
         display: flex;
         flex-direction: column;
-        gap: 1.5rem; 
+        gap: 1rem; 
         text-align: center;
         width: 100%;
         margin: 0;
