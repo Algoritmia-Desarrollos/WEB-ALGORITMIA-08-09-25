@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // === FIN BANDERITAS ===
 
     // === INICIALIZACIÓN DE EMAILJS ===
-    const EMAILJS_PUBLIC_KEY = '3bkxlvg4klx2DB5rd'; 
+    const EMAILJS_PUBLIC_KEY = 'veUMyXHA-8TBOkGAL'; 
     if (typeof emailjs !== 'undefined') { // Verificar que la librería cargó
          emailjs.init(EMAILJS_PUBLIC_KEY);
     } else {

@@ -14,8 +14,67 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" />
+
     <link rel="stylesheet" href="css/style.css"> 
     <link rel="stylesheet" href="css/landing-ventas.css">
+
+    <style>
+        /* FIX INPUT WHATSAPP */
+        .iti { width: 100%; display: block; margin-bottom: 5px; }
+        .iti__tel-input {
+            background-color: var(--background, #040404) !important;
+            border: 1px solid #333 !important;
+            color: #fff !important; 
+            border-radius: 6px !important;
+            padding-left: 90px !important; 
+            padding-top: 0.9rem !important;
+            padding-bottom: 0.9rem !important;
+            width: 100% !important;
+        }
+        .iti__flag-container {
+            border-radius: 6px 0 0 6px !important;
+            border-right: 1px solid #333;
+        }
+        .iti__selected-dial-code { color: #ffffff !important; font-weight: 600; }
+        .iti__country-list {
+            background-color: #1a1a1a !important;
+            color: #fff !important;
+            border: 1px solid #333 !important;
+            z-index: 999 !important;
+        }
+
+        /* CARRUSEL INFINITO */
+        .testimonials-carousel {
+            display: flex; flex-direction: column; gap: 1.5rem; width: 100%; position: relative; overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+        .testimonials-track { display: flex; gap: 2rem; width: max-content; will-change: transform; }
+        .track-left { animation: scroll-left 50s linear infinite; }
+        .track-right { animation: scroll-right 50s linear infinite; }
+        .testimonials-track:hover { animation-play-state: paused; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+
+        /* Validaciones */
+        #valid-msg { color: #00E676; font-size: 0.8rem; margin-top: 5px; display: block; }
+        #error-msg { color: #FF5252; font-size: 0.8rem; margin-top: 5px; display: block; }
+        .hide { display: none !important; }
+        .input-error { border-color: #FF5252 !important; }
+
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .lp-hero { padding-top: 5rem; padding-bottom: 2rem; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; }
+            .video-container { max-height: 30vh; }
+            .testi-card-lp { width: 280px; padding: 1.2rem; }
+            .testimonials-track { gap: 1rem; }
+            /* Ajuste Dashboard Mobile */
+            .dashboard-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .dash-img-wrapper { height: 220px; }
+            .modal-content-img { width: 100%; max-width: 95%; }
+        }
+    </style>
 
     <script>
     !function(f,b,e,v,n,t,s)
@@ -34,7 +93,6 @@
     /></noscript>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    
 </head>
 <body>
 
@@ -69,23 +127,101 @@
                     </div>
                 </div>
 
-       <div class="video-container">
-    <video 
-        width="100%" 
-        height="100%" 
-        controls 
-        playsinline 
-        preload="metadata"
-        poster="img/fondoalgo4.webp" 
-        style="object-fit: cover; border-radius: 12px;">
-        
-        <source src="videoportada.mp4" type="video/mp4">
-        
-        Tu navegador no soporta la etiqueta de video.
-    </video>
-</div>
+                <div class="video-container">
+                    <video 
+                        width="100%" 
+                        height="100%" 
+                        controls 
+                        playsinline 
+                        preload="metadata"
+                        poster="img/portada.webp" 
+                        style="object-fit: cover; border-radius: 12px;">
+                        <source src="videoportada.mp4" type="video/mp4">
+                        Tu navegador no soporta la etiqueta de video.
+                    </video>
+                </div>
             </div>
         </section>
+
+        <section class="lp-dashboard-preview">
+            <div class="container">
+                <div class="section-header-lp">
+                    <h3>Control Total</h3>
+                    <h2>Tu negocio en piloto automático</h2>
+                    <p>Hacé clic en las imágenes para ver el detalle.</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    
+                    <div class="dash-card">
+                        <div class="dash-img-wrapper">
+                            <img src="img/Ingresos.png" alt="Panel de Ingresos - Control financiero total" class="zoomable-img" loading="lazy">
+                        </div>
+                        <div class="dash-content">
+                            <h4>Ingresos en Tiempo Real</h4>
+                            <p>Visualizá tus ganancias al instante. Filtrá por día, mes o año y tené el control financiero total.</p>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-img-wrapper">
+                            <img src="img/Pedidos.png" alt="Gestión de Pedidos - Detalle de clientes" class="zoomable-img" loading="lazy">
+                        </div>
+                        <div class="dash-content">
+                            <h4>Gestión de Pedidos</h4>
+                            <p>Registro detallado de cada venta. Facturación simple y datos del comprador a mano.</p>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-img-wrapper">
+                            <img src="img/Productos.png" alt="Editor Masivo - Tipo Excel fácil" class="zoomable-img" loading="lazy">
+                        </div>
+                        <div class="dash-content">
+                            <h4>Editor Masivo (Tipo Excel)</h4>
+                            <p>La herramienta favorita. Modificá precios y stock masivamente en segundos.</p>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-img-wrapper">
+                            <img src="img/Trafico.png" alt="Analíticas de Visitas - Datos reales" class="zoomable-img" loading="lazy">
+                        </div>
+                        <div class="dash-content">
+                            <h4>Analíticas de Visitas</h4>
+                            <p>Conocé a tu audiencia. Mirá cuánta gente entra y desde qué país.</p>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-img-wrapper">
+                            <img src="img/categorizado.jpg" alt="Categorización Web - Menú organizado" class="zoomable-img" loading="lazy">
+                        </div>
+                        <div class="dash-content">
+                            <h4>Categorización Inteligente</h4>
+                            <p>Organización total. Tus clientes encuentran rápido lo que buscan gracias a un menú claro y visual en tu web.</p>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-img-wrapper">
+                            <img src="img/cupones.png" alt="Sistema de Cupones - Marketing" class="zoomable-img" loading="lazy">
+                        </div>
+                        <div class="dash-content">
+                            <h4>Motor de Cupones</h4>
+                            <p>Marketing potente. Creá códigos de descuento (ej: HOTSALE) con reglas personalizadas para fidelizar clientes.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <div id="myModal" class="modal-lightbox">
+            <span class="close-modal">&times;</span>
+            <img class="modal-content-img" id="img01">
+            <div id="caption"></div>
+        </div>
 
         <section class="lp-social-proof">
             <div class="container">
@@ -96,63 +232,83 @@
             </div>
             
             <div class="testimonials-carousel">
-                <div class="testimonials-track">
-                    
+                
+                <div class="testimonials-track track-left">
                     <div class="testi-card-lp">
                         <div class="testi-header">
                             <h4 class="client-logo-text font-serif">CASE ROSSI</h4>
                             <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
                         </div>
-                        <p class="testi-quote">"El sistema nos permitió organizar <strong>más de 600 productos</strong> de informática fácilmente. El catálogo quedó impecable y muy profesional."</p>
+                        <p class="testi-quote">"El sistema nos permitió organizar <strong>más de 600 productos</strong> fácilmente. El catálogo quedó impecable."</p>
                         <div class="testi-author">Case Rossi Informática</div>
                     </div>
-
                     <div class="testi-card-lp">
                         <div class="testi-header">
                             <img src="img/Marketing/7.png" alt="Librería Leo" class="client-logo-img white-logo-filter">
                             <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
                         </div>
-                        <p class="testi-quote">"Ahora está todo administrado. Tenemos cargados <strong>más de 1500 productos</strong> y la gestión es súper fluida. Ideal para mayoristas."</p>
+                        <p class="testi-quote">"Tenemos cargados <strong>más de 1500 productos</strong> y la gestión es súper fluida. Ideal para mayoristas."</p>
                         <div class="testi-author">Librería Mayorista Leo</div>
                     </div>
-
                     <div class="testi-card-lp">
                         <div class="testi-header">
                             <h4 class="client-logo-text font-serif">BURMÉS</h4>
                             <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
                         </div>
-                        <p class="testi-quote">"Mis clientas aman los cupones. El sistema automatiza todo y yo cierro la venta por WhatsApp. Mis ventas subieron un 40%."</p>
+                        <p class="testi-quote">"El sistema automatiza todo y yo cierro la venta por WhatsApp. Mis ventas subieron un 40%."</p>
                         <div class="testi-author">Burmés Deco</div>
                     </div>
+                    <div class="testi-card-lp">
+                        <div class="testi-header">
+                            <img src="img/Marketing/8.png" alt="Puertas Jack" class="client-logo-img white-logo-filter">
+                            <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
+                        </div>
+                        <p class="testi-quote">"Vendemos puertas blindadas directo desde la web. La confianza que genera el sitio es clave para cerrar ventas grandes."</p>
+                        <div class="testi-author">Puertas Jack</div>
+                    </div>
+                </div>
 
+                <div class="testimonials-track track-right">
                     <div class="testi-card-lp">
                         <div class="testi-header">
                             <img src="img/Marketing/12.png" alt="Savages" class="client-logo-img white-logo-filter">
                             <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
                         </div>
-                        <p class="testi-quote">"El panel para cambiar precios es súper intuitivo. La web es hermosa y al fin vendo sin dejarle plata a nadie."</p>
+                        <p class="testi-quote">"El panel para cambiar precios es súper intuitivo. Al fin vendo sin dejarle plata a nadie."</p>
                         <div class="testi-author">Savages</div>
                     </div>
-
                     <div class="testi-card-lp">
                         <div class="testi-header">
                             <img src="img/Marketing/15.png" alt="Armura" class="client-logo-img white-logo-filter"> 
                             <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
                         </div>
-                        <p class="testi-quote">"La estética de la web elevó muchísimo nuestra marca de indumentaria. Vendemos directo y sin vueltas."</p>
+                        <p class="testi-quote">"La estética de la web elevó muchísimo nuestra marca. Vendemos directo y sin vueltas."</p>
                         <div class="testi-author">Armura Indumentaria</div>
                     </div>
-
                     <div class="testi-card-lp">
                         <div class="testi-header">
                             <img src="img/apps/2.png" alt="Fagaz SA" class="client-logo-img white-logo-filter">
                             <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
                         </div>
-                        <p class="testi-quote">"Son unos genios. Entendieron todo rápido y la plataforma quedó impecable. Muy recomendables."</p>
+                        <p class="testi-quote">"Son unos genios. Entendieron todo rápido y la plataforma quedó impecable."</p>
                         <div class="testi-author">Fagaz S.A.</div>
                     </div>
-
-
+                    <div class="testi-card-lp">
+                        <div class="testi-header">
+                            <img src="img/Marketing/9.png" alt="Atermicos Pinamar" class="client-logo-img white-logo-filter">
+                            <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
+                        </div>
+                        <p class="testi-quote">"Desde que tenemos la tienda, los pedidos nos llegan ordenados. Ahorramos muchísimo tiempo administrativo."</p>
+                        <div class="testi-author">Atérmicos Pinamar</div>
+                    </div>
+                    <div class="testi-card-lp">
+                        <div class="testi-header">
+                            <h4 class="client-logo-text font-serif">Clinically</h4>
+                            <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i></div>
+                        </div>
+                        <p class="testi-quote">"Muy contenta con el trabajo que hicieron. Todo excelente."</p>
+                        <div class="testi-author">Clinically</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -173,7 +329,6 @@
                             <p>Un panel inteligente visualmente idéntico a una hoja de cálculo. Cambiá precios, stock y nombres de cientos de productos en segundos.</p>
                         </div>
                     </div>
-
                     <div class="feature-card">
                         <div class="icon-box"><i class='bx bxs-discount'></i></div>
                         <div class="feature-content">
@@ -181,7 +336,6 @@
                             <p>Creá cupones de descuento (ej: "OFERTA25") para fechas especiales. Una herramienta clave para fidelizar y cerrar ventas.</p>
                         </div>
                     </div>
-
                     <div class="feature-card">
                         <div class="icon-box"><i class='bx bxs-palette'></i></div>
                         <div class="feature-content">
@@ -189,7 +343,6 @@
                             <p>Diseño premium enfocado en la conversión. Una web visualmente impactante genera deseo inmediato en tus productos.</p>
                         </div>
                     </div>
-
                     <div class="feature-card">
                         <div class="icon-box"><i class='bx bxs-tachometer'></i></div>
                         <div class="feature-content">
@@ -197,7 +350,6 @@
                             <p>Tus clientes no esperan. Optimizamos el código para que tu tienda cargue al instante, evitando que pierdas ventas por lentitud.</p>
                         </div>
                     </div>
-
                     <div class="feature-card">
                         <div class="icon-box"><i class='bx bxs-mobile'></i></div>
                         <div class="feature-content">
@@ -205,7 +357,6 @@
                             <p>La mayoría compra desde el celular. Diseñamos pensando primero en la pantalla chica para una experiencia de usuario perfecta.</p>
                         </div>
                     </div>
-
                     <div class="feature-card">
                         <div class="icon-box"><i class='bx bxs-lock-alt'></i></div>
                         <div class="feature-content">
@@ -234,21 +385,18 @@
                             <p>Porque el cierre de la venta se realiza directamente en tu WhatsApp. La web toma el pedido, pero el pago final te lo hace el cliente a vos (le pasás tu Alias o CBU por chat). <strong>Al no procesar el pago automático dentro de la plataforma, ninguna empresa te muerde tu ganancia.</strong></p>
                         </div>
                     </details>
-
                     <details class="faq-item">
                         <summary>¿Cómo se cargan los productos? ¿Es un Excel?</summary>
                         <div class="faq-content">
                             <p>Es una <strong>tabla visual inteligente integrada en tu web</strong>, muy parecida a un Excel, pero mejor. No tenés que subir ni bajar archivos. Entrás al panel, escribís el precio nuevo en la celda, guardás y listo. Es la forma más rápida del mercado.</p>
                         </div>
                     </details>
-
                     <details class="faq-item">
                         <summary>¿La web sirve si tengo local físico?</summary>
                         <div class="faq-content">
                             <p>Sí, absolutamente. Funciona como tu catálogo digital 24/7. Muchos clientes la usan para ver qué tenés antes de ir al local, o para reservar productos online y elegir "Retiro en Local".</p>
                         </div>
                     </details>
-
                     <details class="faq-item">
                         <summary>¿Puedo hacer ofertas y descuentos?</summary>
                         <div class="faq-content">
@@ -267,25 +415,33 @@
                         <p>Analizamos tu negocio y te mostramos cómo funciona.</p>
                     </div>
 
-                    <form id="landingForm" action="/gracias.html" class="compact-form">
+                    <form id="landingForm" class="compact-form">
+                        
                         <div class="input-group">
                             <label>Nombre y Apellido</label>
-                            <input type="text" name="nombre" placeholder="Tu nombre" required>
+                            <input type="text" id="name" name="nombre" placeholder="Tu nombre" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Tu Email</label>
+                            <input type="email" id="email" name="email" placeholder="tuemail@ejemplo.com" required>
                         </div>
                         
                         <div class="input-group">
                             <label>Tu WhatsApp</label>
-                            <input type="tel" name="telefono" placeholder="+54 9..." required>
+                            <input type="tel" id="phone" name="telefono" required>
+                            <span id="valid-msg" class="hide">✓ Válido</span>
+                            <span id="error-msg" class="hide"></span>
                         </div>
 
-                        <div class="input-group">
+                        <div class="input-group" style="margin-top: 15px;">
                             <label>¿Qué productos vendés y qué stock tenés aprox?</label>
-                            <textarea name="detalle_productos" rows="3" placeholder="Ej: Vendo zapatillas, tengo unos 50 modelos distintos..." required></textarea>
+                            <textarea id="details" name="detalle_productos" rows="3" placeholder="Ej: Vendo zapatillas, tengo unos 50 modelos distintos..." required></textarea>
                         </div>
 
                         <div class="input-group">
                             <label>¿Cuál es tu situación actual?</label>
-                            <select name="situacion_web" required>
+                            <select id="goal" name="situacion_web" required>
                                 <option value="" disabled selected>Seleccioná una opción...</option>
                                 <option value="No tengo sitio web">No tengo sitio web aún</option>
                                 <option value="Tengo web pero quiero renovarla">Tengo web pero quiero renovarla</option>
@@ -309,18 +465,9 @@
     </main>
 
     <script src="js/script.js"></script>
-    <script src="js/landing-form-sender.js"></script> 
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const track = document.querySelector('.testimonials-track');
-            const items = Array.from(track.children);
-            // Duplicamos los elementos para asegurar el loop infinito suave
-            items.forEach(item => {
-                const clone = item.cloneNode(true);
-                track.appendChild(clone);
-            });
-        });
-    </script>
+    <script src="js/landing-form-sender.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
+
 </body>
 </html>

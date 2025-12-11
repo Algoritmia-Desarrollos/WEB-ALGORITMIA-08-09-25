@@ -1,79 +1,193 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // === INICIALIZACIÓN DE EMAILJS ===
-    const EMAILJS_PUBLIC_KEY = '3bkxlvg4klx2DB5rd'; // TU PUBLIC KEY
+    
+    // ==========================================
+    // 1. CARRUSEL INFINITO (DUAL ROW)
+    // ==========================================
+    const tracks = document.querySelectorAll('.testimonials-track');
+    if (tracks.length > 0) {
+        tracks.forEach(track => {
+            const items = Array.from(track.children);
+            items.forEach(item => {
+                const clone = item.cloneNode(true);
+                clone.setAttribute('aria-hidden', true);
+                track.appendChild(clone);
+            });
+        });
+    }
+
+    // ==========================================
+    // 2. LIGHTBOX (ZOOM IMAGENES DASHBOARD)
+    // ==========================================
+    const modal = document.getElementById("myModal");
+    const modalImg = document.getElementById("img01");
+    const captionText = document.getElementById("caption");
+    const closeBtn = document.querySelector(".close-modal");
+    
+    // Seleccionamos todos los wrappers de imágenes del dashboard
+    const imageWrappers = document.querySelectorAll('.dash-img-wrapper');
+
+    if (modal && imageWrappers.length > 0) {
+        
+        // Función para cerrar modal
+        const closeModal = () => {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto"; // Reactivar scroll
+        };
+
+        // Asignar evento click a cada imagen
+        imageWrappers.forEach(wrapper => {
+            wrapper.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                if (img) {
+                    modal.style.display = "block";
+                    modalImg.src = img.src;
+                    captionText.innerHTML = img.alt;
+                    document.body.style.overflow = "hidden"; // Bloquear scroll
+                }
+            });
+        });
+
+        // Cerrar con la X
+        if (closeBtn) closeBtn.onclick = closeModal;
+
+        // Cerrar con click afuera
+        modal.onclick = (e) => {
+            if (e.target === modal) closeModal();
+        };
+
+        // Cerrar con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && modal.style.display === "block") closeModal();
+        });
+    }
+
+    // ==========================================
+    // 3. CONFIGURACIÓN EMAILJS
+    // ==========================================
+    const EMAILJS_PUBLIC_KEY = 'veUMyXHA-8TBOkGAL'; 
     if (typeof emailjs !== 'undefined') {
          emailjs.init(EMAILJS_PUBLIC_KEY);
     } else {
-        console.error("EmailJS SDK no cargado!");
-        alert("Error al cargar el sistema de envío. Por favor, inténtalo de nuevo más tarde.");
-        return; 
+        console.warn("EmailJS no cargado. El formulario no funcionará.");
     }
-    // === FIN EMAILJS INIT ===
 
+    // ==========================================
+    // 4. CONFIGURACIÓN TELÉFONO (INTL-TEL-INPUT)
+    // ==========================================
+    const phoneInputField = document.querySelector("#phone");
+    const errorMsg = document.querySelector("#error-msg");
+    const validMsg = document.querySelector("#valid-msg");
+    let iti;
+
+    // Mapa de errores
+    const errorMap = ["Número inválido", "Código de país inválido", "Muy corto", "Muy largo", "Número inválido"];
+
+    const resetInput = () => {
+        phoneInputField.classList.remove("input-error");
+        if(errorMsg) {
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+        }
+        if(validMsg) validMsg.classList.add("hide");
+    };
+
+    if (phoneInputField) {
+        // Inicializar librería
+        iti = window.intlTelInput(phoneInputField, {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
+            initialCountry: "ar",
+            preferredCountries: ['ar', 'mx', 'cl', 'co', 'es', 'us'], 
+            separateDialCode: true, 
+            nationalMode: false, 
+            autoPlaceholder: "aggressive", 
+        });
+
+        // Formateo automático de espacios
+        phoneInputField.addEventListener('input', function(e) {
+            if (e.inputType !== 'deleteContentBackward') {
+                const currentVal = phoneInputField.value;
+                const cleanVal = currentVal.replace(/\D/g, '');
+                if (cleanVal.length > 0 && typeof intlTelInputUtils !== 'undefined') {
+                    iti.setNumber(cleanVal); 
+                }
+            }
+            resetInput(); 
+        });
+    }
+
+    // ==========================================
+    // 5. ENVÍO DEL FORMULARIO
+    // ==========================================
     const landingForm = document.getElementById('landingForm'); 
-    const submitButton = landingForm.querySelector('.btn-submit-landing'); 
+    const submitButton = landingForm ? landingForm.querySelector('.btn-submit-landing') : null; 
+    const emailInput = document.getElementById('email');
+
+    const validateEmail = (email) => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    };
 
     if (landingForm && submitButton) {
         landingForm.addEventListener('submit', function(e) {
             e.preventDefault(); 
+            resetInput();
+            let hasError = false;
 
+            // Validar Email
+            if (!validateEmail(emailInput.value)) {
+                alert("El email ingresado no es válido.");
+                emailInput.classList.add('input-error');
+                hasError = true;
+            }
+
+            // Validar Teléfono (Estricto)
+            if (iti) {
+                if (!iti.isValidNumber()) {
+                    const errorCode = iti.getValidationError();
+                    const msg = errorMap[errorCode] || "Número inválido";
+                    if(errorMsg) {
+                        errorMsg.innerHTML = msg;
+                        errorMsg.classList.remove("hide");
+                    }
+                    phoneInputField.classList.add('input-error');
+                    hasError = true;
+                } else {
+                    if(validMsg) validMsg.classList.remove("hide");
+                }
+            }
+
+            if (hasError) return;
+
+            // Enviar
+            const originalBtnText = submitButton.innerHTML;
             submitButton.disabled = true;
             submitButton.innerHTML = 'Enviando... <i class="bx bx-loader bx-spin"></i>'; 
 
-            // --- MAPEADO DE DATOS: landing-meta.html -> Plantilla Antigua ---
+            const fullPhoneNumber = iti ? iti.getNumber() : phoneInputField.value;
+
             const templateParams = {
-                // Mapeos directos o más lógicos
-                nombre: document.getElementById('name')?.value || '', // Campo 'name' -> variable 'nombre'
-                email: document.getElementById('email')?.value || '', // Campo 'email' -> variable 'email'
-                telefono_full: document.getElementById('phone')?.value || '', // Campo 'phone' -> variable 'telefono_full'
-                servicio_principal: document.getElementById('goal')?.value || '', // Campo 'goal' -> variable 'servicio_principal'
-                mensaje_final: document.getElementById('details')?.value || '', // Campo 'details' -> variable 'mensaje_final'
-                
-                // Campos de la plantilla antigua SIN equivalente directo en la nueva landing:
-                // Los enviamos vacíos o con un valor por defecto para que no den error.
-                web_existente: document.getElementById('website')?.value || 'No aplica (Landing)', // Usamos el campo website si existe, sino indicamos
-                web_tipo: 'No aplica (Landing)', 
-                diseno_listo: 'No aplica (Landing)',
-                app_descripcion: '', // Vacío
-                seo_sitio_actual: document.getElementById('website')?.value || '', // Reutilizamos website aquí también si es útil
-                presupuesto_publicidad: 'No aplica (Landing)',
-                otro_descripcion: '', // Vacío
-                fuente: 'Landing Meta Ads' // Podemos hardcodear la fuente aquí
+                nombre: document.getElementById('name').value, 
+                email: emailInput.value, 
+                telefono_full: fullPhoneNumber, 
+                servicio_principal: document.getElementById('goal').value, 
+                mensaje_final: document.getElementById('details').value,
+                web_existente: 'No aplica', 
+                web_tipo: 'E-commerce', 
+                fuente: 'Landing Page Ventas'
             };
-            // --- FIN MAPEADO ---
+            
+            const SERVICE_ID = 'service_jm0kq2j'; 
+            const TEMPLATE_ID = 'template_xxpx1qq'; 
 
-            // IDs de EmailJS (USA TU TEMPLATE ID EXISTENTE)
-            const SERVICE_ID = 'service_ehavv1a'; // Tu Service ID
-            const TEMPLATE_ID = 'template_7mgl4yh'; // ¡¡¡TU TEMPLATE ID EXISTENTE!!!
-
-            // --- ENVÍO CON emailjs.send ---
             emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
                 .then(() => {
-                    // Envío exitoso -> Redirige a la página de gracias
-                    window.location.href = '/gracias'; // Redirige a /gracias
+                    window.location.href = 'gracias.html'; 
                 }, (error) => {
-                    // Error en el envío
-                    console.error('Error al enviar con EmailJS:', error);
-                    alert('Hubo un error al enviar tu solicitud. Por favor, inténtalo de nuevo o contáctanos directamente. Código: ' + (error.status || 'Desconocido'));
-                    // Rehabilita el botón
+                    console.error('Error:', error);
+                    alert('Hubo un error al enviar. Por favor contactanos por WhatsApp.');
                     submitButton.disabled = false;
-                    submitButton.innerHTML = 'Solicitar Asesoría Gratuita <i class="bx bx-right-arrow-alt"></i>';
+                    submitButton.innerHTML = originalBtnText;
                 });
-            // --- FIN ENVÍO ---
         });
-    } else {
-        console.error("No se encontró el formulario 'landingForm' o su botón de envío.");
-    }
-
-    // Script simple para manejar el preloader (si aplica)
-    const preloader = document.getElementById('preloader');
-    const mainContent = document.getElementById('main-content');
-    if (preloader && mainContent) {
-        window.addEventListener('load', () => {
-            preloader.classList.add('loaded');
-            mainContent.classList.add('loaded');
-        });
-    } else if (mainContent) {
-            mainContent.classList.add('loaded'); // Si no hay preloader
     }
 });
