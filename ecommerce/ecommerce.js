@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================
-    // 4. CONFIGURACIÓN INPUT TELÉFONO
+    // 4. CONFIGURACIÓN INPUT TELÉFONO (CON GEOIP)
     // =========================================
     const phoneInputField = document.querySelector("#phone");
     const errorMsg = document.querySelector("#error-msg");
@@ -94,7 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (phoneInputField) {
         iti = window.intlTelInput(phoneInputField, {
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
-            initialCountry: "ar",
+            initialCountry: "auto", // Detección automática
+            geoIpLookup: function(callback) {
+                fetch("https://ipapi.co/json")
+                .then(function(res) { return res.json(); })
+                .then(function(data) { callback(data.country_code); })
+                .catch(function() { callback("ar"); }); // Fallback a Argentina si falla
+            },
             preferredCountries: ['ar', 'mx', 'cl', 'co', 'es', 'us'], 
             separateDialCode: true, 
             nationalMode: false, 
@@ -115,7 +121,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================
-    // 5. ENVÍO DEL FORMULARIO
+    // 5. STICKY CTA (SCROLL DEPENDIENTE)
+    // =========================================
+    const stickyBtn = document.querySelector('.sticky-cta-mobile');
+    if (stickyBtn) {
+        window.addEventListener('scroll', () => {
+            // Muestra el botón después de 600px de scroll (aprox pasando el hero)
+            if (window.scrollY > 600) { 
+                stickyBtn.classList.add('visible');
+            } else {
+                stickyBtn.classList.remove('visible');
+            }
+        });
+    }
+
+    // =========================================
+    // 6. ENVÍO DEL FORMULARIO
     // =========================================
     const landingForm = document.getElementById('landingForm'); 
     const submitButton = landingForm ? landingForm.querySelector('.btn-submit-landing') : null; 
