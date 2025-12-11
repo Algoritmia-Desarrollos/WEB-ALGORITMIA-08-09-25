@@ -27,7 +27,7 @@ body {
 .lp-benefit-sub {
     color: #FF5252; /* Rojo suave */
     font-weight: 700;
-    font-size: clamp(0.8rem, 1.5vw, 0.9rem);    text-transform: uppercase;    letter-spacing: 0.5px;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);    text-transform: uppercase;    letter-spacing: 0.5px;
     margin-bottom: 1.5rem;
     display: block;
 }
@@ -533,7 +533,7 @@ body {
     }
 
     /* Tipografía Mobile */
-    .lp-title { font-size: 2rem; line-height: 1.15; margin-bottom: 0.5rem; }
+    .lp-title { font-size: 2.3rem; line-height: 1.15; margin-bottom: 0.5rem; }
     .lp-benefit-sub { margin-bottom: 1rem; }
     .lp-subtitle { font-size: 1rem; margin-bottom: 1.5rem; padding: 0; }
     .badge { font-size: 0.8rem; margin-bottom: 0.8rem; }
