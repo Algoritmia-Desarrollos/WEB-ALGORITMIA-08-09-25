@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. CARRUSEL INFINITO (DUAL ROW)
+    // 1. CARRUSEL INFINITO
     const tracks = document.querySelectorAll('.testimonials-track');
     if (tracks.length > 0) {
         tracks.forEach(track => {
@@ -26,24 +26,33 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.style.overflow = "auto";
         };
 
+        const openModal = (imgSrc, imgAlt) => {
+            modal.style.display = "flex"; // Usamos flex para centrar
+            modalImg.src = imgSrc;
+            if(captionText) captionText.innerHTML = imgAlt;
+            document.body.style.overflow = "hidden";
+        };
+
         imageWrappers.forEach(wrapper => {
             wrapper.addEventListener('click', function() {
                 const img = this.querySelector('img');
                 if (img) {
-                    modal.style.display = "block";
-                    modalImg.src = img.src;
-                    captionText.innerHTML = img.alt;
-                    document.body.style.overflow = "hidden";
+                    openModal(img.src, img.alt);
                 }
             });
         });
 
         if (closeBtn) closeBtn.onclick = closeModal;
+        
+        // Cerrar al hacer clic fuera de la imagen
         modal.onclick = (e) => {
-            if (e.target === modal) closeModal();
+            if (e.target === modal || e.target.classList.contains('modal-content-wrapper')) {
+                closeModal();
+            }
         };
+        
         document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape" && modal.style.display === "block") closeModal();
+            if (e.key === "Escape" && modal.style.display === "flex") closeModal();
         });
     }
 
@@ -154,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
                 .then(() => {
-                    // Ruta de gracias corregida (subir dos niveles)
                     window.location.href = '../../gracias.html'; 
                 }, (error) => {
                     console.error('Error:', error);
